@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         executionOrder="random"
+         failOnWarning="true"
+         failOnRisky="true"
+         failOnEmptyTestSuite="true"
+         beStrictAboutOutputDuringTests="true"
+         verbose="true">
+    <testsuites>
+        <testsuite name="YandexGPT Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <coverage includeUncoveredFiles="true"
+              processUncoveredFiles="true"
+              ignoreDeprecatedCodeUnits="true"
+              disableCodeCoverageIgnore="true">
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+        <exclude>
+            <directory>./tests</directory>
+            <directory>./vendor</directory>
+        </exclude>
+    </coverage>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="YANDEX_GPT_OAUTH_TOKEN" value="test_token"/>
+        <env name="YANDEX_GPT_FOLDER_ID" value="test_folder"/>
+    </php>
+</phpunit>
