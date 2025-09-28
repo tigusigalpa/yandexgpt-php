@@ -1,15 +1,21 @@
 # YandexGPT PHP SDK
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
-[![Total Downloads](https://img.shields.io/packagist/dt/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
-[![GitHub Repository](https://img.shields.io/badge/github-tigusigalpa%2Fyandexgpt--php-blue.svg?style=flat-square)](https://github.com/tigusigalpa/yandexgpt-php)
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/cf603474-f9db-47ed-8d25-94f177cbed18" alt="YandexGPT PHP SDK Hero Image">
+</p>
+
+<p align="center">
+    <a href="https://packagist.org/packages/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/packagist/v/tigusigalpa/yandexgpt-php.svg?style=flat-square" alt="Latest Version on Packagist"></a>
+    <a href="https://packagist.org/packages/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/packagist/dt/tigusigalpa/yandexgpt-php.svg?style=flat-square" alt="Total Downloads"></a>
+    <a href="https://github.com/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/badge/github-tigusigalpa%2Fyandexgpt--php-blue.svg?style=flat-square" alt="GitHub Repository"></a>
+</p>
 
 Полнофункциональный PHP SDK для работы с YandexGPT API с поддержкой Laravel. Пакет предоставляет удобный интерфейс для
 интеграции с AI моделями Yandex Cloud.
 
-## Возможности
+## 🚀 Возможности
 
-- 🚀 Простая интеграция с YandexGPT API
+- Простая интеграция с YandexGPT API
 - 🔐 Автоматическое управление OAuth и IAM токенами
 - 🎯 Поддержка всех доступных моделей YandexGPT
 - 🛠 Полная интеграция с Laravel (Service Provider, Facades, конфигурация)
@@ -18,7 +24,9 @@
 - 🧪 Покрытие тестами
 - 📚 Подробная документация
 
-## Установка
+---
+
+## 📦 Установка
 
 ### Установка из Packagist (рекомендуется)
 
@@ -104,7 +112,9 @@ ln -s ../../packages/yandexgpt-php vendor/tigusigalpa/yandexgpt-php
 php artisan vendor:publish --tag=yandexgpt-config
 ```
 
-## Настройка
+---
+
+## ⚙️ Настройка
 
 ### 1. Получение OAuth токена
 
@@ -140,12 +150,10 @@ IAM токен получается автоматически через SDK с
 **Получение через SDK:**
 
 ```php
-use Tigusigalpa\\YandexGPT\\Auth\OAuthTokenManager;
+use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
 
 // Создание менеджера аутентификации
 $authManager = new OAuthTokenManager('your_oauth_token');
-
-
 
 // Получение IAM токена
 $iamToken = $authManager->getIamToken();
@@ -156,7 +164,7 @@ echo "IAM Token: " . $iamToken . "\n";
 **Автоматическое управление токенами через YandexGPTClient:**
 
 ```php
-use Tigusigalpa\\YandexGPT\\YandexGPTClient;
+use Tigusigalpa\YandexGPT\YandexGPTClient;
 
 // Клиент автоматически получает и обновляет IAM токены
 $client = new YandexGPTClient('your_oauth_token', 'your_folder_id');
@@ -181,7 +189,7 @@ curl -d "{\"yandexPassportOauthToken\":\"YOUR_OAUTH_TOKEN\"}" \
 **Через SDK:**
 
 ```php
-use Tigusigalpa\\YandexGPT\\Auth\OAuthTokenManager;
+use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
 
 $authManager = new OAuthTokenManager('your_oauth_token');
 
@@ -295,8 +303,8 @@ yc resource-manager folder add-access-binding \
 ```php
 <?php
 
-use Tigusigalpa\\YandexGPT\\Auth\OAuthTokenManager;
-use Tigusigalpa\\YandexGPT\\YandexGPTClient;
+use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
+use Tigusigalpa\YandexGPT\YandexGPTClient;
 
 // 1. Инициализация менеджера аутентификации
 $authManager = new OAuthTokenManager('your_oauth_token');
@@ -336,7 +344,9 @@ echo $response['result']['alternatives'][0]['message']['text'];
 - 🤖 [API Foundation Models](https://yandex.cloud/ru/docs/foundation-models/concepts/api)
 - 💰 [Тарифы YandexGPT](https://yandex.cloud/ru/docs/foundation-models/pricing)
 
-## Использование
+---
+
+## 💡 Использование
 
 ### Базовое использование (без Laravel)
 
@@ -345,8 +355,8 @@ echo $response['result']['alternatives'][0]['message']['text'];
 
 require_once 'vendor/autoload.php';
 
-use Tigusigalpa\\YandexGPT\\YandexGPTClient;
-use Tigusigalpa\\YandexGPT\\Models\YandexGPTModel;
+use Tigusigalpa\YandexGPT\YandexGPTClient;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
 
 // Создание клиента
 $client = new YandexGPTClient('your_oauth_token', 'your_folder_id');
@@ -450,8 +460,8 @@ php artisan vendor:publish --tag=yandexgpt-config
 ```php
 <?php
 
-use Tigusigalpa\\YandexGPT\\Laravel\Facades\YandexGPT;
-use Tigusigalpa\\YandexGPT\\Models\YandexGPTModel;
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
 
 // Простой запрос
 $response = YandexGPT::generateText('Привет, как дела?');
@@ -476,7 +486,7 @@ echo $response['result']['alternatives'][0]['message']['text'];
 ```php
 <?php
 
-use Tigusigalpa\\YandexGPT\\YandexGPTClient;
+use Tigusigalpa\YandexGPT\YandexGPTClient;
 
 class ChatController extends Controller
 {
@@ -498,9 +508,7 @@ class ChatController extends Controller
 ### Работа с диалогами
 
 ```php
-<?php
-
-use Tigusigalpa\\YandexGPT\\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
 
 $messages = [
     [
@@ -529,7 +537,7 @@ $response = YandexGPT::generateFromMessages($messages);
 ```php
 <?php
 
-use Tigusigalpa\\YandexGPT\\YandexGPTClient;
+use Tigusigalpa\YandexGPT\YandexGPTClient;
 
 $client = new YandexGPTClient('oauth_token', 'folder_id');
 $authManager = $client->getAuthManager();
@@ -557,7 +565,9 @@ $authManager->assignRole(
 );
 ```
 
-## Доступные модели
+---
+
+## 🤖 Доступные модели
 
 | Модель           | Описание                        | Константа                         |
 |------------------|---------------------------------|-----------------------------------|
@@ -574,7 +584,9 @@ $models = YandexGPT::getAvailableModels();
 $descriptions = YandexGPT::getModelDescriptions();
 ```
 
-## Параметры генерации
+---
+
+## 🔧 Параметры генерации
 
 ```php
 $options = [
@@ -588,14 +600,16 @@ $options = [
 $response = YandexGPT::generateText('Ваш запрос', 'yandexgpt-lite', $options);
 ```
 
-## Обработка ошибок
+---
+
+## ⚠️ Обработка ошибок
 
 ```php
 <?php
 
-use Tigusigalpa\\YandexGPT\\Exceptions\AuthenticationException;
-use Tigusigalpa\\YandexGPT\\Exceptions\ApiException;
-use Tigusigalpa\\YandexGPT\\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Exceptions\AuthenticationException;
+use Tigusigalpa\YandexGPT\Exceptions\ApiException;
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
 
 try {
     $response = YandexGPT::generateText('Привет!');
@@ -611,7 +625,9 @@ try {
 }
 ```
 
-## Конфигурация
+---
+
+## 🛠️ Конфигурация
 
 Полный конфигурационный файл `config/yandexgpt.php`:
 
@@ -643,7 +659,9 @@ return [
 ];
 ```
 
-## Примеры использования
+---
+
+## 📚 Примеры использования
 
 ### Чат-бот для Laravel
 
@@ -653,8 +671,8 @@ return [
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Tigusigalpa\\YandexGPT\\Laravel\Facades\YandexGPT;
-use Tigusigalpa\\YandexGPT\\Models\YandexGPTModel;
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
 
 class ChatBotController extends Controller
 {
@@ -705,8 +723,8 @@ class ChatBotController extends Controller
 ```php
 <?php
 
-use Tigusigalpa\\YandexGPT\\Laravel\Facades\YandexGPT;
-use Tigusigalpa\\YandexGPT\\Models\YandexGPTModel;
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
 
 class ContentGenerator
 {
@@ -739,7 +757,9 @@ class ContentGenerator
 }
 ```
 
-## Тестирование
+---
+
+## 🧪 Тестирование
 
 ### Запуск тестов пакета
 
@@ -819,9 +839,11 @@ Route::get('/test-yandexgpt', [TestYandexGPTController::class, 'test']);
 curl http://your-domain.com/test-yandexgpt
 ```
 
-## Troubleshooting и FAQ
+---
 
-### ❓ Часто задаваемые вопросы
+## ❓ Troubleshooting и FAQ
+
+### Часто задаваемые вопросы
 
 #### Q: Как получить OAuth токен?
 
@@ -859,7 +881,7 @@ $response = $client->generateText(
 );
 ```
 
-### 🔧 Решение проблем
+### Решение проблем
 
 #### Ошибка: "Class 'Tigusigalpa\YandexGPT\YandexGPTClient' not found"
 
@@ -915,7 +937,7 @@ YANDEX_GPT_FOLDER_ID=your_folder_id_here
 2. Проверьте интернет-соединение
 3. Убедитесь, что нет блокировки файрволом
 
-### 🐛 Отладка
+### Отладка
 
 #### Включение детального логирования
 
@@ -950,30 +972,43 @@ dd([
 ]);
 ```
 
-## Требования
+---
+
+## ✅ Требования
 
 - PHP 8.0 или выше
 - Laravel 8.0 или выше (для интеграции с Laravel)
 - Guzzle HTTP 7.0 или выше
 
-## Лицензия
+---
+
+## 📄 Лицензия
 
 Этот пакет распространяется под лицензией MIT. Подробности в файле [LICENSE](LICENSE).
 
-## Поддержка
+---
+
+## 🤝 Поддержка
 
 - [Документация YandexGPT API](https://yandex.cloud/ru/docs/foundation-models/)
 - [Quickstart](https://yandex.cloud/ru/docs/foundation-models/quickstart/yandexgpt)
 - [Список моделей](https://yandex.cloud/ru/docs/ai-studio/concepts/generation/models)
 
-## Участие в разработке
+---
+
+## 🧑‍💻 Участие в разработке
 
 Мы приветствуем участие в разработке! Пожалуйста, ознакомьтесь с [руководством по участию](CONTRIBUTING.md).
 
-## Changelog
+---
+
+## 📜 Changelog
 
 Все изменения документируются в [CHANGELOG.md](CHANGELOG.md).
 
-## Безопасность
+---
+
+## 🛡️ Безопасность
 
 Если вы обнаружили уязвимость в безопасности, пожалуйста, отправьте email на sovletig@gmail.com вместо создания issue.
+
