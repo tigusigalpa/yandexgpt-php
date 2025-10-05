@@ -10,7 +10,8 @@
     <a href="https://github.com/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/badge/github-tigusigalpa%2Fyandexgpt--php-blue.svg?style=flat-square" alt="GitHub Repository"></a>
 </p>
 
-A full-featured PHP SDK for the YandexGPT API with Laravel support. The package provides a convenient interface for integrating with Yandex Cloud AI models.
+A full-featured PHP SDK for the YandexGPT API with Laravel support. The package provides a convenient interface for
+integrating with Yandex Cloud AI models.
 
 ## 🚀 Features
 
@@ -41,51 +42,51 @@ If you want to use the package locally for development or testing:
 
 #### Method 1: Via local repository
 
-1.  **Clone or place the package in your project folder:**
+1. **Clone or place the package in your project folder:**
 
-    ```bash
-    # In the root of your Laravel project
-    mkdir -p packages
-    cd packages
-    git clone https://github.com/tigusigalpa/yandexgpt-php.git
-    # or copy the package folder to packages/yandexgpt-php
-    ```
+   ```bash
+   # In the root of your Laravel project
+   mkdir -p packages
+   cd packages
+   git clone https://github.com/tigusigalpa/yandexgpt-php.git
+   # or copy the package folder to packages/yandexgpt-php
+   ```
 
-2.  **Add the local repository to your project's composer.json:**
+2. **Add the local repository to your project's composer.json:**
 
-    ```json
-    {
-        "repositories": [
-            {
-                "type": "path",
-                "url": "./packages/yandexgpt-php"
-            }
-        ],
-        "require": {
-            "tigusigalpa/yandexgpt-php": "@dev"
-        }
-    }
-    ```
+   ```json
+   {
+       "repositories": [
+           {
+               "type": "path",
+               "url": "./packages/yandexgpt-php"
+           }
+       ],
+       "require": {
+           "tigusigalpa/yandexgpt-php": "@dev"
+       }
+   }
+   ```
 
-3.  **Install the dependencies:**
+3. **Install the dependencies:**
 
-    ```bash
-    composer install
-    # or if the package was already installed
-    composer update tigusigalpa/yandexgpt-php
-    ```
+   ```bash
+   composer install
+   # or if the package was already installed
+   composer update tigusigalpa/yandexgpt-php
+   ```
 
 #### Method 2: Via symlinks
 
-1.  **Create a symlink in vendor:**
+1. **Create a symlink in vendor:**
 
-    ```bash
-    # Remove the existing package (if any)
-    rm -rf vendor/tigusigalpa/yandexgpt-php
+   ```bash
+   # Remove the existing package (if any)
+   rm -rf vendor/tigusigalpa/yandexgpt-php
 
-    # Create a symlink
-    ln -s ../../packages/yandexgpt-php vendor/tigusigalpa/yandexgpt-php
-    ```
+   # Create a symlink
+   ln -s ../../packages/yandexgpt-php vendor/tigusigalpa/yandexgpt-php
+   ```
 
 #### Method 3: Via VCS repository
 
@@ -138,11 +139,13 @@ YANDEX_GPT_MAX_TOKENS=2000
 
 ### 3. Prepare Yandex Cloud
 
-To work with the YandexGPT API, you need to perform several steps in Yandex Cloud. The SDK automates most of them, but it is important to understand the process:
+To work with the YandexGPT API, you need to perform several steps in Yandex Cloud. The SDK automates most of them, but
+it is important to understand the process:
 
 #### 3.1. Get an IAM token
 
-The IAM token is obtained automatically through the SDK using the OAuth token. The token is valid for 12 hours and is renewed automatically.
+The IAM token is obtained automatically through the SDK using the OAuth token. The token is valid for 12 hours and is
+renewed automatically.
 
 **Get via SDK:**
 
@@ -178,7 +181,8 @@ curl -d "{\"yandexPassportOauthToken\":\"YOUR_OAUTH_TOKEN\"}" \
   "https://iam.api.cloud.yandex.net/iam/v1/tokens"
 ```
 
-📚 **Documentation:** [Getting an IAM token for a Yandex account](https://yandex.cloud/en/docs/iam/operations/iam-token/create)
+📚 **Documentation:
+** [Getting an IAM token for a Yandex account](https://yandex.cloud/en/docs/iam/operations/iam-token/create)
 
 #### 3.2. Get Cloud ID
 
@@ -282,16 +286,16 @@ yc resource-manager folder add-access-binding \
 
 **Via web console:**
 
-1.  Open [Yandex Cloud Console](https://console.cloud.yandex.com/)
-2.  Select a folder
-3.  Go to the "Access rights" section
-4.  Click "Assign roles"
-5.  Select a user and the `ai.languageModels.user` role
+1. Open [Yandex Cloud Console](https://console.cloud.yandex.com/)
+2. Select a folder
+3. Go to the "Access rights" section
+4. Click "Assign roles"
+5. Select a user and the `ai.languageModels.user` role
 
 📚 **Documentation:**
 
--   [Assigning roles](https://yandex.cloud/en/docs/iam/operations/roles/grant)
--   [Roles for Yandex Foundation Models](https://yandex.cloud/en/docs/foundation-models/security/)
+- [Assigning roles](https://yandex.cloud/en/docs/iam/operations/roles/grant)
+- [Roles for Yandex Foundation Models](https://yandex.cloud/en/docs/foundation-models/security/)
 
 #### 3.5. Full setup example
 
@@ -333,11 +337,11 @@ echo $response['result']['alternatives'][0]['message']['text'];
 
 #### 3.6. Useful links
 
--   📖 [YandexGPT Quickstart](https://yandex.cloud/en/docs/foundation-models/quickstart/yandexgpt)
--   🔑 [API Authentication](https://yandex.cloud/en/docs/iam/concepts/authorization/iam-token)
--   🏗️ [Resource Management](https://yandex.cloud/en/docs/resource-manager/)
--   🤖 [API Foundation Models](https://yandex.cloud/en/docs/foundation-models/concepts/api)
--   💰 [YandexGPT Pricing](https://yandex.cloud/en/docs/foundation-models/pricing)
+- 📖 [YandexGPT Quickstart](https://yandex.cloud/en/docs/foundation-models/quickstart/yandexgpt)
+- 🔑 [API Authentication](https://yandex.cloud/en/docs/iam/concepts/authorization/iam-token)
+- 🏗️ [Resource Management](https://yandex.cloud/en/docs/resource-manager/)
+- 🤖 [API Foundation Models](https://yandex.cloud/en/docs/foundation-models/concepts/api)
+- 💰 [YandexGPT Pricing](https://yandex.cloud/en/docs/foundation-models/pricing)
 
 ---
 
@@ -389,58 +393,58 @@ The package is automatically integrated with Laravel via a Service Provider, whi
 
 **What the Service Provider does:**
 
-1.  **Register services** (`register()` method):
-    -   Merges the package configuration with the application configuration
-    -   Registers `YandexGPTClient` as a singleton in the container
-    -   Creates an alias for convenient dependency injection
+1. **Register services** (`register()` method):
+    - Merges the package configuration with the application configuration
+    - Registers `YandexGPTClient` as a singleton in the container
+    - Creates an alias for convenient dependency injection
 
-    ```php
-    public function register()
-    {
-        // Merge configuration
-        $this->mergeConfigFrom(
-            __DIR__ . '/../../config/yandexgpt.php',
-            'yandexgpt'
-        );
+   ```php
+   public function register()
+   {
+       // Merge configuration
+       $this->mergeConfigFrom(
+           __DIR__ . '/../../config/yandexgpt.php',
+           'yandexgpt'
+       );
 
-        // Register singleton
-        $this->app->singleton('yandexgpt', function ($app) {
-            $config = $app['config']['yandexgpt'];
+       // Register singleton
+       $this->app->singleton('yandexgpt', function ($app) {
+           $config = $app['config']['yandexgpt'];
 
-            return new YandexGPTClient(
-                $config['oauth_token'],
-                $config['folder_id']
-            );
-        });
+           return new YandexGPTClient(
+               $config['oauth_token'],
+               $config['folder_id']
+           );
+       });
 
-        // Create alias
-        $this->app->alias('yandexgpt', YandexGPTClient::class);
-    }
-    ```
+       // Create alias
+       $this->app->alias('yandexgpt', YandexGPTClient::class);
+   }
+   ```
 
-2.  **Load services** (`boot()` method):
-    -   Publishes the configuration file for customization
+2. **Load services** (`boot()` method):
+    - Publishes the configuration file for customization
 
-    ```php
-    public function boot()
-    {
-        if ($this->app->runningInConsole()) {
-            $this->publishes([
-                __DIR__ . '/../../config/yandexgpt.php' => config_path('yandexgpt.php'),
-            ], 'yandexgpt-config');
-        }
-    }
-    ```
+   ```php
+   public function boot()
+   {
+       if ($this->app->runningInConsole()) {
+           $this->publishes([
+               __DIR__ . '/../../config/yandexgpt.php' => config_path('yandexgpt.php'),
+           ], 'yandexgpt-config');
+       }
+   }
+   ```
 
-3.  **Define provided services** (`provides()` method):
-    -   Specifies which services the provider provides
+3. **Define provided services** (`provides()` method):
+    - Specifies which services the provider provides
 
-    ```php
-    public function provides()
-    {
-        return ['yandexgpt', YandexGPTClient::class];
-    }
-    ```
+   ```php
+   public function provides()
+   {
+       return ['yandexgpt', YandexGPTClient::class];
+   }
+   ```
 
 **Publishing the configuration:**
 
@@ -464,7 +468,7 @@ $response = YandexGPT::generateText('Hello, how are you?');
 // With specified model and parameters
 $response = YandexGPT::generateText(
     'Write a poem about programming',
-    YandexGPTModel::YANDEX_GPT_PRO,
+    YandexGPTModel::YANDEX_GPT,
     [
         'completionOptions' => [
             'temperature' => 0.8,
@@ -564,12 +568,13 @@ $authManager->assignRole(
 
 ## 🤖 Available models
 
-| Model            | Description                     | Constant                          |
-| ---------------- | ------------------------------- | --------------------------------- |
-| `yandexgpt-lite` | Fast and economical model       | `YandexGPTModel::YANDEX_GPT_LITE` |
-| `yandexgpt`      | Standard model                  | `YandexGPTModel::YANDEX_GPT`      |
-| `yandexgpt-pro`  | Advanced model                  | `YandexGPTModel::YandexGPT_PRO`   |
-| `yandexgpt-32k`  | Model with an extended context  | `YandexGPTModel::YANDEX_GPT_32K`  |
+| Model            | Description               | Constant                          |
+|------------------|---------------------------|-----------------------------------|
+| `yandexgpt-lite` | Fast and economical model | `YandexGPTModel::YANDEX_GPT_LITE` |
+| `yandexgpt`      | Standard model            | `YandexGPTModel::YANDEX_GPT`      |
+
+📚 **Complete list of available models:**
+[Generation models in Yandex AI Studio](https://yandex.cloud/en/docs/ai-studio/concepts/generation/models)
 
 ```php
 // Get all available models
@@ -729,7 +734,7 @@ class ContentGenerator
 
         $response = YandexGPT::generateText(
             $prompt,
-            YandexGPTModel::YANDEX_GPT_PRO,
+            YandexGPTModel::YANDEX_GPT,
             [
                 'completionOptions' => [
                     'temperature' => 0.7,
@@ -774,65 +779,65 @@ composer test-coverage
 
 ### Testing in a Laravel project
 
-1.  **Create a test controller or use an existing one:**
+1. **Create a test controller or use an existing one:**
 
-    ```php
-    <?php
+   ```php
+   <?php
 
-    namespace App\Http\Controllers;
+   namespace App\Http\Controllers;
 
-    use Tigusigalpa\YandexGPT\YandexGPTClient;
-    use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
-    use Tigusigalpa\YandexGPT\Exceptions\AuthenticationException;
-    use Tigusigalpa\YandexGPT\Exceptions\ApiException;
+   use Tigusigalpa\YandexGPT\YandexGPTClient;
+   use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+   use Tigusigalpa\YandexGPT\Exceptions\AuthenticationException;
+   use Tigusigalpa\YandexGPT\Exceptions\ApiException;
 
-    class TestYandexGPTController extends Controller
-    {
-        public function test()
-        {
-            try {
-                $client = new YandexGPTClient(
-                    env('YANDEX_GPT_OAUTH_TOKEN'),
-                    env('YANDEX_GPT_FOLDER_ID')
-                );
+   class TestYandexGPTController extends Controller
+   {
+       public function test()
+       {
+           try {
+               $client = new YandexGPTClient(
+                   env('YANDEX_GPT_OAUTH_TOKEN'),
+                   env('YANDEX_GPT_FOLDER_ID')
+               );
 
-                $response = $client->generateText(
-                    'Hello! This is a YandexGPT SDK test',
-                    YandexGPTModel::YANDEX_GPT_LITE
-                );
+               $response = $client->generateText(
+                   'Hello! This is a YandexGPT SDK test',
+                   YandexGPTModel::YANDEX_GPT_LITE
+               );
 
-                return response()->json([
-                    'success' => true,
-                    'response' => $response['result']['alternatives'][0]['message']['text']
-                ]);
+               return response()->json([
+                   'success' => true,
+                   'response' => $response['result']['alternatives'][0]['message']['text']
+               ]);
 
-            } catch (AuthenticationException $e) {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'Authentication error: ' . $e->getMessage()
-                ], 401);
-            } catch (ApiException $e) {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'API error: ' . $e->getMessage()
-                ], 400);
-            }
-        }
-    }
-    ```
+           } catch (AuthenticationException $e) {
+               return response()->json([
+                   'success' => false,
+                   'error' => 'Authentication error: ' . $e->getMessage()
+               ], 401);
+           } catch (ApiException $e) {
+               return response()->json([
+                   'success' => false,
+                   'error' => 'API error: ' . $e->getMessage()
+               ], 400);
+           }
+       }
+   }
+   ```
 
-2.  **Add a route for testing:**
+2. **Add a route for testing:**
 
-    ```php
-    // routes/web.php
-    Route::get('/test-yandexgpt', [TestYandexGPTController::class, 'test']);
-    ```
+   ```php
+   // routes/web.php
+   Route::get('/test-yandexgpt', [TestYandexGPTController::class, 'test']);
+   ```
 
-3.  **Test via a browser or API client:**
+3. **Test via a browser or API client:**
 
-    ```bash
-    curl http://your-domain.com/test-yandexgpt
-    ```
+   ```bash
+   curl http://your-domain.com/test-yandexgpt
+   ```
 
 ---
 
@@ -842,7 +847,8 @@ composer test-coverage
 
 #### Q: How to get an OAuth token?
 
-**A:** Follow the link: https://oauth.yandex.com/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb
+**A:** Follow the
+link: https://oauth.yandex.com/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb
 
 After authorization, copy the token from the URL.
 
@@ -881,55 +887,55 @@ $response = $client->generateText(
 
 **Solution:**
 
-1.  Make sure the package is installed: `composer show tigusigalpa/yandexgpt-php`
-2.  Clear the autoloader: `composer dump-autoload`
-3.  Check that the package is added to `composer.json`
+1. Make sure the package is installed: `composer show tigusigalpa/yandexgpt-php`
+2. Clear the autoloader: `composer dump-autoload`
+3. Check that the package is added to `composer.json`
 
 #### Error: "YandexGPT OAuth token not configured"
 
 **Solution:**
 
-1.  Add to the `.env` file:
+1. Add to the `.env` file:
 
-    ```env
-    YANDEX_GPT_OAUTH_TOKEN=your_actual_token_here
-    YANDEX_GPT_FOLDER_ID=your_folder_id_here
-    ```
+   ```env
+   YANDEX_GPT_OAUTH_TOKEN=your_actual_token_here
+   YANDEX_GPT_FOLDER_ID=your_folder_id_here
+   ```
 
-2.  Clear the configuration cache: `php artisan config:clear`
+2. Clear the configuration cache: `php artisan config:clear`
 
 #### Error: "YandexGPT API error (code 401): Unauthorized"
 
 **Solution:**
 
-1.  Check the correctness of the OAuth token
-2.  Make sure the token has not expired (OAuth tokens are valid for 1 year)
-3.  Check the access rights to the folder
+1. Check the correctness of the OAuth token
+2. Make sure the token has not expired (OAuth tokens are valid for 1 year)
+3. Check the access rights to the folder
 
 #### Error: "YandexGPT API error (code 403): Forbidden"
 
 **Solution:**
 
-1.  Make sure the user has the `ai.languageModels.user` role
-2.  Check the correctness of the Folder ID
-3.  Make sure the folder exists and is accessible
+1. Make sure the user has the `ai.languageModels.user` role
+2. Check the correctness of the Folder ID
+3. Make sure the folder exists and is accessible
 
 #### Error: "Connection timeout"
 
 **Solution:**
 
-1.  Increase the timeout in the configuration:
+1. Increase the timeout in the configuration:
 
-    ```php
-    // config/yandexgpt.php
-    'http_options' => [
-        'timeout' => 60,
-        'connect_timeout' => 30,
-    ],
-    ```
+   ```php
+   // config/yandexgpt.php
+   'http_options' => [
+       'timeout' => 60,
+       'connect_timeout' => 30,
+   ],
+   ```
 
-2.  Check your internet connection
-3.  Make sure there is no firewall blocking
+2. Check your internet connection
+3. Make sure there is no firewall blocking
 
 ### Debugging
 
@@ -970,9 +976,9 @@ dd([
 
 ## ✅ Requirements
 
--   PHP 8.0 or higher
--   Laravel 8.0 or higher (for Laravel integration)
--   Guzzle HTTP 7.0 or higher
+- PHP 8.0 or higher
+- Laravel 8.0 or higher (for Laravel integration)
+- Guzzle HTTP 7.0 or higher
 
 ---
 
@@ -984,9 +990,9 @@ This package is distributed under the MIT license. See the [LICENSE](LICENSE) fi
 
 ## 🤝 Support
 
--   [YandexGPT API Documentation](https://yandex.cloud/en/docs/foundation-models/)
--   [Quickstart](https://yandex.cloud/en/docs/foundation-models/quickstart/yandexgpt)
--   [List of models](https://yandex.cloud/en/docs/ai-studio/concepts/generation/models)
+- [YandexGPT API Documentation](https://yandex.cloud/en/docs/foundation-models/)
+- [Quickstart](https://yandex.cloud/en/docs/foundation-models/quickstart/yandexgpt)
+- [List of models](https://yandex.cloud/en/docs/ai-studio/concepts/generation/models)
 
 ---
 

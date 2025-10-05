@@ -181,8 +181,8 @@ curl -d "{\"yandexPassportOauthToken\":\"YOUR_OAUTH_TOKEN\"}" \
   "https://iam.api.cloud.yandex.net/iam/v1/tokens"
 ```
 
-📚 **Документация:
-** [Получение IAM-токена для аккаунта на Яндексе](https://yandex.cloud/ru/docs/iam/operations/iam-token/create)
+📚 **Документация:**
+[Получение IAM-токена для аккаунта на Яндексе](https://yandex.cloud/ru/docs/iam/operations/iam-token/create)
 
 #### 3.2. Получение Cloud ID
 
@@ -212,8 +212,8 @@ yc resource-manager cloud list
 
 **Через веб-консоль:** [Yandex Cloud Console](https://console.cloud.yandex.ru/) → выберите облако → скопируйте ID
 
-📚 **Документация:
-** [Получение идентификатора облака](https://yandex.cloud/ru/docs/resource-manager/operations/cloud/get-id)
+📚 **Документация:**
+[Получение идентификатора облака](https://yandex.cloud/ru/docs/resource-manager/operations/cloud/get-id)
 
 #### 3.3. Создание каталога (Folder)
 
@@ -469,7 +469,7 @@ $response = YandexGPT::generateText('Привет, как дела?');
 // С указанием модели и параметров
 $response = YandexGPT::generateText(
     'Напиши стихотворение о программировании',
-    YandexGPTModel::YANDEX_GPT_PRO,
+    YandexGPTModel::YANDEX_GPT,
     [
         'completionOptions' => [
             'temperature' => 0.8,
@@ -569,12 +569,13 @@ $authManager->assignRole(
 
 ## 🤖 Доступные модели
 
-| Модель           | Описание                        | Константа                         |
-|------------------|---------------------------------|-----------------------------------|
-| `yandexgpt-lite` | Быстрая и экономичная модель    | `YandexGPTModel::YANDEX_GPT_LITE` |
-| `yandexgpt`      | Стандартная модель              | `YandexGPTModel::YANDEX_GPT`      |
-| `yandexgpt-pro`  | Продвинутая модель              | `YandexGPTModel::YANDEX_GPT_PRO`  |
-| `yandexgpt-32k`  | Модель с расширенным контекстом | `YandexGPTModel::YANDEX_GPT_32K`  |
+| Модель           | Описание                     | Константа                         |
+|------------------|------------------------------|-----------------------------------|
+| `yandexgpt-lite` | Быстрая и экономичная модель | `YandexGPTModel::YANDEX_GPT_LITE` |
+| `yandexgpt`      | Стандартная модель           | `YandexGPTModel::YANDEX_GPT`      |
+
+📚 **Полный список доступных моделей:**
+[Модели генерации в Yandex AI Studio](https://yandex.cloud/ru/docs/ai-studio/concepts/generation/models)
 
 ```php
 // Получение всех доступных моделей
@@ -734,7 +735,7 @@ class ContentGenerator
 
         $response = YandexGPT::generateText(
             $prompt,
-            YandexGPTModel::YANDEX_GPT_PRO,
+            YandexGPTModel::YANDEX_GPT,
             [
                 'completionOptions' => [
                     'temperature' => 0.7,

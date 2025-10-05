@@ -17,22 +17,11 @@ class YandexGPTClientTest extends BaseTestCase
     private YandexGPTClient $client;
     private MockHandler $mockHandler;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->mockHandler = new MockHandler();
-        $handlerStack = HandlerStack::create($this->mockHandler);
-        $httpClient = new Client(['handler' => $handlerStack]);
-
-        $this->client = new YandexGPTClient('test_oauth_token', 'test_folder_id', $httpClient);
-    }
-
     public function testGenerateTextSuccess()
     {
         // Mock IAM token response
         $this->mockHandler->append(new Response(200, [], json_encode([
-            'iamToken' => 'test_iam_token'
+            'iamToken' => 'test_iam_token',
         ])));
 
         // Mock YandexGPT response
@@ -42,18 +31,18 @@ class YandexGPTClientTest extends BaseTestCase
                     [
                         'message' => [
                             'role' => 'assistant',
-                            'text' => 'Привет! Как дела?'
+                            'text' => 'Привет! Как дела?',
                         ],
-                        'status' => 'ALTERNATIVE_STATUS_FINAL'
-                    ]
+                        'status' => 'ALTERNATIVE_STATUS_FINAL',
+                    ],
                 ],
                 'usage' => [
                     'inputTextTokens' => '10',
                     'completionTokens' => '5',
-                    'totalTokens' => '15'
+                    'totalTokens' => '15',
                 ],
-                'modelVersion' => 'yandexgpt-lite/latest'
-            ]
+                'modelVersion' => 'yandexgpt-lite/latest',
+            ],
         ])));
 
         $response = $this->client->generateText('Hello!');
@@ -75,7 +64,7 @@ class YandexGPTClientTest extends BaseTestCase
     {
         // Mock IAM token response
         $this->mockHandler->append(new Response(200, [], json_encode([
-            'iamToken' => 'test_iam_token'
+            'iamToken' => 'test_iam_token',
         ])));
 
         // Mock YandexGPT response
@@ -85,18 +74,18 @@ class YandexGPTClientTest extends BaseTestCase
                     [
                         'message' => [
                             'role' => 'assistant',
-                            'text' => 'This is an answer on your question'
+                            'text' => 'This is an answer on your question',
                         ],
-                        'status' => 'ALTERNATIVE_STATUS_FINAL'
-                    ]
-                ]
-            ]
+                        'status' => 'ALTERNATIVE_STATUS_FINAL',
+                    ],
+                ],
+            ],
         ])));
 
         $messages = [
             ['role' => 'user', 'text' => 'Hello!'],
             ['role' => 'assistant', 'text' => 'Hello! How are you?'],
-            ['role' => 'user', 'text' => 'Good, and you?']
+            ['role' => 'user', 'text' => 'Good, and you?'],
         ];
 
         $response = $this->client->generateFromMessages($messages);
@@ -112,7 +101,6 @@ class YandexGPTClientTest extends BaseTestCase
         $this->assertIsArray($models);
         $this->assertContains(YandexGPTModel::YANDEX_GPT_LITE, $models);
         $this->assertContains(YandexGPTModel::YANDEX_GPT, $models);
-        $this->assertContains(YandexGPTModel::YANDEX_GPT_PRO, $models);
     }
 
     public function testGetModelDescriptions()
@@ -136,11 +124,22 @@ class YandexGPTClientTest extends BaseTestCase
     {
         // Mock failed IAM token response
         $this->mockHandler->append(new Response(401, [], json_encode([
-            'error' => 'Unauthorized'
+            'error' => 'Unauthorized',
         ])));
 
         $this->expectException(AuthenticationException::class);
 
         $this->client->generateText('Привет!');
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->mockHandler = new MockHandler();
+        $handlerStack = HandlerStack::create($this->mockHandler);
+        $httpClient = new Client(['handler' => $handlerStack]);
+
+        $this->client = new YandexGPTClient('test_oauth_token', 'test_folder_id', $httpClient);
     }
 }
