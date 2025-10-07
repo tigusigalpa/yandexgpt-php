@@ -1,5 +1,7 @@
 # YandexGPT PHP SDK
 
+<p align="right"><a href="./README_en.md">English version</a></p>
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/cf603474-f9db-47ed-8d25-94f177cbed18" alt="YandexGPT PHP SDK Hero Image">
 </p>
@@ -10,11 +12,12 @@
 </p>
 
 Полнофункциональный PHP SDK для работы с YandexGPT API с поддержкой Laravel. Пакет предоставляет удобный интерфейс для
-интеграции с AI моделями Yandex Cloud.
+интеграции с AI моделями Yandex Cloud, включая поддержку YandexART.
 
 ## 🚀 Возможности
 
-- Простая интеграция с YandexGPT API
+- 🔌 Простая интеграция с YandexGPT API
+- 🔨 **Поддержка YandexART**
 - 🔐 Автоматическое управление OAuth и IAM токенами
 - 🎯 Поддержка всех доступных моделей YandexGPT
 - 🛠 Полная интеграция с Laravel (Service Provider, Facades, конфигурация)
@@ -1098,8 +1101,11 @@ $operation = $client->generateImageAsync($messages);
 ```php
 $generationOptions = [
     // Пример: указание типа изображения и размера (уточните в документации актуальные ключи)
+    // @link https://yandex.cloud/ru/docs/ai-studio/quickstart/yandexart#generate-text
     // 'mimeType' => 'image/jpeg',
     // 'size' => ['width' => 1024, 'height' => 1024],
+    // 'aspectRatio' => ['widthRatio' => 16, 'heightRatio' => 9],
+    // 'seed' => 1863,
 ];
 $operation = $client->generateImageAsync('Описание сцены', $generationOptions);
 ```
@@ -1136,12 +1142,6 @@ $operation = $client->generateImageAsync('Описание сцены', $generat
 ## 🧑‍💻 Участие в разработке
 
 Мы приветствуем участие в разработке! Пожалуйста, ознакомьтесь с [руководством по участию](CONTRIBUTING.md).
-
----
-
-## 📜 Changelog
-
-Все изменения документируются в [CHANGELOG.md](CHANGELOG.md).
 
 ---
 

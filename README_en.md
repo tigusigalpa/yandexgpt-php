@@ -1,5 +1,7 @@
 # YandexGPT PHP SDK
 
+<p align="right"><a href="./README.md">Русская версия</a></p>
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/cf603474-f9db-47ed-8d25-94f177cbed18" alt="YandexGPT PHP SDK Hero Image">
 </p>
@@ -15,7 +17,8 @@ integrating with Yandex Cloud AI models.
 
 ## 🚀 Features
 
-- Easy integration with the YandexGPT API
+- 🔌 Easy integration with the YandexGPT API
+- 🔨 **YandexART integration**
 - 🔐 Automatic management of OAuth and IAM tokens
 - 🎯 Support for all available YandexGPT models
 - 🛠 Full integration with Laravel (Service Provider, Facades, configuration)
@@ -1095,8 +1098,11 @@ The list of available options depends on the YandexART API. Example options:
 ```php
 $generationOptions = [
     // Example: specify image type and size (check the docs for up-to-date keys)
+    // @link https://yandex.cloud/en/docs/ai-studio/quickstart/yandexart#generate-image
     // 'mimeType' => 'image/jpeg',
     // 'size' => ['width' => 1024, 'height' => 1024],
+    // 'aspectRatio' => ['widthRatio' => 16, 'heightRatio' => 9],
+    // 'seed' => 1863,
 ];
 $operation = $client->generateImageAsync('Scene description', $generationOptions);
 ```
