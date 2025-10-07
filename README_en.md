@@ -8,7 +8,6 @@
 
 <p align="center">
     <a href="https://packagist.org/packages/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/packagist/v/tigusigalpa/yandexgpt-php.svg?style=flat-square" alt="Latest Version on Packagist"></a>
-    <a href="https://packagist.org/packages/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/packagist/dt/tigusigalpa/yandexgpt-php.svg?style=flat-square" alt="Total Downloads"></a>
     <a href="https://github.com/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/badge/github-tigusigalpa%2Fyandexgpt--php-blue.svg?style=flat-square" alt="GitHub Repository"></a>
 </p>
 
@@ -983,6 +982,7 @@ dd([
 
 > 📚 Resources
 > - 📖 Documentation: https://yandex.cloud/en/docs/ai-studio/quickstart/yandexart
+> - 🎨 Website: https://ya.ru/ai/papers/paper-yaart-v1
 
 The SDK supports image generation using YandexART. There are three methods available:
 
@@ -992,8 +992,8 @@ The SDK supports image generation using YandexART. There are three methods avail
 
 Access requirements:
 
-- You must assign the ai.imageGeneration.user role to the Folder where image generation will be performed
-- For text models, the ai.languageModels.user role is also required
+- You must assign the `ai.imageGeneration.user` role to the Folder where image generation will be performed
+- For text models, the `ai.languageModels.user` role is also required
 
 YandexART model:
 
