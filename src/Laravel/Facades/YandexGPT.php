@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Facade;
  * @method static \Tigusigalpa\YandexGPT\Auth\OAuthTokenManager getAuthManager()
  * @method static void setFolderId(string $folderId)
  * @method static string getFolderId()
+ * @method static array generateImageAsync(array|string $messages, array $generationOptions = [], ?string $catalogId = null)
+ * @method static array getOperation(string $operationId)
+ * @method static array generateImage(array|string $messages, array $generationOptions = [], ?string $catalogId = null, int $pollIntervalSeconds = 2, int $maxWaitSeconds = 600)
  *
  * @see \Tigusigalpa\YandexGPT\YandexGPTClient
  */

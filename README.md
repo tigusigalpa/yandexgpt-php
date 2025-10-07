@@ -6,7 +6,6 @@
 
 <p align="center">
     <a href="https://packagist.org/packages/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/packagist/v/tigusigalpa/yandexgpt-php.svg?style=flat-square" alt="Latest Version on Packagist"></a>
-    <a href="https://packagist.org/packages/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/packagist/dt/tigusigalpa/yandexgpt-php.svg?style=flat-square" alt="Total Downloads"></a>
     <a href="https://github.com/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/badge/github-tigusigalpa%2Fyandexgpt--php-blue.svg?style=flat-square" alt="GitHub Repository"></a>
 </p>
 
@@ -972,6 +971,143 @@ dd([
     'folder_id' => env('YANDEX_GPT_FOLDER_ID'),
 ]);
 ```
+
+---
+
+## 🖼️ Генерация изображений (YandexART)
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0e08dee0-6fe2-41bd-ac92-501f53d18166" alt="YandexART Hero Image">
+</p>
+
+> 📚 Ресурсы
+> - 📖 Документация: https://yandex.cloud/ru/docs/ai-studio/quickstart/yandexart
+> - 🎨 Сайт: https://ya.ru/ai/art
+
+SDK поддерживает генерацию изображений с помощью YandexART. Доступны три метода:
+
+- 📨 **generateImageAsync** — отправка запроса на генерацию и получение объекта операции
+- 🔎 **getOperation** — проверка статуса операции по её ID
+- ⏳ **generateImage** — синхронная обёртка с ожиданием результата
+
+Требования доступа:
+
+- Необходимо назначить роль `ai.imageGeneration.user` на каталог (Folder), где будет выполняться генерация изображений
+- Для работы текстовых моделей также требуется роль `ai.languageModels.user`
+
+Модель YandexART:
+
+- Используется модель `yandex-art/latest` с URI вида `art://<folder_id>/yandex-art/latest`
+
+Примеры использования
+
+1) Базовая асинхронная генерация:
+
+```php
+use Tigusigalpa\YandexGPT\YandexGPTClient;
+
+$client = new YandexGPTClient(env('YANDEX_GPT_OAUTH_TOKEN'), env('YANDEX_GPT_FOLDER_ID'));
+
+// Строка запроса или массив сообщений (см. формат ниже)
+$operation = $client->generateImageAsync('Скальный берег у моря на закате, стиль живопись');
+$operationId = $operation['id'];
+
+// Проверка статуса операции
+$op = $client->getOperation($operationId);
+if (!empty($op['done']) && empty($op['error'])) {
+    $imageBase64 = $op['response']['image'] ?? null;
+    if ($imageBase64) {
+        file_put_contents('art.jpg', base64_decode($imageBase64));
+    }
+}
+```
+
+2) Синхронная генерация с ожиданием результата:
+
+```php
+use Tigusigalpa\YandexGPT\YandexGPTClient;
+
+$client = new YandexGPTClient(env('YANDEX_GPT_OAUTH_TOKEN'), env('YANDEX_GPT_FOLDER_ID'));
+
+$result = $client->generateImage('Футуристический город ночью, неоновые огни');
+file_put_contents('city.jpg', base64_decode($result['image_base64']));
+echo '<img src="data:image/png;base64,'.$response['image_base64'].'">';
+```
+
+### Пример сгенерированного изображения Омска
+
+![изображение Омска](https://github.com/user-attachments/assets/96b69b45-0d3d-4c17-90c8-e08ace4c7f59)
+
+3) Использование через Laravel Facade:
+
+```php
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+
+$result = YandexGPT::generateImage('Тёплый домик у озера зимой, стиль акварель');
+file_put_contents('lake.jpg', base64_decode($result['image_base64']));
+echo '<img src="data:image/png;base64,'.$response['image_base64'].'">';
+```
+
+4) Prompt chaining (YandexGPT → YandexART):
+
+```php
+use Tigusigalpa\YandexGPT\YandexGPTClient;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+
+$client = new YandexGPTClient(env('YANDEX_GPT_OAUTH_TOKEN'), env('YANDEX_GPT_FOLDER_ID'));
+
+// Сначала генерируем текстовый промпт через YandexGPT
+$textResponse = $client->generateText(
+    "Сгенерируй краткий, детальный промпт для генерации изображения в стиле цифровой живописи на тему: 'Полет над альпийскими горами'. Укажи стиль, цветовую палитру и ключевые детали.",
+    YandexGPTModel::YANDEX_GPT_LITE
+);
+
+$generatedPrompt = $textResponse['result']['alternatives'][0]['message']['text'] ?? null;
+
+// Затем передаем получившийся промпт в YandexART
+if ($generatedPrompt) {
+    $result = $client->generateImage($generatedPrompt);
+    file_put_contents('alps.jpg', base64_decode($result['image_base64']));
+}
+```
+
+Формат сообщений для YandexART
+
+Метод принимает либо строку (один запрос), либо массив сообщений.
+Каждое сообщение может быть:
+
+- строкой: 'описание сцены'
+- массивом: ['text' => 'описание', 'weight' => 1]
+
+Пример массива сообщений:
+
+```php
+$messages = [
+    ['text' => 'Горы на рассвете', 'weight' => 1],
+    ['text' => 'озеро на переднем плане', 'weight' => 1],
+    ['text' => 'стиль импрессионизм', 'weight' => 1],
+];
+$operation = $client->generateImageAsync($messages);
+```
+
+Параметры generationOptions
+
+Параметр generationOptions (необязателен) позволяет задать настройки генерации.
+Список доступных опций зависит от API YandexART. Примеры опций:
+
+```php
+$generationOptions = [
+    // Пример: указание типа изображения и размера (уточните в документации актуальные ключи)
+    // 'mimeType' => 'image/jpeg',
+    // 'size' => ['width' => 1024, 'height' => 1024],
+];
+$operation = $client->generateImageAsync('Описание сцены', $generationOptions);
+```
+
+Обработка ошибок
+
+Методы могут выбрасывать исключения ApiException и AuthenticationException.
+Проверяйте поле error в ответе операции и наличие поля response.image при успешном завершении.
 
 ---
 

@@ -974,6 +974,140 @@ dd([
 
 ---
 
+## 🖼️ Image Generation (YandexART)
+
+<img src="https://github.com/user-attachments/assets/e9fdb285-e575-40ef-b240-824a990e097f" alt="YandexART Hero Image">
+
+> 📚 Resources
+> - 📖 Documentation: https://yandex.cloud/en/docs/ai-studio/quickstart/yandexart
+
+The SDK supports image generation using YandexART. There are three methods available:
+
+- 📨 **generateImageAsync** — submit a generation request and receive an Operation object
+- 🔎 **getOperation** — check the operation status by its ID
+- ⏳ **generateImage** — synchronous wrapper that waits for the result
+
+Access requirements:
+
+- You must assign the ai.imageGeneration.user role to the Folder where image generation will be performed
+- For text models, the ai.languageModels.user role is also required
+
+YandexART model:
+
+- Uses `yandex-art/latest` with URI `art://<folder_id>/yandex-art/latest`
+
+Usage examples
+
+1) Basic asynchronous generation:
+
+```php
+use Tigusigalpa\YandexGPT\YandexGPTClient;
+
+$client = new YandexGPTClient(env('YANDEX_GPT_OAUTH_TOKEN'), env('YANDEX_GPT_FOLDER_ID'));
+
+// Prompt string or an array of messages (see format below)
+$operation = $client->generateImageAsync('Rocky sea shore at sunset, painting style');
+$operationId = $operation['id'];
+
+// Check operation status
+$op = $client->getOperation($operationId);
+if (!empty($op['done']) && empty($op['error'])) {
+    $imageBase64 = $op['response']['image'] ?? null;
+    if ($imageBase64) {
+        file_put_contents('art.jpg', base64_decode($imageBase64));
+    }
+}
+```
+
+2) Synchronous generation with result waiting:
+
+```php
+use Tigusigalpa\YandexGPT\YandexGPTClient;
+
+$client = new YandexGPTClient(env('YANDEX_GPT_OAUTH_TOKEN'), env('YANDEX_GPT_FOLDER_ID'));
+
+$result = $client->generateImage('Futuristic city at night, neon lights');
+file_put_contents('city.jpg', base64_decode($result['image_base64']));
+echo '<img src="data:image/png;base64,'.$response['image_base64'].'">';
+```
+
+### Example of a generated image of Omsk
+
+![Omsk city](https://github.com/user-attachments/assets/96b69b45-0d3d-4c17-90c8-e08ace4c7f59)
+
+3) Using Laravel Facade:
+
+```php
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+
+$result = YandexGPT::generateImage('Cozy cabin by the lake in winter, watercolor style');
+file_put_contents('lake.jpg', base64_decode($result['image_base64']));
+echo '<img src="data:image/png;base64,'.$response['image_base64'].'">';
+```
+
+4) Prompt chaining (YandexGPT → YandexART):
+
+```php
+use Tigusigalpa\YandexGPT\YandexGPTClient;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+
+$client = new YandexGPTClient(env('YANDEX_GPT_OAUTH_TOKEN'), env('YANDEX_GPT_FOLDER_ID'));
+
+// First, generate a text prompt with YandexGPT
+$textResponse = $client->generateText(
+    "Generate a concise, detailed prompt for an image in digital painting style on the theme: 'Flight over the Alpine mountains'. Specify the style, color palette, and key details.",
+    YandexGPTModel::YANDEX_GPT_LITE
+);
+
+$generatedPrompt = $textResponse['result']['alternatives'][0]['message']['text'] ?? null;
+
+// Then pass the resulting prompt to YandexART
+if ($generatedPrompt) {
+    $result = $client->generateImage($generatedPrompt);
+    file_put_contents('alps.jpg', base64_decode($result['image_base64']));
+}
+```
+
+Message format for YandexART
+
+The method accepts either a string (single prompt) or an array of messages.
+Each message can be:
+
+- a string: 'scene description'
+- an array: ['text' => 'description', 'weight' => 1]
+
+Example of a messages array:
+
+```php
+$messages = [
+    ['text' => 'Mountains at sunrise', 'weight' => 1],
+    ['text' => 'a lake in the foreground', 'weight' => 1],
+    ['text' => 'impressionism style', 'weight' => 1],
+];
+$operation = $client->generateImageAsync($messages);
+```
+
+generationOptions parameters
+
+The generationOptions parameter (optional) allows you to set generation settings.
+The list of available options depends on the YandexART API. Example options:
+
+```php
+$generationOptions = [
+    // Example: specify image type and size (check the docs for up-to-date keys)
+    // 'mimeType' => 'image/jpeg',
+    // 'size' => ['width' => 1024, 'height' => 1024],
+];
+$operation = $client->generateImageAsync('Scene description', $generationOptions);
+```
+
+Error handling
+
+Methods may throw ApiException and AuthenticationException.
+Check the error field in the operation response and the presence of response.image when completed successfully.
+
+---
+
 ## ✅ Requirements
 
 - PHP 8.0 or higher

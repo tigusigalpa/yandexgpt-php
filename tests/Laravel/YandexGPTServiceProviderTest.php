@@ -2,6 +2,8 @@
 
 namespace Tigusigalpa\YandexGPT\Tests\Laravel;
 
+require_once __DIR__ . '/../TestCase.php';
+
 use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
 use Tigusigalpa\YandexGPT\Tests\TestCase;
 use Tigusigalpa\YandexGPT\YandexGPTClient;
