@@ -120,7 +120,10 @@ php artisan vendor:publish --tag=yandexgpt-config
 
 ### 1. Получение OAuth токена
 
-Перейдите по ссылке для получения OAuth токена:
+📚 **Документация:** [OAuth-токен](https://yandex.cloud/ru/docs/iam/concepts/authorization/oauth-token)
+
+Перейдите по ссылке
+для [получения OAuth токена](https://oauth.yandex.ru/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb):
 
 ```
 https://oauth.yandex.ru/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb
@@ -183,8 +186,8 @@ curl -d "{\"yandexPassportOauthToken\":\"YOUR_OAUTH_TOKEN\"}" \
   "https://iam.api.cloud.yandex.net/iam/v1/tokens"
 ```
 
-📚 **Документация:**
-[Получение IAM-токена для аккаунта на Яндексе](https://yandex.cloud/ru/docs/iam/operations/iam-token/create)
+📚 **Документация:
+** [Получение IAM-токена для аккаунта на Яндексе](https://yandex.cloud/ru/docs/iam/operations/iam-token/create#exchange-token)
 
 #### 3.2. Получение Cloud ID
 
@@ -873,15 +876,6 @@ $folders = $authManager->listFolders($clouds[0]['id']);
 
 **A:** Убедитесь, что в `.env` файле правильно задан `YANDEX_GPT_OAUTH_TOKEN` без пробелов и кавычек.
 
-#### Q: Как работать с большими текстами?
-
-**A:** Используйте модель `yandexgpt-32k` для работы с контекстом до 32K токенов:
-
-```php
-$response = $client->generateText(
-    $longText,
-    YandexGPTModel::YANDEX_GPT_32K
-);
 ```
 
 ### Решение проблем

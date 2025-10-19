@@ -120,7 +120,10 @@ php artisan vendor:publish --tag=yandexgpt-config
 
 ### 1. Get an OAuth token
 
-Follow the link to get an OAuth token:
+📚 **Documentation:** [OAuth-token](https://yandex.cloud/ru/docs/iam/concepts/authorization/oauth-token)
+
+Follow the link
+to [get an OAuth token](https://oauth.yandex.com/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb):
 
 ```
 https://oauth.yandex.com/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb
@@ -184,7 +187,7 @@ curl -d "{\"yandexPassportOauthToken\":\"YOUR_OAUTH_TOKEN\"}" \
 ```
 
 📚 **Documentation:
-** [Getting an IAM token for a Yandex account](https://yandex.cloud/en/docs/iam/operations/iam-token/create)
+** [Getting an IAM token for a Yandex account](https://yandex.cloud/en/docs/iam/operations/iam-token/create#exchange-token)
 
 #### 3.2. Get Cloud ID
 
@@ -872,15 +875,6 @@ $folders = $authManager->listFolders($clouds[0]['id']);
 
 **A:** Make sure that `YANDEX_GPT_OAUTH_TOKEN` is correctly set in the `.env` file without spaces or quotes.
 
-#### Q: How to work with large texts?
-
-**A:** Use the `yandexgpt-32k` model to work with a context of up to 32K tokens:
-
-```php
-$response = $client->generateText(
-    $longText,
-    YandexGPTModel::YANDEX_GPT_32K
-);
 ```
 
 ### Troubleshooting
