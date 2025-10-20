@@ -120,7 +120,7 @@ php artisan vendor:publish --tag=yandexgpt-config
 
 ### 1. Get an OAuth token
 
-📚 **Documentation:** [OAuth-token](https://yandex.cloud/ru/docs/iam/concepts/authorization/oauth-token)
+📚 **Documentation:** [OAuth-token](https://yandex.cloud/en/docs/iam/concepts/authorization/oauth-token)
 
 Follow the link
 to [get an OAuth token](https://oauth.yandex.com/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb):
@@ -976,6 +976,8 @@ dd([
 
 > 📚 Resources
 > - 📖 Documentation: https://yandex.cloud/en/docs/ai-studio/quickstart/yandexart
+> - 🛠️ [Request](https://yandex.cloud/en/docs/ai-studio/operations/generation/yandexart-request#generate-text)
+    documentation
 > - 🎨 Website: https://ya.ru/ai/papers/paper-yaart-v1
 
 The SDK supports image generation using YandexART. There are three methods available:

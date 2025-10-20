@@ -979,6 +979,8 @@ dd([
 
 > 📚 Ресурсы
 > - 📖 Документация: https://yandex.cloud/ru/docs/ai-studio/quickstart/yandexart
+> - 🛠️ Документация
+    по [отправке запроса](https://yandex.cloud/ru/docs/ai-studio/operations/generation/yandexart-request#generate-text)
 > - 🎨 Сайт: https://ya.ru/ai/art
 
 SDK поддерживает генерацию изображений с помощью YandexART. Доступны три метода:
