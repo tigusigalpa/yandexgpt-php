@@ -1,15 +1,13 @@
 # YandexGPT PHP SDK
 
-<p align="right"><a href="./README.md">Русская версия</a></p>
+![YandexGPT PHP SDK](https://github.com/user-attachments/assets/cf603474-f9db-47ed-8d25-94f177cbed18)
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/cf603474-f9db-47ed-8d25-94f177cbed18" alt="YandexGPT PHP SDK Hero Image">
-</p>
+> 🇷🇺 [Russian version documentation](README.md)
 
-<p align="center">
-    <a href="https://packagist.org/packages/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/packagist/v/tigusigalpa/yandexgpt-php.svg?style=flat-square" alt="Latest Version on Packagist"></a>
-    <a href="https://github.com/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/badge/github-tigusigalpa%2Fyandexgpt--php-blue.svg?style=flat-square" alt="GitHub Repository"></a>
-</p>
+[![Latest Version](https://img.shields.io/packagist/v/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
+[![PHP Version](https://img.shields.io/packagist/php-v/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
+[![License](https://img.shields.io/packagist/l/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
+[![Tests](https://img.shields.io/github/actions/workflow/status/tigusigalpa/yandexgpt-php/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/tigusigalpa/yandexgpt-php/actions)
 
 A full-featured PHP SDK for the YandexGPT API with Laravel support. The package provides a convenient interface for
 integrating with Yandex Cloud AI models.
@@ -118,41 +116,40 @@ php artisan vendor:publish --tag=yandexgpt-config
 
 ## ⚙️ Configuration
 
-### 1. Get an OAuth token
+### 1. Getting an OAuth token
 
 📚 **Documentation:** [OAuth-token](https://yandex.cloud/en/docs/iam/concepts/authorization/oauth-token)
 
-Follow the link
-to [get an OAuth token](https://oauth.yandex.com/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb):
+Follow the link to [get an OAuth token](https://oauth.yandex.com/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb):
 
 ```
 https://oauth.yandex.com/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb
 ```
 
-### 2. Configure the environment
+### 2. Environment configuration
 
 Add to your `.env` file:
 
 ```env
 YANDEX_GPT_OAUTH_TOKEN=your_oauth_token_here
-# get the folder_id via a special request
+# get folder_id via special request
 YANDEX_GPT_FOLDER_ID=your_folder_id_here
 YANDEX_GPT_DEFAULT_MODEL=yandexgpt-lite
 YANDEX_GPT_TEMPERATURE=0.6
 YANDEX_GPT_MAX_TOKENS=2000
 ```
 
-### 3. Prepare Yandex Cloud
+### 3. Yandex Cloud preparation
 
-To work with the YandexGPT API, you need to perform several steps in Yandex Cloud. The SDK automates most of them, but
-it is important to understand the process:
+To work with the YandexGPT API, you need to perform several steps in Yandex Cloud. The SDK automates most of them, but it is important to understand the process:
 
-#### 3.1. Get an IAM token
+#### 3.1. Getting an IAM token
 
-The IAM token is obtained automatically through the SDK using the OAuth token. The token is valid for 12 hours and is
-renewed automatically.
+📚 **Documentation:** [Getting an IAM token for a Yandex account](https://yandex.cloud/en/docs/iam/operations/iam-token/create#exchange-token)
 
-**Get via SDK:**
+The IAM token is obtained automatically through the SDK using the OAuth token. The token is valid for 12 hours and is renewed automatically.
+
+**Getting via SDK:**
 
 ```php
 use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
@@ -186,10 +183,9 @@ curl -d "{\"yandexPassportOauthToken\":\"YOUR_OAUTH_TOKEN\"}" \
   "https://iam.api.cloud.yandex.net/iam/v1/tokens"
 ```
 
-📚 **Documentation:
-** [Getting an IAM token for a Yandex account](https://yandex.cloud/en/docs/iam/operations/iam-token/create#exchange-token)
+#### 3.2. Getting Cloud ID
 
-#### 3.2. Get Cloud ID
+**Documentation:** [Getting a list of Cloud resources](https://yandex.cloud/en/docs/resource-manager/api-ref/Cloud/list)
 
 **Via SDK:**
 
@@ -217,21 +213,14 @@ yc resource-manager cloud list
 
 **Via web console:** [Yandex Cloud Console](https://console.cloud.yandex.com/) → select a cloud → copy the ID
 
-📚 **Documentation:** [Getting a cloud ID](https://yandex.cloud/en/docs/resource-manager/operations/cloud/get-id)
+#### 3.3. Getting Folder ID
 
-#### 3.3. Create a folder
+**Documentation:** [Getting a list of Folder resources in the specified cloud](https://yandex.cloud/en/docs/resource-manager/api-ref/Folder/list)
 
 **Via SDK:**
 
 ```php
 $authManager = new OAuthTokenManager('your_oauth_token');
-// Laravel:
-// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
-// $authManager = YandexGPT::getAuthManager();
-
-// Create a folder
-$folder = $authManager->createFolder('cloud_id', 'my-ai-folder', 'Folder for AI projects');
-$folderId = $folder['id'];
 
 // Or get existing folders
 $folders = $authManager->listFolders('cloud_id');
@@ -251,25 +240,81 @@ yc resource-manager folder create --name my-ai-folder --cloud-id YOUR_CLOUD_ID
 yc resource-manager folder list --cloud-id YOUR_CLOUD_ID
 ```
 
+#### Creating a folder
+
+```php
+// Laravel:
+// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+// $authManager = YandexGPT::getAuthManager();
+
+// Create a folder
+$folder = $authManager->createFolder('cloud_id', 'my-ai-folder', 'Folder for AI projects');
+$folderId = $folder['id'];
+
+```
+
 📚 **Documentation:** [Creating a folder](https://yandex.cloud/en/docs/resource-manager/operations/folder/create)
 
-#### 3.4. Assign the ai.languageModels.user role
+#### 3.4. Assigning roles to folder or cloud
+
+📚 **Documentation:**
+
+[Authentication in Yandex AI Studio API](https://yandex.cloud/en/docs/ai-studio/api-ref/authentication)
+
+[Access management in Yandex AI Studio](https://yandex.cloud/en/docs/ai-studio/security/)
+
+[Assign a role to a folder or cloud](https://yandex.cloud/en/docs/iam/operations/roles/grant#cloud-or-folder)
+
+[Assigning a role to a cloud](https://yandex.cloud/en/docs/resource-manager/api-ref/Cloud/updateAccessBindings)
+
+[Subject object for cloud](https://yandex.cloud/en/docs/resource-manager/api-ref/Cloud/updateAccessBindings#yandex.cloud.access.Subject)
+
+[Assigning a role to a folder](https://yandex.cloud/en/docs/resource-manager/api-ref/Folder/updateAccessBindings)
+
+[Subject object for folder](https://yandex.cloud/en/docs/resource-manager/api-ref/Folder/updateAccessBindings#yandex.cloud.access.Subject)
+
+[Step-by-step instructions for Identity and Access Management](https://yandex.cloud/en/docs/iam/operations/)
+
+[UserAccount API](https://yandex.cloud/en/docs/iam/api-ref/UserAccount/)
+
+[Identity and Access Management API, REST: YandexPassportUserAccount.GetByLogin](https://yandex.cloud/en/docs/iam/api-ref/YandexPassportUserAccount/getByLogin)
 
 **Via SDK:**
 
 ```php
 $authManager = new OAuthTokenManager('your_oauth_token');
+$iamToken = $authManager->getIamToken();
 
 // Laravel:
 // use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
 // $authManager = YandexGPT::getAuthManager();
 
-// Assign a role to a user
-$authManager->assignRole(
+// 1. Get User ID by Yandex login
+$userId = $authManager->getUserIdByLogin('username@yandex.ru');
+
+// Or get full user information
+$userInfo = $authManager->getUserByLogin('username@yandex.ru');
+$userId = $userInfo['id'];
+
+// 2. Get user information by UserAccountId
+$userAccount = $authManager->getUserAccount($userId);
+
+// 3. Assign role to folder
+$authManager->assignRoleToFolder(
+    $iamToken,
     'folder_id',
-    'userAccount', // subject type
-    'user_id',     // user ID
-    'ai.languageModels.user'
+    $userId,
+    'ai.languageModels.user',  // role
+    'userAccount'               // subject type: 'userAccount' or 'serviceAccount'
+);
+
+// 4. Assign role to cloud
+$authManager->assignRoleToCloud(
+    $iamToken,
+    'cloud_id',
+    $userId,
+    'viewer',       // cloud role
+    'userAccount'   // subject type
 );
 ```
 
@@ -325,15 +370,27 @@ $cloudId = $clouds[0]['id']; // Take the first cloud
 $folder = $authManager->createFolder($cloudId, 'ai-projects', 'Folder for AI');
 $folderId = $folder['id'];
 
-// 4. Assign a role (if needed)
-$authManager->assignRole(
+// 4. Get User ID by login (if needed)
+$userId = $authManager->getUserIdByLogin('username@yandex.ru');
+
+// 5. Assign role to folder
+$iamToken = $authManager->getIamToken();
+$authManager->assignRoleToFolder(
+    $iamToken,
     $folderId,
-    'userAccount',
-    'your_user_id',
+    $userId,
     'ai.languageModels.user'
 );
 
-// 5. Use the client
+// Or assign role to cloud
+$authManager->assignRoleToCloud(
+    $iamToken,
+    $cloudId,
+    $userId,
+    'editor'
+);
+
+// 6. Use the client
 $client = new YandexGPTClient('your_oauth_token', $folderId);
 $response = $client->generateText('Hello, how are you?');
 
@@ -560,13 +617,154 @@ $folder = $authManager->createFolder(
     'Folder for working with YandexGPT'
 );
 
-// Assign permissions
-$authManager->assignRole(
+// Get User ID by Yandex login
+$userId = $authManager->getUserIdByLogin('username@yandex.ru');
+
+// Get user information
+$userInfo = $authManager->getUserByLogin('username@yandex.ru');
+// or by UserAccountId
+$userAccount = $authManager->getUserAccount($userId);
+
+// Assign role to folder
+$authManager->assignRoleToFolder(
     $iamToken,
     $folder['id'],
-    'user_account_id',
-    'ai.languageModels.user'
+    $userId,
+    'ai.languageModels.user',
+    'userAccount'  // or 'serviceAccount'
 );
+
+// Assign role to cloud
+$authManager->assignRoleToCloud(
+    $iamToken,
+    'cloud_id',
+    $userId,
+    'editor',
+    'userAccount'
+);
+```
+
+### User and Role Management (IAM)
+
+The SDK provides a complete set of functions for working with Identity and Access Management (IAM):
+
+#### Getting user information
+
+```php
+use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
+
+$authManager = new OAuthTokenManager('your_oauth_token');
+
+// 1. Get User ID (Subject ID) by Yandex login
+$userId = $authManager->getUserIdByLogin('username@yandex.ru');
+echo "User ID: " . $userId;
+
+// 2. Get full user information by login
+$userInfo = $authManager->getUserByLogin('username@yandex.ru');
+/*
+Returns array:
+[
+    'id' => 'aje...',           // User Subject ID
+    'yandexPassportUserAccount' => [
+        'login' => 'username',
+        'defaultEmail' => 'username@yandex.ru'
+    ]
+]
+*/
+
+// 3. Get user information by UserAccountId
+$userAccount = $authManager->getUserAccount($userId);
+/*
+Returns array with full account information
+*/
+```
+
+#### Assigning roles to folder
+
+```php
+$authManager = new OAuthTokenManager('your_oauth_token');
+$iamToken = $authManager->getIamToken();
+
+// Assign role to user on folder
+$result = $authManager->assignRoleToFolder(
+    $iamToken,
+    'folder_id',              // Folder ID
+    'user_subject_id',        // User Subject ID
+    'ai.languageModels.user', // Role
+    'userAccount'             // Subject type
+);
+
+// Assign role to service account
+$result = $authManager->assignRoleToFolder(
+    $iamToken,
+    'folder_id',
+    'service_account_id',
+    'ai.languageModels.user',
+    'serviceAccount'          // For service account
+);
+
+// Available roles for AI:
+// - ai.languageModels.user - use models
+// - ai.editor - edit resources
+// - ai.viewer - view resources
+// - editor - full folder access
+// - viewer - view folder
+```
+
+#### Assigning roles to cloud
+
+```php
+$authManager = new OAuthTokenManager('your_oauth_token');
+$iamToken = $authManager->getIamToken();
+
+// Assign role to cloud
+$result = $authManager->assignRoleToCloud(
+    $iamToken,
+    'cloud_id',        // Cloud ID
+    'user_subject_id', // User Subject ID
+    'editor',          // Cloud role
+    'userAccount'      // Subject type
+);
+
+// Available roles for cloud:
+// - admin - cloud administrator
+// - editor - cloud editor
+// - viewer - view cloud
+// - resource-manager.clouds.owner - cloud owner
+```
+
+#### Complete example: get user and assign role
+
+```php
+use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
+
+$authManager = new OAuthTokenManager('your_oauth_token');
+
+try {
+    // 1. Get IAM token
+    $iamToken = $authManager->getIamToken();
+    
+    // 2. Get User ID by login
+    $userId = $authManager->getUserIdByLogin('username@yandex.ru');
+    echo "User ID: {$userId}\n";
+    
+    // 3. Get user information
+    $userInfo = $authManager->getUserAccount($userId);
+    echo "User info: " . json_encode($userInfo, JSON_PRETTY_PRINT) . "\n";
+    
+    // 4. Assign role to folder
+    $result = $authManager->assignRoleToFolder(
+        $iamToken,
+        'your_folder_id',
+        $userId,
+        'ai.languageModels.user'
+    );
+    
+    echo "Role assigned successfully!\n";
+    
+} catch (\Tigusigalpa\YandexGPT\Exceptions\AuthenticationException $e) {
+    echo "Error: " . $e->getMessage();
+}
 ```
 
 ---

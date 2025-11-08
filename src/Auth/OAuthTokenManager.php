@@ -9,6 +9,9 @@ use Tigusigalpa\YandexGPT\YandexGPTClient;
 
 class OAuthTokenManager
 {
+    private const USER_ACCOUNT_ENDPOINT = 'https://iam.api.cloud.yandex.net/iam/v1/yandexPassportUserAccounts:byLogin';
+    private const USER_ACCOUNT_GET_ENDPOINT = 'https://iam.api.cloud.yandex.net/iam/v1/userAccounts';
+    
     private Client $httpClient;
     private string $oauthToken;
 
@@ -50,45 +53,102 @@ class OAuthTokenManager
     }
 
     /**
-     * Assign role to user
+     * Assign role to folder
      *
      * @param  string  $iamToken
      * @param  string  $folderId
-     * @param  string  $userAccountId
-     * @param  string  $role
+     * @param  string  $subjectId  Subject ID (user or service account)
+     * @param  string  $role  Role ID (e.g., 'ai.languageModels.user', 'editor')
+     * @param  string  $subjectType  Subject type: 'userAccount' or 'serviceAccount'
      * @return array
      * @throws AuthenticationException
+     * @see https://yandex.cloud/en/docs/resource-manager/api-ref/Folder/updateAccessBindings
      */
-    public function assignRole(
+    public function assignRoleToFolder(
         string $iamToken,
         string $folderId,
-        string $userAccountId,
-        string $role = 'ai.languageModels.user'
+        string $subjectId,
+        string $role = 'ai.languageModels.user',
+        string $subjectType = 'userAccount'
     ): array {
         try {
-            $response =
-                $this->httpClient->post(YandexGPTClient::FOLDERS_ENDPOINT."/{$folderId}:setAccessBindings",
-                    [
-                        'json' => [
-                            'accessBindings' => [
-                                [
+            $response = $this->httpClient->post(
+                YandexGPTClient::FOLDERS_ENDPOINT."/{$folderId}:updateAccessBindings",
+                [
+                    'json' => [
+                        'accessBindingDeltas' => [
+                            [
+                                'action' => 'ADD',
+                                'accessBinding' => [
                                     'roleId' => $role,
                                     'subject' => [
-                                        'id' => $userAccountId,
-                                        'type' => 'userAccount',
+                                        'id' => $subjectId,
+                                        'type' => $subjectType,
                                     ],
                                 ],
                             ],
                         ],
-                        'headers' => [
-                            'Authorization' => 'Bearer '.$iamToken,
-                            'Content-Type' => 'application/json',
-                        ],
-                    ]);
+                    ],
+                    'headers' => [
+                        'Authorization' => 'Bearer '.$iamToken,
+                        'Content-Type' => 'application/json',
+                    ],
+                ]
+            );
 
             return json_decode($response->getBody()->getContents(), true);
         } catch (GuzzleException $e) {
-            throw new AuthenticationException('Error assigning role: '.$e->getMessage());
+            throw new AuthenticationException('Error assigning role to folder: '.$e->getMessage());
+        }
+    }
+
+    /**
+     * Assign role to cloud
+     *
+     * @param  string  $iamToken
+     * @param  string  $cloudId
+     * @param  string  $subjectId  Subject ID (user or service account)
+     * @param  string  $role  Role ID (e.g., 'editor', 'viewer')
+     * @param  string  $subjectType  Subject type: 'userAccount' or 'serviceAccount'
+     * @return array
+     * @throws AuthenticationException
+     * @see https://yandex.cloud/en/docs/resource-manager/api-ref/Cloud/updateAccessBindings
+     */
+    public function assignRoleToCloud(
+        string $iamToken,
+        string $cloudId,
+        string $subjectId,
+        string $role = 'viewer',
+        string $subjectType = 'userAccount'
+    ): array {
+        try {
+            $response = $this->httpClient->post(
+                YandexGPTClient::CLOUDS_ENDPOINT."/{$cloudId}:updateAccessBindings",
+                [
+                    'json' => [
+                        'accessBindingDeltas' => [
+                            [
+                                'action' => 'ADD',
+                                'accessBinding' => [
+                                    'roleId' => $role,
+                                    'subject' => [
+                                        'id' => $subjectId,
+                                        'type' => $subjectType,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                    'headers' => [
+                        'Authorization' => 'Bearer '.$iamToken,
+                        'Content-Type' => 'application/json',
+                    ],
+                ]
+            );
+
+            return json_decode($response->getBody()->getContents(), true);
+        } catch (GuzzleException $e) {
+            throw new AuthenticationException('Error assigning role to cloud: '.$e->getMessage());
         }
     }
 
@@ -196,6 +256,84 @@ class OAuthTokenManager
             return $data['folders'] ?? [];
         } catch (GuzzleException $e) {
             throw new AuthenticationException('Error getting folders list: '.$e->getMessage());
+        }
+    }
+
+    /**
+     * Get user ID (Subject ID) by login - convenience method
+     *
+     * @param  string  $login  Yandex Passport user login
+     * @return string User Subject ID
+     * @throws AuthenticationException
+     */
+    public function getUserIdByLogin(string $login): string
+    {
+        $user = $this->getUserByLogin($login);
+        return $user['id'];
+    }
+
+    /**
+     * Get user account information by login
+     *
+     * @param  string  $login  Yandex Passport user login
+     * @return array User account data including 'id' (Subject ID)
+     * @throws AuthenticationException
+     * @see https://yandex.cloud/en/docs/iam/api-ref/YandexPassportUserAccount/getByLogin
+     */
+    public function getUserByLogin(string $login): array
+    {
+        $iamToken = $this->getIamToken();
+
+        try {
+            $response = $this->httpClient->get(self::USER_ACCOUNT_ENDPOINT, [
+                'query' => [
+                    'login' => $login,
+                ],
+                'headers' => [
+                    'Authorization' => 'Bearer '.$iamToken,
+                ],
+            ]);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            if (!isset($data['id'])) {
+                throw new AuthenticationException('User account response does not contain id field');
+            }
+
+            return $data;
+        } catch (GuzzleException $e) {
+            throw new AuthenticationException('Error getting user by login: '.$e->getMessage());
+        }
+    }
+
+    /**
+     * Get user account information by UserAccountId
+     *
+     * @param  string  $userAccountId  User Account ID (Subject ID)
+     * @return array User account data
+     * @throws AuthenticationException
+     * @see https://yandex.cloud/en/docs/iam/api-ref/UserAccount/get
+     */
+    public function getUserAccount(string $userAccountId): array
+    {
+        $iamToken = $this->getIamToken();
+
+        try {
+            $response = $this->httpClient->get(self::USER_ACCOUNT_GET_ENDPOINT.'/'.$userAccountId, [
+                'headers' => [
+                    'Authorization' => 'Bearer '.$iamToken,
+                ],
+            ]);
+
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            if (!isset($data['id'])) {
+                throw new AuthenticationException('User account response does not contain id field');
+            }
+
+            return $data;
+        } catch (GuzzleException $e) {
+            throw new AuthenticationException('Error getting user account: '.$e->getMessage());
         }
     }
 

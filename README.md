@@ -1,15 +1,13 @@
 # YandexGPT PHP SDK
 
-<p align="right"><a href="./README_en.md">English version</a></p>
+![YandexGPT PHP SDK](https://github.com/user-attachments/assets/cf603474-f9db-47ed-8d25-94f177cbed18)
 
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/cf603474-f9db-47ed-8d25-94f177cbed18" alt="YandexGPT PHP SDK Hero Image">
-</p>
+> 🇬🇧 [English version](README-en.md)
 
-<p align="center">
-    <a href="https://packagist.org/packages/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/packagist/v/tigusigalpa/yandexgpt-php.svg?style=flat-square" alt="Latest Version on Packagist"></a>
-    <a href="https://github.com/tigusigalpa/yandexgpt-php"><img src="https://img.shields.io/badge/github-tigusigalpa%2Fyandexgpt--php-blue.svg?style=flat-square" alt="GitHub Repository"></a>
-</p>
+[![Latest Version](https://img.shields.io/packagist/v/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
+[![PHP Version](https://img.shields.io/packagist/php-v/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
+[![License](https://img.shields.io/packagist/l/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
+[![Tests](https://img.shields.io/github/actions/workflow/status/tigusigalpa/yandexgpt-php/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/tigusigalpa/yandexgpt-php/actions)
 
 Полнофункциональный PHP SDK для работы с YandexGPT API с поддержкой Laravel. Пакет предоставляет удобный интерфейс для
 интеграции с AI моделями Yandex Cloud, включая поддержку YandexART.
@@ -290,17 +288,38 @@ $folderId = $folder['id'];
 
 ```php
 $authManager = new OAuthTokenManager('your_oauth_token');
+$iamToken = $authManager->getIamToken();
 
 // Laravel:
 // use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
 // $authManager = YandexGPT::getAuthManager();
 
-// Назначение роли пользователю
-$authManager->assignRole(
+// 1. Получение User ID по логину Yandex
+$userId = $authManager->getUserIdByLogin('username@yandex.ru');
+
+// Или получение полной информации о пользователе
+$userInfo = $authManager->getUserByLogin('username@yandex.ru');
+$userId = $userInfo['id'];
+
+// 2. Получение информации о пользователе по UserAccountId
+$userAccount = $authManager->getUserAccount($userId);
+
+// 3. Назначение роли на каталог
+$authManager->assignRoleToFolder(
+    $iamToken,
     'folder_id',
-    'userAccount', // тип субъекта
-    'user_id',     // ID пользователя
-    'ai.languageModels.user'
+    $userId,
+    'ai.languageModels.user',  // роль
+    'userAccount'               // тип субъекта: 'userAccount' или 'serviceAccount'
+);
+
+// 4. Назначение роли на облако
+$authManager->assignRoleToCloud(
+    $iamToken,
+    'cloud_id',
+    $userId,
+    'viewer',       // роль для облака
+    'userAccount'   // тип субъекта
 );
 ```
 
@@ -351,15 +370,27 @@ $cloudId = $clouds[0]['id']; // Берем первое облако
 $folder = $authManager->createFolder($cloudId, 'ai-projects', 'Каталог для AI');
 $folderId = $folder['id'];
 
-// 4. Назначение роли (если нужно)
-$authManager->assignRole(
+// 4. Получение User ID по логину (если нужно)
+$userId = $authManager->getUserIdByLogin('username@yandex.ru');
+
+// 5. Назначение роли на каталог
+$iamToken = $authManager->getIamToken();
+$authManager->assignRoleToFolder(
+    $iamToken,
     $folderId,
-    'userAccount',
-    'your_user_id',
+    $userId,
     'ai.languageModels.user'
 );
 
-// 5. Использование клиента
+// Или назначение роли на облако
+$authManager->assignRoleToCloud(
+    $iamToken,
+    $cloudId,
+    $userId,
+    'editor'
+);
+
+// 6. Использование клиента
 $client = new YandexGPTClient('your_oauth_token', $folderId);
 $response = $client->generateText('Привет, как дела?');
 
@@ -586,13 +617,154 @@ $folder = $authManager->createFolder(
     'Каталог для работы с YandexGPT'
 );
 
-// Назначение прав
-$authManager->assignRole(
+// Получение User ID по логину Yandex
+$userId = $authManager->getUserIdByLogin('username@yandex.ru');
+
+// Получение информации о пользователе
+$userInfo = $authManager->getUserByLogin('username@yandex.ru');
+// или по UserAccountId
+$userAccount = $authManager->getUserAccount($userId);
+
+// Назначение роли на каталог
+$authManager->assignRoleToFolder(
     $iamToken,
     $folder['id'],
-    'user_account_id',
-    'ai.languageModels.user'
+    $userId,
+    'ai.languageModels.user',
+    'userAccount'  // или 'serviceAccount'
 );
+
+// Назначение роли на облако
+$authManager->assignRoleToCloud(
+    $iamToken,
+    'cloud_id',
+    $userId,
+    'editor',
+    'userAccount'
+);
+```
+
+### Управление пользователями и ролями (IAM)
+
+SDK предоставляет полный набор функций для работы с Identity and Access Management (IAM):
+
+#### Получение информации о пользователях
+
+```php
+use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
+
+$authManager = new OAuthTokenManager('your_oauth_token');
+
+// 1. Получение User ID (Subject ID) по логину Yandex
+$userId = $authManager->getUserIdByLogin('username@yandex.ru');
+echo "User ID: " . $userId;
+
+// 2. Получение полной информации о пользователе по логину
+$userInfo = $authManager->getUserByLogin('username@yandex.ru');
+/*
+Возвращает массив:
+[
+    'id' => 'aje...',           // Subject ID пользователя
+    'yandexPassportUserAccount' => [
+        'login' => 'username',
+        'defaultEmail' => 'username@yandex.ru'
+    ]
+]
+*/
+
+// 3. Получение информации о пользователе по UserAccountId
+$userAccount = $authManager->getUserAccount($userId);
+/*
+Возвращает массив с полной информацией об аккаунте
+*/
+```
+
+#### Назначение ролей на каталог
+
+```php
+$authManager = new OAuthTokenManager('your_oauth_token');
+$iamToken = $authManager->getIamToken();
+
+// Назначение роли пользователю на каталог
+$result = $authManager->assignRoleToFolder(
+    $iamToken,
+    'folder_id',              // ID каталога
+    'user_subject_id',        // Subject ID пользователя
+    'ai.languageModels.user', // Роль
+    'userAccount'             // Тип субъекта
+);
+
+// Назначение роли сервисному аккаунту
+$result = $authManager->assignRoleToFolder(
+    $iamToken,
+    'folder_id',
+    'service_account_id',
+    'ai.languageModels.user',
+    'serviceAccount'          // Для сервисного аккаунта
+);
+
+// Доступные роли для AI:
+// - ai.languageModels.user - использование моделей
+// - ai.editor - редактирование ресурсов
+// - ai.viewer - просмотр ресурсов
+// - editor - полный доступ к каталогу
+// - viewer - просмотр каталога
+```
+
+#### Назначение ролей на облако
+
+```php
+$authManager = new OAuthTokenManager('your_oauth_token');
+$iamToken = $authManager->getIamToken();
+
+// Назначение роли на облако
+$result = $authManager->assignRoleToCloud(
+    $iamToken,
+    'cloud_id',        // ID облака
+    'user_subject_id', // Subject ID пользователя
+    'editor',          // Роль для облака
+    'userAccount'      // Тип субъекта
+);
+
+// Доступные роли для облака:
+// - admin - администратор облака
+// - editor - редактор облака
+// - viewer - просмотр облака
+// - resource-manager.clouds.owner - владелец облака
+```
+
+#### Полный пример: получение пользователя и назначение роли
+
+```php
+use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
+
+$authManager = new OAuthTokenManager('your_oauth_token');
+
+try {
+    // 1. Получаем IAM токен
+    $iamToken = $authManager->getIamToken();
+    
+    // 2. Получаем User ID по логину
+    $userId = $authManager->getUserIdByLogin('username@yandex.ru');
+    echo "User ID: {$userId}\n";
+    
+    // 3. Получаем информацию о пользователе
+    $userInfo = $authManager->getUserAccount($userId);
+    echo "User info: " . json_encode($userInfo, JSON_PRETTY_PRINT) . "\n";
+    
+    // 4. Назначаем роль на каталог
+    $result = $authManager->assignRoleToFolder(
+        $iamToken,
+        'your_folder_id',
+        $userId,
+        'ai.languageModels.user'
+    );
+    
+    echo "Role assigned successfully!\n";
+    
+} catch (\Tigusigalpa\YandexGPT\Exceptions\AuthenticationException $e) {
+    echo "Error: " . $e->getMessage();
+}
 ```
 
 ---
