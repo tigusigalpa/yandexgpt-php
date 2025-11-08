@@ -149,6 +149,9 @@ YANDEX_GPT_MAX_TOKENS=2000
 
 #### 3.1. Получение IAM токена
 
+📚 **Документация:
+** [Получение IAM-токена для аккаунта на Яндексе](https://yandex.cloud/ru/docs/iam/operations/iam-token/create#exchange-token)
+
 IAM токен получается автоматически через SDK с помощью OAuth токена. Токен действует 12 часов и обновляется
 автоматически.
 
@@ -182,14 +185,13 @@ $iamToken = $authManager->getIamToken();
 **Ручное получение через API:**
 
 ```bash
-curl -d "{\"yandexPassportOauthToken\":\"YOUR_OAUTH_TOKEN\"}" \
+curl -d "{"yandexPassportOauthToken":"YOUR_OAUTH_TOKEN"}" \
   "https://iam.api.cloud.yandex.net/iam/v1/tokens"
 ```
 
-📚 **Документация:
-** [Получение IAM-токена для аккаунта на Яндексе](https://yandex.cloud/ru/docs/iam/operations/iam-token/create#exchange-token)
-
 #### 3.2. Получение Cloud ID
+
+**Документация:** [Получение списка ресурсов Cloud](https://yandex.cloud/ru/docs/resource-manager/api-ref/Cloud/list)
 
 **Через SDK:**
 
@@ -217,22 +219,15 @@ yc resource-manager cloud list
 
 **Через веб-консоль:** [Yandex Cloud Console](https://console.cloud.yandex.ru/) → выберите облако → скопируйте ID
 
-📚 **Документация:**
-[Получение идентификатора облака](https://yandex.cloud/ru/docs/resource-manager/operations/cloud/get-id)
+#### 3.3. Получение Folder ID
 
-#### 3.3. Создание каталога (Folder)
+**Документация:**
+[Получение списка ресурсов Folder в указанном облаке](https://yandex.cloud/ru/docs/resource-manager/api-ref/Folder/list)
 
 **Через SDK:**
 
 ```php
 $authManager = new OAuthTokenManager('your_oauth_token');
-// Laravel:
-// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
-// $authManager = YandexGPT::getAuthManager();
-
-// Создание каталога
-$folder = $authManager->createFolder('cloud_id', 'my-ai-folder', 'Каталог для AI проектов');
-$folderId = $folder['id'];
 
 // Или получение существующих каталогов
 $folders = $authManager->listFolders('cloud_id');
@@ -252,9 +247,44 @@ yc resource-manager folder create --name my-ai-folder --cloud-id YOUR_CLOUD_ID
 yc resource-manager folder list --cloud-id YOUR_CLOUD_ID
 ```
 
+#### Создание каталога
+
+```php
+// Laravel:
+// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+// $authManager = YandexGPT::getAuthManager();
+
+// Создание каталога
+$folder = $authManager->createFolder('cloud_id', 'my-ai-folder', 'Каталог для AI проектов');
+$folderId = $folder['id'];
+
+```
+
 📚 **Документация:** [Создание каталога](https://yandex.cloud/ru/docs/resource-manager/operations/folder/create)
 
-#### 3.4. Назначение роли ai.languageModels.user
+#### 3.4. Назначение ролей на каталог или облако
+
+📚 **Документация:**
+
+[Аутентификация в API Yandex AI Studio](https://yandex.cloud/ru/docs/ai-studio/api-ref/authentication)
+
+[Управление доступом в Yandex AI Studio](https://yandex.cloud/ru/docs/ai-studio/security/)
+
+[Назначить роль на каталог или облако](https://yandex.cloud/ru/docs/iam/operations/roles/grant#cloud-or-folder)
+
+[Назначение роли на облако](https://yandex.cloud/ru/docs/resource-manager/api-ref/Cloud/updateAccessBindings)
+
+[Объект Subject для облака](https://yandex.cloud/ru/docs/resource-manager/api-ref/Cloud/updateAccessBindings#yandex.cloud.access.Subject)
+
+[Назначение роли на каталог](https://yandex.cloud/ru/docs/resource-manager/api-ref/Folder/updateAccessBindings)
+
+[Объект Subject для каталога](https://yandex.cloud/ru/docs/resource-manager/api-ref/Folder/updateAccessBindings#yandex.cloud.access.Subject)
+
+[Пошаговые инструкции для Identity and Access Management](https://yandex.cloud/ru/docs/iam/operations/)
+
+[UserAccount API](https://yandex.cloud/ru/docs/iam/api-ref/UserAccount/)
+
+[Identity and Access Management API, REST: YandexPassportUserAccount.GetByLogin](https://yandex.cloud/ru/docs/iam/api-ref/YandexPassportUserAccount/getByLogin)
 
 **Через SDK:**
 
@@ -297,11 +327,6 @@ yc resource-manager folder add-access-binding \
 3. Перейдите в раздел "Права доступа"
 4. Нажмите "Назначить роли"
 5. Выберите пользователя и роль `ai.languageModels.user`
-
-📚 **Документация:**
-
-- [Назначение ролей](https://yandex.cloud/ru/docs/iam/operations/roles/grant)
-- [Роли для Yandex Foundation Models](https://yandex.cloud/ru/docs/foundation-models/security/)
 
 #### 3.5. Полный пример настройки
 
