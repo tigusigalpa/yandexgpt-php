@@ -699,16 +699,20 @@ SDK предоставляет полный набор функций для р�
 #### Получение информации о пользователях
 
 ```php
-use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
 
-$authManager = new OAuthTokenManager('your_oauth_token');
+$cloudClient = new YandexCloudClient('your_oauth_token');
+
+// Laravel:
+// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+// $cloudClient = YandexGPT::getCloudClient();
 
 // 1. Получение User ID (Subject ID) по логину Yandex
-$userId = $authManager->getUserIdByLogin('username@yandex.ru');
+$userInfo = $cloudClient->yandexPassportUserAccounts()->getByLogin('username@yandex.ru');
+$userId = $userInfo['id'];
 echo "User ID: " . $userId;
 
 // 2. Получение полной информации о пользователе по логину
-$userInfo = $authManager->getUserByLogin('username@yandex.ru');
 /*
 Возвращает массив:
 [
@@ -721,7 +725,7 @@ $userInfo = $authManager->getUserByLogin('username@yandex.ru');
 */
 
 // 3. Получение информации о пользователе по UserAccountId
-$userAccount = $authManager->getUserAccount($userId);
+$userAccount = $cloudClient->userAccounts()->get($userId);
 /*
 Возвращает массив с полной информацией об аккаунте
 */
@@ -730,25 +734,46 @@ $userAccount = $authManager->getUserAccount($userId);
 #### Назначение ролей на каталог
 
 ```php
-$authManager = new OAuthTokenManager('your_oauth_token');
-$iamToken = $authManager->getIamToken();
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
+
+$cloudClient = new YandexCloudClient('your_oauth_token');
+
+// Laravel:
+// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+// $cloudClient = YandexGPT::getCloudClient();
 
 // Назначение роли пользователю на каталог
-$result = $authManager->assignRoleToFolder(
-    $iamToken,
+$cloudClient->folders()->updateAccessBindings(
     'folder_id',              // ID каталога
-    'user_subject_id',        // Subject ID пользователя
-    'ai.languageModels.user', // Роль
-    'userAccount'             // Тип субъекта
+    [
+        [
+            'action' => 'ADD',
+            'accessBinding' => [
+                'roleId' => 'ai.languageModels.user', // Роль
+                'subject' => [
+                    'id' => 'user_subject_id',        // Subject ID пользователя
+                    'type' => 'userAccount'           // Тип субъекта
+                ]
+            ]
+        ]
+    ]
 );
 
 // Назначение роли сервисному аккаунту
-$result = $authManager->assignRoleToFolder(
-    $iamToken,
+$cloudClient->folders()->updateAccessBindings(
     'folder_id',
-    'service_account_id',
-    'ai.languageModels.user',
-    'serviceAccount'          // Для сервисного аккаунта
+    [
+        [
+            'action' => 'ADD',
+            'accessBinding' => [
+                'roleId' => 'ai.languageModels.user',
+                'subject' => [
+                    'id' => 'service_account_id',
+                    'type' => 'serviceAccount'        // Для сервисного аккаунта
+                ]
+            ]
+        ]
+    ]
 );
 
 // Доступные роли для AI:
@@ -762,16 +787,29 @@ $result = $authManager->assignRoleToFolder(
 #### Назначение ролей на облако
 
 ```php
-$authManager = new OAuthTokenManager('your_oauth_token');
-$iamToken = $authManager->getIamToken();
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
+
+$cloudClient = new YandexCloudClient('your_oauth_token');
+
+// Laravel:
+// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+// $cloudClient = YandexGPT::getCloudClient();
 
 // Назначение роли на облако
-$result = $authManager->assignRoleToCloud(
-    $iamToken,
+$cloudClient->clouds()->updateAccessBindings(
     'cloud_id',        // ID облака
-    'user_subject_id', // Subject ID пользователя
-    'editor',          // Роль для облака
-    'userAccount'      // Тип субъекта
+    [
+        [
+            'action' => 'ADD',
+            'accessBinding' => [
+                'roleId' => 'editor',          // Роль для облака
+                'subject' => [
+                    'id' => 'user_subject_id', // Subject ID пользователя
+                    'type' => 'userAccount'    // Тип субъекта
+                ]
+            ]
+        ]
+    ]
 );
 
 // Доступные роли для облака:
@@ -784,33 +822,44 @@ $result = $authManager->assignRoleToCloud(
 #### Полный пример: получение пользователя и назначение роли
 
 ```php
-use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
 
-$authManager = new OAuthTokenManager('your_oauth_token');
+$cloudClient = new YandexCloudClient('your_oauth_token');
+
+// Laravel:
+// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+// $cloudClient = YandexGPT::getCloudClient();
 
 try {
-    // 1. Получаем IAM токен
-    $iamToken = $authManager->getIamToken();
-    
-    // 2. Получаем User ID по логину
-    $userId = $authManager->getUserIdByLogin('username@yandex.ru');
+    // 1. Получаем User ID по логину
+    $userInfo = $cloudClient->yandexPassportUserAccounts()->getByLogin('username@yandex.ru');
+    $userId = $userInfo['id'];
     echo "User ID: {$userId}\n";
     
-    // 3. Получаем информацию о пользователе
-    $userInfo = $authManager->getUserAccount($userId);
-    echo "User info: " . json_encode($userInfo, JSON_PRETTY_PRINT) . "\n";
+    // 2. Получаем информацию о пользователе
+    $userAccount = $cloudClient->userAccounts()->get($userId);
+    echo "User info: " . json_encode($userAccount, JSON_PRETTY_PRINT) . "\n";
     
-    // 4. Назначаем роль на каталог
-    $result = $authManager->assignRoleToFolder(
-        $iamToken,
+    // 3. Назначаем роль на каталог
+    $cloudClient->folders()->updateAccessBindings(
         'your_folder_id',
-        $userId,
-        'ai.languageModels.user'
+        [
+            [
+                'action' => 'ADD',
+                'accessBinding' => [
+                    'roleId' => 'ai.languageModels.user',
+                    'subject' => [
+                        'id' => $userId,
+                        'type' => 'userAccount'
+                    ]
+                ]
+            ]
+        ]
     );
     
     echo "Role assigned successfully!\n";
     
-} catch (\Tigusigalpa\YandexGPT\Exceptions\AuthenticationException $e) {
+} catch (\Exception $e) {
     echo "Error: " . $e->getMessage();
 }
 ```
@@ -1109,13 +1158,16 @@ curl http://your-domain.com/test-yandexgpt
 **A:** Используйте SDK для получения списка каталогов:
 
 ```php
-$authManager = new OAuthTokenManager('your_oauth_token');
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
+
+$cloudClient = new YandexCloudClient('your_oauth_token');
 
 // Laravel:
 // use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
-// $authManager = YandexGPT::getAuthManager();
-$clouds = $authManager->listClouds();
-$folders = $authManager->listFolders($clouds[0]['id']);
+// $cloudClient = YandexGPT::getCloudClient();
+
+$clouds = $cloudClient->clouds()->list();
+$folders = $cloudClient->folders()->list($clouds[0]['id']);
 ```
 
 #### Q: Почему возникает ошибка "OAuth токен не может быть пустым"?

@@ -700,16 +700,20 @@ The SDK provides a complete set of functions for working with Identity and Acces
 #### Getting user information
 
 ```php
-use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
 
-$authManager = new OAuthTokenManager('your_oauth_token');
+$cloudClient = new YandexCloudClient('your_oauth_token');
+
+// Laravel:
+// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+// $cloudClient = YandexGPT::getCloudClient();
 
 // 1. Get User ID (Subject ID) by Yandex login
-$userId = $authManager->getUserIdByLogin('username@yandex.ru');
+$userInfo = $cloudClient->yandexPassportUserAccounts()->getByLogin('username@yandex.ru');
+$userId = $userInfo['id'];
 echo "User ID: " . $userId;
 
 // 2. Get full user information by login
-$userInfo = $authManager->getUserByLogin('username@yandex.ru');
 /*
 Returns array:
 [
@@ -722,7 +726,7 @@ Returns array:
 */
 
 // 3. Get user information by UserAccountId
-$userAccount = $authManager->getUserAccount($userId);
+$userAccount = $cloudClient->userAccounts()->get($userId);
 /*
 Returns array with full account information
 */
@@ -731,25 +735,46 @@ Returns array with full account information
 #### Assigning roles to folder
 
 ```php
-$authManager = new OAuthTokenManager('your_oauth_token');
-$iamToken = $authManager->getIamToken();
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
+
+$cloudClient = new YandexCloudClient('your_oauth_token');
+
+// Laravel:
+// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+// $cloudClient = YandexGPT::getCloudClient();
 
 // Assign role to user on folder
-$result = $authManager->assignRoleToFolder(
-    $iamToken,
+$cloudClient->folders()->updateAccessBindings(
     'folder_id',              // Folder ID
-    'user_subject_id',        // User Subject ID
-    'ai.languageModels.user', // Role
-    'userAccount'             // Subject type
+    [
+        [
+            'action' => 'ADD',
+            'accessBinding' => [
+                'roleId' => 'ai.languageModels.user', // Role
+                'subject' => [
+                    'id' => 'user_subject_id',        // User Subject ID
+                    'type' => 'userAccount'           // Subject type
+                ]
+            ]
+        ]
+    ]
 );
 
 // Assign role to service account
-$result = $authManager->assignRoleToFolder(
-    $iamToken,
+$cloudClient->folders()->updateAccessBindings(
     'folder_id',
-    'service_account_id',
-    'ai.languageModels.user',
-    'serviceAccount'          // For service account
+    [
+        [
+            'action' => 'ADD',
+            'accessBinding' => [
+                'roleId' => 'ai.languageModels.user',
+                'subject' => [
+                    'id' => 'service_account_id',
+                    'type' => 'serviceAccount'        // For service account
+                ]
+            ]
+        ]
+    ]
 );
 
 // Available roles for AI:
@@ -763,16 +788,29 @@ $result = $authManager->assignRoleToFolder(
 #### Assigning roles to cloud
 
 ```php
-$authManager = new OAuthTokenManager('your_oauth_token');
-$iamToken = $authManager->getIamToken();
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
+
+$cloudClient = new YandexCloudClient('your_oauth_token');
+
+// Laravel:
+// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+// $cloudClient = YandexGPT::getCloudClient();
 
 // Assign role to cloud
-$result = $authManager->assignRoleToCloud(
-    $iamToken,
+$cloudClient->clouds()->updateAccessBindings(
     'cloud_id',        // Cloud ID
-    'user_subject_id', // User Subject ID
-    'editor',          // Cloud role
-    'userAccount'      // Subject type
+    [
+        [
+            'action' => 'ADD',
+            'accessBinding' => [
+                'roleId' => 'editor',          // Cloud role
+                'subject' => [
+                    'id' => 'user_subject_id', // User Subject ID
+                    'type' => 'userAccount'    // Subject type
+                ]
+            ]
+        ]
+    ]
 );
 
 // Available roles for cloud:
@@ -785,33 +823,44 @@ $result = $authManager->assignRoleToCloud(
 #### Complete example: get user and assign role
 
 ```php
-use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
 
-$authManager = new OAuthTokenManager('your_oauth_token');
+$cloudClient = new YandexCloudClient('your_oauth_token');
+
+// Laravel:
+// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+// $cloudClient = YandexGPT::getCloudClient();
 
 try {
-    // 1. Get IAM token
-    $iamToken = $authManager->getIamToken();
-    
-    // 2. Get User ID by login
-    $userId = $authManager->getUserIdByLogin('username@yandex.ru');
+    // 1. Get User ID by login
+    $userInfo = $cloudClient->yandexPassportUserAccounts()->getByLogin('username@yandex.ru');
+    $userId = $userInfo['id'];
     echo "User ID: {$userId}\n";
     
-    // 3. Get user information
-    $userInfo = $authManager->getUserAccount($userId);
-    echo "User info: " . json_encode($userInfo, JSON_PRETTY_PRINT) . "\n";
+    // 2. Get user information
+    $userAccount = $cloudClient->userAccounts()->get($userId);
+    echo "User info: " . json_encode($userAccount, JSON_PRETTY_PRINT) . "\n";
     
-    // 4. Assign role to folder
-    $result = $authManager->assignRoleToFolder(
-        $iamToken,
+    // 3. Assign role to folder
+    $cloudClient->folders()->updateAccessBindings(
         'your_folder_id',
-        $userId,
-        'ai.languageModels.user'
+        [
+            [
+                'action' => 'ADD',
+                'accessBinding' => [
+                    'roleId' => 'ai.languageModels.user',
+                    'subject' => [
+                        'id' => $userId,
+                        'type' => 'userAccount'
+                    ]
+                ]
+            ]
+        ]
     );
     
     echo "Role assigned successfully!\n";
     
-} catch (\Tigusigalpa\YandexGPT\Exceptions\AuthenticationException $e) {
+} catch (\Exception $e) {
     echo "Error: " . $e->getMessage();
 }
 ```
@@ -1110,13 +1159,16 @@ After authorization, copy the token from the URL.
 **A:** Use the SDK to get a list of folders:
 
 ```php
-$authManager = new OAuthTokenManager('your_oauth_token');
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
+
+$cloudClient = new YandexCloudClient('your_oauth_token');
 
 // Laravel:
 // use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
-// $authManager = YandexGPT::getAuthManager();
-$clouds = $authManager->listClouds();
-$folders = $authManager->listFolders($clouds[0]['id']);
+// $cloudClient = YandexGPT::getCloudClient();
+
+$clouds = $cloudClient->clouds()->list();
+$folders = $cloudClient->folders()->list($clouds[0]['id']);
 ```
 
 #### Q: Why do I get the error "OAuth token cannot be empty"?
