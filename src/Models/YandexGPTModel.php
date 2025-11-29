@@ -8,6 +8,7 @@ class YandexGPTModel
     // @link https://yandex.cloud/ru/docs/ai-studio/concepts/generation/models
     public const YANDEX_GPT_LITE = 'yandexgpt-lite';
     public const YANDEX_GPT = 'yandexgpt';
+    public const ALICE_AI = 'aliceai-llm';
 
     /**
      * Get model descriptions
@@ -19,6 +20,7 @@ class YandexGPTModel
         return [
             self::YANDEX_GPT_LITE => 'Lightweight version of YandexGPT for simple tasks',
             self::YANDEX_GPT => 'Standard YandexGPT model',
+            self::ALICE_AI => 'Alice AI LLM - advanced conversational model with 32K context',
         ];
     }
 
@@ -43,6 +45,7 @@ class YandexGPTModel
         return [
             self::YANDEX_GPT_LITE,
             self::YANDEX_GPT,
+            self::ALICE_AI,
         ];
     }
 

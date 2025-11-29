@@ -12,6 +12,8 @@
 Полнофункциональный PHP SDK для работы с YandexGPT API с поддержкой Laravel. Пакет предоставляет удобный интерфейс для
 интеграции с AI моделями Yandex Cloud, включая поддержку YandexART.
 
+> **Примечание:** Пакет использует [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php) для управления облачной инфраструктурой Yandex Cloud (организации, облака, каталоги, авторизация).
+
 ## 🚀 Возможности
 
 - 🔌 Простая интеграция с YandexGPT API
@@ -156,13 +158,13 @@ IAM токен получается автоматически через SDK с
 **Получение через SDK:**
 
 ```php
-use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
 
-// Создание менеджера аутентификации
-$authManager = new OAuthTokenManager('your_oauth_token');
+// Создание клиента Yandex Cloud
+$cloudClient = new YandexCloudClient('your_oauth_token');
 
 // Получение IAM токена
-$iamToken = $authManager->getIamToken();
+$iamToken = $cloudClient->getAuthManager()->getIamToken();
 
 echo "IAM Token: " . $iamToken . "\n";
 ```
@@ -175,9 +177,9 @@ use Tigusigalpa\YandexGPT\YandexGPTClient;
 // Клиент автоматически получает и обновляет IAM токены
 $client = new YandexGPTClient('your_oauth_token', 'your_folder_id');
 
-// Получение менеджера аутентификации для ручного управления
-$authManager = $client->getAuthManager();
-$iamToken = $authManager->getIamToken();
+// Получение Yandex Cloud клиента для управления облаком
+$cloudClient = $client->getCloudClient();
+$iamToken = $cloudClient->getAuthManager()->getIamToken();
 ```
 
 **Ручное получение через API:**
@@ -194,14 +196,14 @@ curl -d "{"yandexPassportOauthToken":"YOUR_OAUTH_TOKEN"}" \
 **Через SDK:**
 
 ```php
-use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
 
-$authManager = new OAuthTokenManager('your_oauth_token');
+$cloudClient = new YandexCloudClient('your_oauth_token');
 
 // Laravel:
 // use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
-// $authManager = YandexGPT::getAuthManager();
-$clouds = $authManager->listClouds();
+// $cloudClient = YandexGPT::getCloudClient();
+$clouds = $cloudClient->clouds()->list();
 
 foreach ($clouds as $cloud) {
     echo "Cloud ID: " . $cloud['id'] . "\n";
@@ -225,10 +227,12 @@ yc resource-manager cloud list
 **Через SDK:**
 
 ```php
-$authManager = new OAuthTokenManager('your_oauth_token');
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
 
-// Или получение существующих каталогов
-$folders = $authManager->listFolders('cloud_id');
+$cloudClient = new YandexCloudClient('your_oauth_token');
+
+// Получение существующих каталогов
+$folders = $cloudClient->folders()->list('cloud_id');
 foreach ($folders as $folder) {
     echo "Folder ID: " . $folder['id'] . "\n";
     echo "Name: " . $folder['name'] . "\n";
@@ -248,13 +252,17 @@ yc resource-manager folder list --cloud-id YOUR_CLOUD_ID
 #### Создание каталога
 
 ```php
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
+
+$cloudClient = new YandexCloudClient('your_oauth_token');
+
 // Laravel:
 // use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
-// $authManager = YandexGPT::getAuthManager();
+// $cloudClient = YandexGPT::getCloudClient();
 
 // Создание каталога
-$folder = $authManager->createFolder('cloud_id', 'my-ai-folder', 'Каталог для AI проектов');
-$folderId = $folder['id'];
+$folder = $cloudClient->folders()->create('cloud_id', 'my-ai-folder', 'Каталог для AI проектов');
+$folderId = $folder['metadata']['folderId'];
 
 ```
 
@@ -287,39 +295,53 @@ $folderId = $folder['id'];
 **Через SDK:**
 
 ```php
-$authManager = new OAuthTokenManager('your_oauth_token');
-$iamToken = $authManager->getIamToken();
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
+
+$cloudClient = new YandexCloudClient('your_oauth_token');
 
 // Laravel:
 // use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
-// $authManager = YandexGPT::getAuthManager();
+// $cloudClient = YandexGPT::getCloudClient();
 
 // 1. Получение User ID по логину Yandex
-$userId = $authManager->getUserIdByLogin('username@yandex.ru');
-
-// Или получение полной информации о пользователе
-$userInfo = $authManager->getUserByLogin('username@yandex.ru');
+$userInfo = $cloudClient->yandexPassportUserAccounts()->getByLogin('username@yandex.ru');
 $userId = $userInfo['id'];
 
 // 2. Получение информации о пользователе по UserAccountId
-$userAccount = $authManager->getUserAccount($userId);
+$userAccount = $cloudClient->userAccounts()->get($userId);
 
 // 3. Назначение роли на каталог
-$authManager->assignRoleToFolder(
-    $iamToken,
+$cloudClient->folders()->updateAccessBindings(
     'folder_id',
-    $userId,
-    'ai.languageModels.user',  // роль
-    'userAccount'               // тип субъекта: 'userAccount' или 'serviceAccount'
+    [
+        [
+            'action' => 'ADD',
+            'accessBinding' => [
+                'roleId' => 'ai.languageModels.user',
+                'subject' => [
+                    'id' => $userId,
+                    'type' => 'userAccount'
+                ]
+            ]
+        ]
+    ]
 );
 
 // 4. Назначение роли на облако
-$authManager->assignRoleToCloud(
-    $iamToken,
+$cloudClient->clouds()->updateAccessBindings(
     'cloud_id',
-    $userId,
-    'viewer',       // роль для облака
-    'userAccount'   // тип субъекта
+    [
+        [
+            'action' => 'ADD',
+            'accessBinding' => [
+                'roleId' => 'viewer',
+                'subject' => [
+                    'id' => $userId,
+                    'type' => 'userAccount'
+                ]
+            ]
+        ]
+    ]
 );
 ```
 
@@ -352,42 +374,54 @@ yc resource-manager folder add-access-binding \
 ```php
 <?php
 
-use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
 use Tigusigalpa\YandexGPT\YandexGPTClient;
 
-// 1. Инициализация менеджера аутентификации
-$authManager = new OAuthTokenManager('your_oauth_token');
+// 1. Инициализация Yandex Cloud клиента
+$cloudClient = new YandexCloudClient('your_oauth_token');
 
 // Laravel:
 // use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
-// $authManager = YandexGPT::getAuthManager();
+// $cloudClient = YandexGPT::getCloudClient();
 
 // 2. Получение списка облаков
-$clouds = $authManager->listClouds();
+$clouds = $cloudClient->clouds()->list();
 $cloudId = $clouds[0]['id']; // Берем первое облако
 
 // 3. Создание каталога (если нужно)
-$folder = $authManager->createFolder($cloudId, 'ai-projects', 'Каталог для AI');
-$folderId = $folder['id'];
+$folder = $cloudClient->folders()->create($cloudId, 'ai-projects', 'Каталог для AI');
+$folderId = $folder['metadata']['folderId'];
 
 // 4. Получение User ID по логину (если нужно)
-$userId = $authManager->getUserIdByLogin('username@yandex.ru');
+$userInfo = $cloudClient->yandexPassportUserAccounts()->getByLogin('username@yandex.ru');
+$userId = $userInfo['id'];
 
 // 5. Назначение роли на каталог
-$iamToken = $authManager->getIamToken();
-$authManager->assignRoleToFolder(
-    $iamToken,
+$cloudClient->folders()->updateAccessBindings(
     $folderId,
-    $userId,
-    'ai.languageModels.user'
+    [
+        [
+            'action' => 'ADD',
+            'accessBinding' => [
+                'roleId' => 'ai.languageModels.user',
+                'subject' => ['id' => $userId, 'type' => 'userAccount']
+            ]
+        ]
+    ]
 );
 
 // Или назначение роли на облако
-$authManager->assignRoleToCloud(
-    $iamToken,
+$cloudClient->clouds()->updateAccessBindings(
     $cloudId,
-    $userId,
-    'editor'
+    [
+        [
+            'action' => 'ADD',
+            'accessBinding' => [
+                'roleId' => 'editor',
+                'subject' => ['id' => $userId, 'type' => 'userAccount']
+            ]
+        ]
+    ]
 );
 
 // 6. Использование клиента
@@ -426,6 +460,20 @@ $client = new YandexGPTClient('your_oauth_token', 'your_folder_id');
 $response = $client->generateText(
     'Расскажи о преимуществах PHP',
     YandexGPTModel::YANDEX_GPT_LITE
+);
+
+echo $response['result']['alternatives'][0]['message']['text'];
+
+// Использование модели Alice AI для разговорных задач
+$response = $client->generateText(
+    'Привет! Расскажи интересную историю',
+    YandexGPTModel::ALICE_AI,
+    [
+        'completionOptions' => [
+            'temperature' => 0.7,
+            'maxTokens' => 2000
+        ]
+    ]
 );
 
 echo $response['result']['alternatives'][0]['message']['text'];
@@ -771,10 +819,11 @@ try {
 
 ## 🤖 Доступные модели
 
-| Модель           | Описание                     | Константа                         |
-|------------------|------------------------------|-----------------------------------|
-| `yandexgpt-lite` | Быстрая и экономичная модель | `YandexGPTModel::YANDEX_GPT_LITE` |
-| `yandexgpt`      | Стандартная модель           | `YandexGPTModel::YANDEX_GPT`      |
+| Модель           | Описание                                          | Константа                         | Контекст |
+|------------------|---------------------------------------------------|-----------------------------------|----------|
+| `yandexgpt-lite` | Быстрая и экономичная модель                      | `YandexGPTModel::YANDEX_GPT_LITE` | 32K      |
+| `yandexgpt`      | Стандартная модель                                | `YandexGPTModel::YANDEX_GPT`      | 32K      |
+| `aliceai-llm`    | Alice AI LLM - продвинутая разговорная модель     | `YandexGPTModel::ALICE_AI`        | 32K      |
 
 📚 **Полный список доступных моделей:**
 [Модели генерации в Yandex AI Studio](https://yandex.cloud/ru/docs/ai-studio/concepts/generation/models)

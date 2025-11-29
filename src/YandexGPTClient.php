@@ -5,7 +5,7 @@ namespace Tigusigalpa\YandexGPT;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use stdClass;
-use Tigusigalpa\YandexGPT\Auth\OAuthTokenManager;
+use Tigusigalpa\YandexCloudClient\YandexCloudClient;
 use Tigusigalpa\YandexGPT\Exceptions\ApiException;
 use Tigusigalpa\YandexGPT\Exceptions\AuthenticationException;
 use Tigusigalpa\YandexGPT\Models\YandexARTModel;
@@ -13,17 +13,13 @@ use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
 
 class YandexGPTClient
 {
-    const FOLDERS_ENDPOINT = 'https://resource-manager.api.cloud.yandex.net/resource-manager/v1/folders';
-    const IAM_TOKEN_ENDPOINT = 'https://iam.api.cloud.yandex.net/iam/v1/tokens';
-    const CLOUDS_ENDPOINT = 'https://resource-manager.api.cloud.yandex.net/resource-manager/v1/clouds';
     const COMPLETION_ENDPOINT = 'https://llm.api.cloud.yandex.net/foundationModels/v1/completion';
     const IMAGE_GENERATION_ASYNC_ENDPOINT = 'https://llm.api.cloud.yandex.net/foundationModels/v1/imageGenerationAsync';
     const OPERATIONS_ENDPOINT = 'https://operation.api.cloud.yandex.net/operations';
+    
     private Client $httpClient;
-    private OAuthTokenManager $authManager;
+    private YandexCloudClient $cloudClient;
     private string $folderId;
-    private ?string $iamToken = null;
-    private ?int $iamTokenExpiry = null;
 
     public function __construct(string $oauthToken, string $folderId, ?Client $httpClient = null)
     {
@@ -37,7 +33,7 @@ class YandexGPTClient
         }
 
         $this->httpClient = $httpClient ?? new Client();
-        $this->authManager = new OAuthTokenManager($oauthToken, $this->httpClient);
+        $this->cloudClient = new YandexCloudClient($oauthToken, $this->httpClient);
         $this->folderId = $folderId;
     }
 
@@ -113,13 +109,7 @@ class YandexGPTClient
      */
     private function getValidIamToken(): string
     {
-        // Проверяем, нужно ли обновить токен (токены действуют 12 часов)
-        if ($this->iamToken === null || $this->iamTokenExpiry === null || time() >= $this->iamTokenExpiry) {
-            $this->iamToken = $this->authManager->getIamToken();
-            $this->iamTokenExpiry = time() + (12 * 60 * 60) - 300; // 12 часов минус 5 минут запаса
-        }
-
-        return $this->iamToken;
+        return $this->cloudClient->getAuthManager()->getValidIamToken();
     }
 
     /**
@@ -205,13 +195,13 @@ class YandexGPTClient
     }
 
     /**
-     * Get authentication manager
+     * Get Yandex Cloud Client
      *
-     * @return OAuthTokenManager
+     * @return YandexCloudClient
      */
-    public function getAuthManager(): OAuthTokenManager
+    public function getCloudClient(): YandexCloudClient
     {
-        return $this->authManager;
+        return $this->cloudClient;
     }
 
     /**
