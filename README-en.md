@@ -1,19 +1,19 @@
 # YandexGPT PHP SDK
 
-![YandexGPT PHP SDK](https://github.com/user-attachments/assets/cf603474-f9db-47ed-8d25-94f177cbed18)
-
-> 🇷🇺 [Russian version documentation](README.md)
+![YandexGPT PHP SDK](https://github.com/user-attachments/assets/758d8956-0126-4b32-a6ba-afa8c8948188)
 
 [![Latest Version](https://img.shields.io/packagist/v/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
 [![PHP Version](https://img.shields.io/packagist/php-v/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
 [![License](https://img.shields.io/packagist/l/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
-[![Tests](https://img.shields.io/github/actions/workflow/status/tigusigalpa/yandexgpt-php/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/tigusigalpa/yandexgpt-php/actions)
 [![Dependencies](https://img.shields.io/packagist/dm/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
 
-A full-featured PHP SDK for working with YandexGPT API with Laravel support. The package provides a convenient interface for
-integrating with Yandex Cloud AI models, including YandexART support.
+**🌐 Language:** English | [Русский](README.md)
 
-> **Note:** This package uses [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php) for managing Yandex Cloud infrastructure (organizations, clouds, folders, authorization).
+A full-featured PHP SDK for working with YandexGPT API with Laravel support. The package provides a convenient interface
+for integrating with Yandex Cloud AI models, including YandexART support.
+
+> **Note:** This package uses [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php) for
+> managing Yandex Cloud infrastructure (organizations, clouds, folders, authorization).
 
 ## 🚀 Features
 
@@ -123,7 +123,8 @@ php artisan vendor:publish --tag=yandexgpt-config
 
 📚 **Documentation:** [OAuth-token](https://yandex.cloud/en/docs/iam/concepts/authorization/oauth-token)
 
-Follow the link to [get an OAuth token](https://oauth.yandex.com/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb):
+Follow the link
+to [get an OAuth token](https://oauth.yandex.com/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb):
 
 ```
 https://oauth.yandex.com/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb
@@ -144,13 +145,16 @@ YANDEX_GPT_MAX_TOKENS=2000
 
 ### 3. Yandex Cloud preparation
 
-To work with the YandexGPT API, you need to perform several steps in Yandex Cloud. The SDK automates most of them, but it is important to understand the process:
+To work with the YandexGPT API, you need to perform several steps in Yandex Cloud. The SDK automates most of them, but
+it is important to understand the process:
 
 #### 3.1. Getting an IAM token
 
-📚 **Documentation:** [Getting an IAM token for a Yandex account](https://yandex.cloud/en/docs/iam/operations/iam-token/create#exchange-token)
+📚 **Documentation:
+** [Getting an IAM token for a Yandex account](https://yandex.cloud/en/docs/iam/operations/iam-token/create#exchange-token)
 
-The IAM token is obtained automatically through the SDK using the OAuth token. The token is valid for 12 hours and is renewed automatically.
+The IAM token is obtained automatically through the SDK using the OAuth token. The token is valid for 12 hours and is
+renewed automatically.
 
 **Getting via SDK:**
 
@@ -218,7 +222,8 @@ yc resource-manager cloud list
 
 #### 3.3. Getting Folder ID
 
-**Documentation:** [Getting a list of Folder resources in the specified cloud](https://yandex.cloud/en/docs/resource-manager/api-ref/Folder/list)
+**Documentation:
+** [Getting a list of Folder resources in the specified cloud](https://yandex.cloud/en/docs/resource-manager/api-ref/Folder/list)
 
 **Via SDK:**
 

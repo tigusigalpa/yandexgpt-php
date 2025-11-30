@@ -1,18 +1,19 @@
 # YandexGPT PHP SDK
 
-![YandexGPT PHP SDK](https://github.com/user-attachments/assets/cf603474-f9db-47ed-8d25-94f177cbed18)
-
-> 🇬🇧 [English version](README-en.md)
+![YandexGPT PHP SDK](https://github.com/user-attachments/assets/758d8956-0126-4b32-a6ba-afa8c8948188)
 
 [![Latest Version](https://img.shields.io/packagist/v/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
 [![PHP Version](https://img.shields.io/packagist/php-v/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
 [![License](https://img.shields.io/packagist/l/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
 [![Tests](https://img.shields.io/github/actions/workflow/status/tigusigalpa/yandexgpt-php/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/tigusigalpa/yandexgpt-php/actions)
 
+**🌐 Язык:** Русский | [English](README-en.md)
+
 Полнофункциональный PHP SDK для работы с YandexGPT API с поддержкой Laravel. Пакет предоставляет удобный интерфейс для
 интеграции с AI моделями Yandex Cloud, включая поддержку YandexART.
 
-> **Примечание:** Пакет использует [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php) для управления облачной инфраструктурой Yandex Cloud (организации, облака, каталоги, авторизация).
+> **Примечание:** Пакет использует [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php) для
+> управления облачной инфраструктурой Yandex Cloud (организации, облака, каталоги, авторизация).
 
 ## 🚀 Возможности
 
@@ -868,11 +869,11 @@ try {
 
 ## 🤖 Доступные модели
 
-| Модель           | Описание                                          | Константа                         | Контекст |
-|------------------|---------------------------------------------------|-----------------------------------|----------|
-| `yandexgpt-lite` | Быстрая и экономичная модель                      | `YandexGPTModel::YANDEX_GPT_LITE` | 32K      |
-| `yandexgpt`      | Стандартная модель                                | `YandexGPTModel::YANDEX_GPT`      | 32K      |
-| `aliceai-llm`    | Alice AI LLM - продвинутая разговорная модель     | `YandexGPTModel::ALICE_AI`        | 32K      |
+| Модель           | Описание                                      | Константа                         | Контекст |
+|------------------|-----------------------------------------------|-----------------------------------|----------|
+| `yandexgpt-lite` | Быстрая и экономичная модель                  | `YandexGPTModel::YANDEX_GPT_LITE` | 32K      |
+| `yandexgpt`      | Стандартная модель                            | `YandexGPTModel::YANDEX_GPT`      | 32K      |
+| `aliceai-llm`    | Alice AI LLM - продвинутая разговорная модель | `YandexGPTModel::ALICE_AI`        | 32K      |
 
 📚 **Полный список доступных моделей:**
 [Модели генерации в Yandex AI Studio](https://yandex.cloud/ru/docs/ai-studio/concepts/generation/models)
