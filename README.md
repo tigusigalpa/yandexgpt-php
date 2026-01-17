@@ -902,6 +902,141 @@ $options = [
 $response = YandexGPT::generateText('Ваш запрос', 'yandexgpt-lite', $options);
 ```
 
+### 🧠 Режим рассуждений (Reasoning Mode)
+
+Режим рассуждений позволяет модели разбивать задачу на этапы и выполнять последовательную цепочку вычислений для повышения точности ответов. Этот режим особенно полезен для задач, требующих логических рассуждений.
+
+📚 **Документация:** [Режим рассуждений в генеративных моделях](https://yandex.cloud/ru/docs/ai-studio/concepts/generation/chain-of-thought)
+
+**Доступные режимы:**
+- `DISABLED` - режим рассуждений выключен (по умолчанию)
+- `ENABLED_HIDDEN` - режим рассуждений включен, но цепочка рассуждений не возвращается в ответе
+
+**Уровни усилий (effort):**
+- `low` - приоритет на скорость и экономию токенов
+- `medium` - баланс между скоростью и точностью рассуждений
+- `high` - приоритет на более полное и тщательное рассуждение
+
+#### Использование с объектом ReasoningOptions
+
+```php
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+use Tigusigalpa\YandexGPT\Models\ReasoningOptions;
+
+// Включить режим рассуждений с низким уровнем усилий
+$response = YandexGPT::generateText(
+    'Решите задачу: если в корзине 5 яблок и 3 груши, сколько всего фруктов?',
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => ReasoningOptions::enabledHidden(ReasoningOptions::EFFORT_LOW)
+    ]
+);
+
+// Включить режим рассуждений с высоким уровнем усилий
+$response = YandexGPT::generateText(
+    'Объясните квантовую запутанность простыми словами',
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => ReasoningOptions::enabledHidden(ReasoningOptions::EFFORT_HIGH)
+    ]
+);
+
+// Отключить режим рассуждений (явно)
+$response = YandexGPT::generateText(
+    'Привет, как дела?',
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => ReasoningOptions::disabled()
+    ]
+);
+```
+
+#### Использование с массивом
+
+```php
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+
+// Включить режим рассуждений
+$response = YandexGPT::generateText(
+    'Какие преимущества использования Docker в разработке?',
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => [
+            'mode' => 'ENABLED_HIDDEN',
+            'effort' => 'medium'
+        ]
+    ]
+);
+
+// Только режим, без указания уровня усилий
+$response = YandexGPT::generateText(
+    'Напишите алгоритм сортировки пузырьком',
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => [
+            'mode' => 'ENABLED_HIDDEN'
+        ]
+    ]
+);
+```
+
+#### Использование с диалогами
+
+```php
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+use Tigusigalpa\YandexGPT\Models\ReasoningOptions;
+
+$messages = [
+    [
+        'role' => 'system',
+        'text' => 'Ты математический помощник'
+    ],
+    [
+        'role' => 'user',
+        'text' => 'Реши уравнение: 2x + 5 = 15'
+    ]
+];
+
+$response = YandexGPT::generateFromMessages(
+    $messages,
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => ReasoningOptions::enabledHidden(ReasoningOptions::EFFORT_MEDIUM),
+        'completionOptions' => [
+            'temperature' => 0.3,
+            'maxTokens' => 1000
+        ]
+    ]
+);
+```
+
+#### Проверка использования токенов рассуждений
+
+При использовании режима рассуждений ответ может содержать информацию о количестве токенов, использованных для рассуждений:
+
+```php
+$response = YandexGPT::generateText(
+    'Сложная математическая задача...',
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => ReasoningOptions::enabledHidden(ReasoningOptions::EFFORT_HIGH)
+    ]
+);
+
+// Проверка токенов рассуждений
+if (isset($response['result']['alternatives'][0]['reasoningTokens'])) {
+    $reasoningTokens = $response['result']['alternatives'][0]['reasoningTokens'];
+    echo "Использовано токенов для рассуждений: {$reasoningTokens}\n";
+}
+
+echo $response['result']['alternatives'][0]['message']['text'];
+```
+
+**Примечание:** Режим рассуждений доступен для модели YandexGPT Pro и может увеличить общее количество токенов запроса.
+
 ---
 
 ## ⚠️ Обработка ошибок

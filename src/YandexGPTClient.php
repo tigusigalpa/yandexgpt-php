@@ -8,6 +8,7 @@ use stdClass;
 use Tigusigalpa\YandexCloudClient\YandexCloudClient;
 use Tigusigalpa\YandexGPT\Exceptions\ApiException;
 use Tigusigalpa\YandexGPT\Exceptions\AuthenticationException;
+use Tigusigalpa\YandexGPT\Models\ReasoningOptions;
 use Tigusigalpa\YandexGPT\Models\YandexARTModel;
 use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
 
@@ -56,13 +57,19 @@ class YandexGPTClient
         $iamToken = $this->getValidIamToken();
         $modelUri = YandexGPTModel::getModelUri($model, $this->folderId);
 
+        $completionOptions = array_merge([
+            'stream' => false,
+            'temperature' => 0.6,
+            'maxTokens' => 2000,
+        ], $options['completionOptions'] ?? []);
+
+        if (isset($options['reasoningOptions'])) {
+            $completionOptions['reasoningOptions'] = $this->normalizeReasoningOptions($options['reasoningOptions']);
+        }
+
         $requestData = [
             'modelUri' => $modelUri,
-            'completionOptions' => array_merge([
-                'stream' => false,
-                'temperature' => 0.6,
-                'maxTokens' => 2000,
-            ], $options['completionOptions'] ?? []),
+            'completionOptions' => $completionOptions,
             'messages' => [
                 [
                     'role' => 'user',
@@ -134,13 +141,19 @@ class YandexGPTClient
         $iamToken = $this->getValidIamToken();
         $modelUri = YandexGPTModel::getModelUri($model, $this->folderId);
 
+        $completionOptions = array_merge([
+            'stream' => false,
+            'temperature' => 0.6,
+            'maxTokens' => 2000,
+        ], $options['completionOptions'] ?? []);
+
+        if (isset($options['reasoningOptions'])) {
+            $completionOptions['reasoningOptions'] = $this->normalizeReasoningOptions($options['reasoningOptions']);
+        }
+
         $requestData = [
             'modelUri' => $modelUri,
-            'completionOptions' => array_merge([
-                'stream' => false,
-                'temperature' => 0.6,
-                'maxTokens' => 2000,
-            ], $options['completionOptions'] ?? []),
+            'completionOptions' => $completionOptions,
             'messages' => $messages,
         ];
 
@@ -362,6 +375,44 @@ class YandexGPTClient
         }
 
         return $normalized;
+    }
+
+    /**
+     * Normalize reasoning options
+     * Accepts ReasoningOptions object or array with mode and optional effort
+     *
+     * @param  ReasoningOptions|array  $reasoningOptions
+     * @return array
+     */
+    private function normalizeReasoningOptions(ReasoningOptions|array $reasoningOptions): array
+    {
+        if ($reasoningOptions instanceof ReasoningOptions) {
+            return $reasoningOptions->toArray();
+        }
+
+        if (is_array($reasoningOptions)) {
+            $normalized = [];
+            
+            if (isset($reasoningOptions['mode'])) {
+                if (!ReasoningOptions::isValidMode($reasoningOptions['mode'])) {
+                    throw new ApiException("Invalid reasoning mode: {$reasoningOptions['mode']}");
+                }
+                $normalized['mode'] = $reasoningOptions['mode'];
+            } else {
+                $normalized['mode'] = ReasoningOptions::MODE_DISABLED;
+            }
+
+            if (isset($reasoningOptions['effort'])) {
+                if (!ReasoningOptions::isValidEffort($reasoningOptions['effort'])) {
+                    throw new ApiException("Invalid reasoning effort: {$reasoningOptions['effort']}");
+                }
+                $normalized['effort'] = $reasoningOptions['effort'];
+            }
+
+            return $normalized;
+        }
+
+        throw new ApiException('Invalid reasoning options format');
     }
 
     /**

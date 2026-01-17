@@ -907,6 +907,141 @@ $options = [
 $response = YandexGPT::generateText('Your request', 'yandexgpt-lite', $options);
 ```
 
+### 🧠 Reasoning Mode
+
+Reasoning mode allows the model to break down tasks into steps and perform sequential chains of computations to improve answer accuracy. This mode is especially useful for tasks requiring logical reasoning.
+
+📚 **Documentation:** [Reasoning mode in generative models](https://yandex.cloud/en/docs/ai-studio/concepts/generation/chain-of-thought)
+
+**Available modes:**
+- `DISABLED` - reasoning mode is disabled (default)
+- `ENABLED_HIDDEN` - reasoning mode is enabled, but the reasoning chain is not returned in the response
+
+**Effort levels:**
+- `low` - priority on speed and token economy
+- `medium` - balance between speed and reasoning accuracy
+- `high` - priority on more complete and thorough reasoning
+
+#### Using ReasoningOptions object
+
+```php
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+use Tigusigalpa\YandexGPT\Models\ReasoningOptions;
+
+// Enable reasoning mode with low effort level
+$response = YandexGPT::generateText(
+    'Solve the problem: if there are 5 apples and 3 pears in a basket, how many fruits are there in total?',
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => ReasoningOptions::enabledHidden(ReasoningOptions::EFFORT_LOW)
+    ]
+);
+
+// Enable reasoning mode with high effort level
+$response = YandexGPT::generateText(
+    'Explain quantum entanglement in simple terms',
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => ReasoningOptions::enabledHidden(ReasoningOptions::EFFORT_HIGH)
+    ]
+);
+
+// Disable reasoning mode (explicitly)
+$response = YandexGPT::generateText(
+    'Hello, how are you?',
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => ReasoningOptions::disabled()
+    ]
+);
+```
+
+#### Using array
+
+```php
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+
+// Enable reasoning mode
+$response = YandexGPT::generateText(
+    'What are the advantages of using Docker in development?',
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => [
+            'mode' => 'ENABLED_HIDDEN',
+            'effort' => 'medium'
+        ]
+    ]
+);
+
+// Mode only, without specifying effort level
+$response = YandexGPT::generateText(
+    'Write a bubble sort algorithm',
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => [
+            'mode' => 'ENABLED_HIDDEN'
+        ]
+    ]
+);
+```
+
+#### Using with dialogs
+
+```php
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+use Tigusigalpa\YandexGPT\Models\ReasoningOptions;
+
+$messages = [
+    [
+        'role' => 'system',
+        'text' => 'You are a math assistant'
+    ],
+    [
+        'role' => 'user',
+        'text' => 'Solve the equation: 2x + 5 = 15'
+    ]
+];
+
+$response = YandexGPT::generateFromMessages(
+    $messages,
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => ReasoningOptions::enabledHidden(ReasoningOptions::EFFORT_MEDIUM),
+        'completionOptions' => [
+            'temperature' => 0.3,
+            'maxTokens' => 1000
+        ]
+    ]
+);
+```
+
+#### Checking reasoning token usage
+
+When using reasoning mode, the response may contain information about the number of tokens used for reasoning:
+
+```php
+$response = YandexGPT::generateText(
+    'Complex mathematical problem...',
+    YandexGPTModel::YANDEX_GPT,
+    [
+        'reasoningOptions' => ReasoningOptions::enabledHidden(ReasoningOptions::EFFORT_HIGH)
+    ]
+);
+
+// Check reasoning tokens
+if (isset($response['result']['alternatives'][0]['reasoningTokens'])) {
+    $reasoningTokens = $response['result']['alternatives'][0]['reasoningTokens'];
+    echo "Reasoning tokens used: {$reasoningTokens}\n";
+}
+
+echo $response['result']['alternatives'][0]['message']['text'];
+```
+
+**Note:** Reasoning mode is available for the YandexGPT Pro model and may increase the total number of request tokens.
+
 ---
 
 ## ⚠️ Error handling
