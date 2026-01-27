@@ -9,23 +9,70 @@
 
 **🌐 Язык:** Русский | [English](README-en.md)
 
-Полнофункциональный PHP SDK для работы с YandexGPT API с поддержкой Laravel. Пакет предоставляет удобный интерфейс для
-интеграции с AI моделями Yandex Cloud, включая поддержку YandexART.
+**Полнофункциональный PHP SDK для работы с YandexGPT API и YandexART** — современная библиотека для интеграции искусственного интеллекта Yandex Cloud в PHP-приложения и Laravel-проекты. Пакет предоставляет простой и удобный интерфейс для работы с генеративными AI моделями, включая текстовую генерацию, диалоговые системы и создание изображений.
+
+## 📋 Описание
+
+YandexGPT PHP SDK — это мощный инструмент для разработчиков, которые хотят интегрировать возможности искусственного интеллекта Yandex Cloud в свои PHP-приложения. Библиотека поддерживает все основные модели YandexGPT (включая YandexGPT Lite, YandexGPT Pro и Alice AI), а также генерацию изображений через YandexART.
+
+**Ключевые преимущества:**
+- ✨ Простая интеграция с любым PHP-проектом (PHP 8.0+)
+- 🚀 Нативная поддержка Laravel с Service Provider и Facades
+- 🤖 Работа со всеми моделями YandexGPT и YandexART
+- 🔐 Автоматическое управление OAuth и IAM токенами
+- 💬 Поддержка диалоговых систем и контекстных бесед
+- 🎨 Генерация изображений с помощью YandexART
+- 🧠 Режим рассуждений (Chain of Thought) для сложных задач
+- 📦 Управление облачной инфраструктурой Yandex Cloud
+- 🛡️ Обработка ошибок и исключений
+- 📚 Подробная документация и примеры
+
+**Сценарии использования:**
+- Создание чат-ботов и виртуальных ассистентов
+- Генерация контента для сайтов и блогов
+- Автоматизация ответов на вопросы клиентов
+- SEO-оптимизация текстов и метаописаний
+- Анализ и обработка естественного языка
+- Создание уникальных изображений для контента
+- Разработка AI-powered приложений на Laravel
+- Интеграция с CMS и e-commerce платформами
 
 > **Примечание:** Пакет использует [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php) для
 > управления облачной инфраструктурой Yandex Cloud (организации, облака, каталоги, авторизация).
 
 ## 🚀 Возможности
 
-- 🔌 Простая интеграция с YandexGPT API
-- 🔨 **Поддержка YandexART**
-- 🔐 Автоматическое управление OAuth и IAM токенами
-- 🎯 Поддержка всех доступных моделей YandexGPT
-- 🛠 Полная интеграция с Laravel (Service Provider, Facades, конфигурация)
-- 📝 Поддержка диалогов и одиночных запросов
-- ⚡ Автоматическое обновление токенов
-- 🧪 Покрытие тестами
-- 📚 Подробная документация
+### Основные функции
+
+- 🔌 **Простая интеграция с YandexGPT API** — подключение за 5 минут
+- 🔨 **Поддержка YandexART** — генерация изображений по текстовому описанию
+- 🔐 **Автоматическое управление OAuth и IAM токенами** — не нужно беспокоиться об обновлении
+- 🎯 **Поддержка всех доступных моделей YandexGPT** — Lite, Pro, Alice AI
+- 🛠 **Полная интеграция с Laravel** — Service Provider, Facades, конфигурация
+- 📝 **Поддержка диалогов и одиночных запросов** — создавайте чат-ботов и AI-ассистентов
+- ⚡ **Автоматическое обновление токенов** — бесшовная работа без прерываний
+- 🧪 **Покрытие тестами** — надежность и стабильность
+- 📚 **Подробная документация** — примеры для всех сценариев использования
+
+### Расширенные возможности
+
+- 🧠 **Режим рассуждений (Chain of Thought)** — для решения сложных логических задач
+- 🎨 **Prompt Chaining** — комбинирование YandexGPT и YandexART
+- 🔄 **Управление облачной инфраструктурой** — создание каталогов, назначение ролей
+- 👥 **IAM и управление пользователями** — полный контроль доступа
+- 🌐 **Работа с организациями и облаками** — корпоративное использование
+- ⚙️ **Гибкая настройка параметров** — temperature, maxTokens, reasoning options
+- 🔍 **Детальная обработка ошибок** — понятные исключения и логирование
+- 📊 **Мониторинг использования токенов** — контроль расходов
+
+### Интеграция и совместимость
+
+- ✅ **PHP 8.0+** — современный синтаксис и типизация
+- ✅ **Laravel 8.0+** — полная поддержка фреймворка
+- ✅ **Composer** — стандартная установка через пакетный менеджер
+- ✅ **PSR-совместимость** — следование стандартам PHP
+- ✅ **Dependency Injection** — чистая архитектура
+- ✅ **Guzzle HTTP Client** — надежные HTTP-запросы
 
 ---
 
@@ -867,13 +914,35 @@ try {
 
 ---
 
-## 🤖 Доступные модели
+## 🤖 Доступные модели YandexGPT
 
-| Модель           | Описание                                      | Константа                         | Контекст |
-|------------------|-----------------------------------------------|-----------------------------------|----------|
-| `yandexgpt-lite` | Быстрая и экономичная модель                  | `YandexGPTModel::YANDEX_GPT_LITE` | 32K      |
-| `yandexgpt`      | Стандартная модель                            | `YandexGPTModel::YANDEX_GPT`      | 32K      |
-| `aliceai-llm`    | Alice AI LLM - продвинутая разговорная модель | `YandexGPTModel::ALICE_AI`        | 32K      |
+SDK поддерживает все актуальные модели генеративного AI от Yandex Cloud:
+
+| Модель           | Описание                                      | Константа                         | Контекст | Применение |
+|------------------|-----------------------------------------------|-----------------------------------|----------|------------|
+| `yandexgpt-lite` | Быстрая и экономичная модель                  | `YandexGPTModel::YANDEX_GPT_LITE` | 32K      | Простые запросы, чат-боты, FAQ |
+| `yandexgpt`      | Стандартная модель (Pro)                      | `YandexGPTModel::YANDEX_GPT`      | 32K      | Генерация контента, анализ текста |
+| `aliceai-llm`    | Alice AI LLM - продвинутая разговорная модель | `YandexGPTModel::ALICE_AI`        | 32K      | Диалоговые системы, ассистенты |
+
+### Выбор модели для вашей задачи
+
+**YandexGPT Lite** — идеальна для:
+- Быстрых ответов на простые вопросы
+- Чат-ботов с базовым функционалом
+- Обработки большого количества запросов
+- Экономии бюджета на токенах
+
+**YandexGPT Pro** — рекомендуется для:
+- Генерации качественного контента
+- SEO-оптимизированных текстов
+- Сложных аналитических задач
+- Работы с режимом рассуждений
+
+**Alice AI** — оптимальна для:
+- Естественных диалогов с пользователями
+- Виртуальных ассистентов
+- Разговорных интерфейсов
+- Персонализированного общения
 
 📚 **Полный список доступных моделей:**
 [Модели генерации в Yandex AI Studio](https://yandex.cloud/ru/docs/ai-studio/concepts/generation/models)
@@ -1098,9 +1167,11 @@ return [
 
 ---
 
-## 📚 Примеры использования
+## 📚 Практические примеры использования
 
-### Чат-бот для Laravel
+### Реальные сценарии применения YandexGPT PHP SDK
+
+#### 1. Чат-бот для Laravel с историей диалога
 
 ```php
 <?php
@@ -1155,7 +1226,7 @@ class ChatBotController extends Controller
 }
 ```
 
-### Генерация контента
+#### 2. Генерация SEO-оптимизированного контента
 
 ```php
 <?php
@@ -1191,8 +1262,219 @@ class ContentGenerator
 
         return $response['result']['alternatives'][0]['message']['text'];
     }
+
+    public function generateProductDescription(array $productData): string
+    {
+        $prompt = "Создай привлекательное описание товара для интернет-магазина:\n";
+        $prompt .= "Название: {$productData['name']}\n";
+        $prompt .= "Характеристики: " . implode(', ', $productData['features']) . "\n";
+        $prompt .= "Описание должно быть SEO-оптимизированным, содержать ключевые слова и призыв к действию.";
+
+        $response = YandexGPT::generateText(
+            $prompt,
+            YandexGPTModel::YANDEX_GPT,
+            [
+                'completionOptions' => [
+                    'temperature' => 0.6,
+                    'maxTokens' => 500
+                ]
+            ]
+        );
+
+        return $response['result']['alternatives'][0]['message']['text'];
+    }
+
+    public function generateBlogPost(string $topic, array $keywords): array
+    {
+        $keywordsList = implode(', ', $keywords);
+        $prompt = "Напиши SEO-оптимизированную статью для блога на тему: '{$topic}'.\n";
+        $prompt .= "Обязательно используй ключевые слова: {$keywordsList}.\n";
+        $prompt .= "Структура: заголовок H1, введение, 3-4 подзаголовка H2 с контентом, заключение.\n";
+        $prompt .= "Длина: 1500-2000 слов.";
+
+        $response = YandexGPT::generateText(
+            $prompt,
+            YandexGPTModel::YANDEX_GPT,
+            [
+                'completionOptions' => [
+                    'temperature' => 0.7,
+                    'maxTokens' => 3000
+                ],
+                'reasoningOptions' => ReasoningOptions::enabledHidden(ReasoningOptions::EFFORT_MEDIUM)
+            ]
+        );
+
+        $content = $response['result']['alternatives'][0]['message']['text'];
+        $metaDescription = $this->generateSEODescription($content);
+
+        return [
+            'content' => $content,
+            'meta_description' => $metaDescription,
+            'keywords' => $keywords
+        ];
+    }
 }
 ```
+
+#### 3. Автоматизация поддержки клиентов
+
+```php
+<?php
+
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+
+class CustomerSupportBot
+{
+    private array $knowledgeBase;
+
+    public function __construct()
+    {
+        $this->knowledgeBase = [
+            'Информация о компании, продуктах, услугах, политиках возврата и т.д.'
+        ];
+    }
+
+    public function answerQuestion(string $question, array $conversationHistory = []): string
+    {
+        $systemPrompt = "Ты — помощник службы поддержки. Используй следующую базу знаний для ответов:\n";
+        $systemPrompt .= implode("\n", $this->knowledgeBase);
+
+        $messages = [
+            ['role' => 'system', 'text' => $systemPrompt],
+            ...$conversationHistory,
+            ['role' => 'user', 'text' => $question]
+        ];
+
+        $response = YandexGPT::generateFromMessages(
+            $messages,
+            YandexGPTModel::ALICE_AI,
+            [
+                'completionOptions' => [
+                    'temperature' => 0.5,
+                    'maxTokens' => 1000
+                ]
+            ]
+        );
+
+        return $response['result']['alternatives'][0]['message']['text'];
+    }
+}
+```
+
+#### 4. Анализ тональности и обработка отзывов
+
+```php
+<?php
+
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+
+class ReviewAnalyzer
+{
+    public function analyzeSentiment(string $review): array
+    {
+        $prompt = "Проанализируй тональность следующего отзыва и верни результат в формате JSON:\n";
+        $prompt .= "Отзыв: {$review}\n\n";
+        $prompt .= "Формат ответа: {\"sentiment\": \"positive/negative/neutral\", \"score\": 0-10, \"key_points\": [\"пункт1\", \"пункт2\"]}";
+
+        $response = YandexGPT::generateText(
+            $prompt,
+            YandexGPTModel::YANDEX_GPT,
+            [
+                'completionOptions' => [
+                    'temperature' => 0.3,
+                    'maxTokens' => 500
+                ]
+            ]
+        );
+
+        $result = $response['result']['alternatives'][0]['message']['text'];
+        return json_decode($result, true) ?? [];
+    }
+
+    public function generateResponse(string $review, string $sentiment): string
+    {
+        $prompt = "Сгенерируй профессиональный ответ на отзыв клиента (тональность: {$sentiment}):\n{$review}";
+
+        $response = YandexGPT::generateText(
+            $prompt,
+            YandexGPTModel::YANDEX_GPT,
+            [
+                'completionOptions' => [
+                    'temperature' => 0.7,
+                    'maxTokens' => 300
+                ]
+            ]
+        );
+
+        return $response['result']['alternatives'][0]['message']['text'];
+    }
+}
+```
+
+#### 5. Генерация изображений для контента
+
+```php
+<?php
+
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+
+class ContentImageGenerator
+{
+    public function generateArticleImage(string $articleTitle, string $articleSummary): string
+    {
+        // Сначала генерируем оптимальный промпт для изображения
+        $promptGeneration = "Создай детальный промпт для генерации изображения к статье:\n";
+        $promptGeneration .= "Заголовок: {$articleTitle}\n";
+        $promptGeneration .= "Краткое содержание: {$articleSummary}\n";
+        $promptGeneration .= "Промпт должен описывать визуальную концепцию, стиль, цветовую палитру.";
+
+        $textResponse = YandexGPT::generateText(
+            $promptGeneration,
+            YandexGPTModel::YANDEX_GPT_LITE
+        );
+
+        $imagePrompt = $textResponse['result']['alternatives'][0]['message']['text'];
+
+        // Генерируем изображение
+        $result = YandexGPT::generateImage($imagePrompt);
+        
+        // Сохраняем изображение
+        $filename = 'article_' . time() . '.jpg';
+        $path = storage_path('app/public/images/' . $filename);
+        file_put_contents($path, base64_decode($result['image_base64']));
+
+        return $filename;
+    }
+}
+```
+
+---
+
+## 🆚 Сравнение с альтернативами
+
+### YandexGPT PHP SDK vs OpenAI PHP
+
+| Характеристика | YandexGPT PHP SDK | OpenAI PHP |
+|----------------|-------------------|------------|
+| **Локализация** | Отличная поддержка русского языка | Хорошая, но не нативная |
+| **Цена** | Конкурентные цены для РФ рынка | Оплата в валюте |
+| **Соответствие законодательству** | Полное соответствие РФ | Требует дополнительных мер |
+| **Интеграция с Yandex Cloud** | Нативная | Отсутствует |
+| **Генерация изображений** | YandexART встроен | Требует DALL-E |
+| **Laravel интеграция** | Service Provider + Facades | Требует дополнительной настройки |
+| **Управление инфраструктурой** | Встроенное управление облаком | Отсутствует |
+
+### Преимущества использования YandexGPT для российских проектов
+
+✅ **Соответствие законодательству** — данные хранятся на территории РФ  
+✅ **Качество русского языка** — модели обучены на русскоязычных данных  
+✅ **Стабильность работы** — не зависит от международных санкций  
+✅ **Техподдержка на русском** — документация и поддержка на родном языке  
+✅ **Интеграция с экосистемой Yandex** — единая инфраструктура  
+✅ **Прозрачное ценообразование** — оплата в рублях  
 
 ---
 
@@ -1282,6 +1564,25 @@ curl http://your-domain.com/test-yandexgpt
 
 ### Часто задаваемые вопросы
 
+#### Q: Что такое YandexGPT и для чего он нужен?
+
+**A:** YandexGPT — это семейство генеративных языковых моделей от Yandex Cloud, которые могут генерировать тексты, вести диалоги, анализировать информацию и решать различные задачи обработки естественного языка. SDK позволяет легко интегрировать эти возможности в PHP-приложения.
+
+#### Q: Какая модель лучше подходит для моей задачи?
+
+**A:** 
+- **YandexGPT Lite** — для простых задач, чат-ботов, FAQ (быстро и экономично)
+- **YandexGPT Pro** — для генерации качественного контента, SEO-текстов, сложных задач
+- **Alice AI** — для естественных диалогов и разговорных интерфейсов
+
+#### Q: Сколько стоит использование YandexGPT?
+
+**A:** Стоимость зависит от модели и количества токенов. Актуальные цены смотрите в [документации Yandex Cloud](https://yandex.cloud/ru/docs/foundation-models/pricing). YandexGPT Lite — самый экономичный вариант.
+
+#### Q: Можно ли использовать SDK без Laravel?
+
+**A:** Да, SDK полностью работает в любом PHP-проекте (PHP 8.0+). Laravel-интеграция опциональна и предоставляет дополнительные удобства (Facades, Service Provider).
+
 #### Q: Как получить OAuth токен?
 
 **A:** Перейдите по
@@ -1310,6 +1611,54 @@ $folders = $cloudClient->folders()->list($clouds[0]['id']);
 
 **A:** Убедитесь, что в `.env` файле правильно задан `YANDEX_GPT_OAUTH_TOKEN` без пробелов и кавычек.
 
+```
+
+#### Q: Безопасно ли хранить OAuth токен в .env файле?
+
+**A:** Да, это стандартная практика для Laravel. Убедитесь, что:
+- Файл `.env` добавлен в `.gitignore`
+- На продакшене используются переменные окружения сервера
+- Права доступа к файлу ограничены (chmod 600)
+
+#### Q: Можно ли использовать SDK для коммерческих проектов?
+
+**A:** Да, пакет распространяется под лицензией MIT, что позволяет свободное использование в коммерческих проектах.
+
+#### Q: Поддерживается ли потоковая передача (streaming)?
+
+**A:** В текущей версии потоковая передача не реализована, но планируется в будущих обновлениях.
+
+#### Q: Как ограничить расход токенов?
+
+**A:** Используйте параметр `maxTokens` в опциях генерации:
+```php
+$response = YandexGPT::generateText(
+    'Ваш запрос',
+    YandexGPTModel::YANDEX_GPT_LITE,
+    [
+        'completionOptions' => [
+            'maxTokens' => 500  // Ограничение
+        ]
+    ]
+);
+```
+
+#### Q: Можно ли использовать несколько каталогов (folders)?
+
+**A:** Да, создавайте отдельные экземпляры клиента для разных каталогов:
+```php
+$client1 = new YandexGPTClient($oauthToken, $folderId1);
+$client2 = new YandexGPTClient($oauthToken, $folderId2);
+```
+
+#### Q: Как обрабатывать большие объемы текста?
+
+**A:** Разбивайте текст на части с учетом лимита контекста (32K токенов) или используйте суммаризацию:
+```php
+$summary = YandexGPT::generateText(
+    "Кратко перескажи основные идеи текста: {$longText}",
+    YandexGPTModel::YANDEX_GPT
+);
 ```
 
 ### Решение проблем
@@ -1578,4 +1927,67 @@ $operation = $client->generateImageAsync('Описание сцены', $generat
 ## 🛡️ Безопасность
 
 Если вы обнаружили уязвимость в безопасности, пожалуйста, отправьте email на sovletig@gmail.com вместо создания issue.
+
+---
+
+## 🔑 Ключевые слова и теги
+
+`yandexgpt`, `yandex-gpt`, `yandex-cloud`, `yandex-ai`, `yandexart`, `php-sdk`, `laravel`, `laravel-package`, `ai`, `artificial-intelligence`, `machine-learning`, `nlp`, `natural-language-processing`, `chatbot`, `chat-bot`, `gpt`, `language-model`, `text-generation`, `image-generation`, `russian-language`, `php8`, `composer-package`, `api-client`, `yandex-api`, `generative-ai`, `llm`, `large-language-model`, `alice-ai`, `reasoning-mode`, `chain-of-thought`, `prompt-engineering`, `content-generation`, `seo-tools`, `php-library`
+
+## 📊 Статистика и производительность
+
+- ⚡ **Скорость ответа**: YandexGPT Lite — 1-3 секунды
+- 🎯 **Точность**: Высокая точность для русскоязычных запросов
+- 💾 **Контекст**: До 32K токенов (примерно 24K слов)
+- 🔄 **Обновление токенов**: Автоматическое каждые 12 часов
+- 📦 **Размер пакета**: Минимальные зависимости, быстрая установка
+
+## 🌟 Отзывы и кейсы использования
+
+### Где используется YandexGPT PHP SDK
+
+- 🛒 **E-commerce**: Генерация описаний товаров, ответы на вопросы покупателей
+- 📰 **Медиа и блоги**: Автоматизация создания контента, SEO-оптимизация
+- 💼 **Корпоративные системы**: Внутренние чат-боты, обработка документов
+- 🎓 **Образование**: Обучающие ассистенты, проверка текстов
+- 🏥 **Здравоохранение**: Информационные системы, FAQ-боты
+- 🏢 **Бизнес-аналитика**: Анализ отзывов, обработка обращений
+
+## 🚀 Roadmap и планы развития
+
+- [ ] Поддержка потоковой передачи (streaming)
+- [ ] Расширенные возможности YandexART
+- [ ] Интеграция с другими сервисами Yandex Cloud
+- [ ] Кеширование запросов для оптимизации
+- [ ] Расширенная аналитика использования токенов
+- [ ] Поддержка асинхронных запросов
+- [ ] CLI-инструменты для быстрого тестирования
+- [ ] Дополнительные адаптеры для популярных CMS
+
+## 📱 Контакты и сообщество
+
+- 📧 **Email**: sovletig@gmail.com
+- 🐙 **GitHub**: [tigusigalpa/yandexgpt-php](https://github.com/tigusigalpa/yandexgpt-php)
+- 📦 **Packagist**: [tigusigalpa/yandexgpt-php](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
+- 📚 **Документация Yandex Cloud**: [foundation-models](https://yandex.cloud/ru/docs/foundation-models/)
+
+## 💡 Полезные ресурсы
+
+### Официальная документация Yandex Cloud
+- [YandexGPT API](https://yandex.cloud/ru/docs/foundation-models/concepts/yandexgpt/)
+- [YandexART](https://yandex.cloud/ru/docs/ai-studio/quickstart/yandexart)
+- [Модели генерации](https://yandex.cloud/ru/docs/ai-studio/concepts/generation/models)
+- [Тарифы](https://yandex.cloud/ru/docs/foundation-models/pricing)
+- [Лучшие практики](https://yandex.cloud/ru/docs/foundation-models/concepts/yandexgpt/)
+
+### Обучающие материалы
+- [Prompt Engineering для YandexGPT](https://yandex.cloud/ru/docs/foundation-models/concepts/yandexgpt/)
+- [Примеры использования](https://github.com/tigusigalpa/yandexgpt-php/tree/main/examples)
+- [Видеоуроки и вебинары](https://yandex.cloud/ru/training)
+
+---
+
+**YandexGPT PHP SDK** — ваш надежный инструмент для интеграции искусственного интеллекта в PHP-приложения. Начните использовать возможности генеративного AI уже сегодня!
+
+⭐ Если проект оказался полезным, поставьте звезду на GitHub!
 

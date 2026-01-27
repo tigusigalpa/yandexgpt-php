@@ -9,23 +9,70 @@
 
 **🌐 Language:** English | [Русский](README.md)
 
-A full-featured PHP SDK for working with YandexGPT API with Laravel support. The package provides a convenient interface
-for integrating with Yandex Cloud AI models, including YandexART support.
+**A full-featured PHP SDK for working with YandexGPT API and YandexART** — a modern library for integrating Yandex Cloud artificial intelligence into PHP applications and Laravel projects. The package provides a simple and convenient interface for working with generative AI models, including text generation, dialogue systems, and image creation.
+
+## 📋 Description
+
+YandexGPT PHP SDK is a powerful tool for developers who want to integrate Yandex Cloud artificial intelligence capabilities into their PHP applications. The library supports all major YandexGPT models (including YandexGPT Lite, YandexGPT Pro, and Alice AI), as well as image generation via YandexART.
+
+**Key Benefits:**
+- ✨ Easy integration with any PHP project (PHP 8.0+)
+- 🚀 Native Laravel support with Service Provider and Facades
+- 🤖 Work with all YandexGPT and YandexART models
+- 🔐 Automatic OAuth and IAM token management
+- 💬 Support for dialogue systems and contextual conversations
+- 🎨 Image generation with YandexART
+- 🧠 Reasoning Mode (Chain of Thought) for complex tasks
+- 📦 Yandex Cloud infrastructure management
+- 🛡️ Error and exception handling
+- 📚 Detailed documentation and examples
+
+**Use Cases:**
+- Creating chatbots and virtual assistants
+- Content generation for websites and blogs
+- Automating customer support responses
+- SEO optimization of texts and meta descriptions
+- Natural language analysis and processing
+- Creating unique images for content
+- Developing AI-powered Laravel applications
+- Integration with CMS and e-commerce platforms
 
 > **Note:** This package uses [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php) for
 > managing Yandex Cloud infrastructure (organizations, clouds, folders, authorization).
 
 ## 🚀 Features
 
-- 🔌 Easy integration with the YandexGPT API
-- 🔨 **YandexART integration**
-- 🔐 Automatic management of OAuth and IAM tokens
-- 🎯 Support for all available YandexGPT models
-- 🛠 Full integration with Laravel (Service Provider, Facades, configuration)
-- 📝 Support for dialogues and single requests
-- ⚡ Automatic token renewal
-- 🧪 Test coverage
-- 📚 Detailed documentation
+### Core Functions
+
+- 🔌 **Easy YandexGPT API integration** — connect in 5 minutes
+- 🔨 **YandexART support** — text-to-image generation
+- 🔐 **Automatic OAuth and IAM token management** — no need to worry about renewal
+- 🎯 **Support for all available YandexGPT models** — Lite, Pro, Alice AI
+- 🛠 **Full Laravel integration** — Service Provider, Facades, configuration
+- 📝 **Support for dialogues and single requests** — create chatbots and AI assistants
+- ⚡ **Automatic token renewal** — seamless operation without interruptions
+- 🧪 **Test coverage** — reliability and stability
+- 📚 **Detailed documentation** — examples for all use cases
+
+### Advanced Features
+
+- 🧠 **Reasoning Mode (Chain of Thought)** — for solving complex logical problems
+- 🎨 **Prompt Chaining** — combining YandexGPT and YandexART
+- 🔄 **Cloud infrastructure management** — folder creation, role assignment
+- 👥 **IAM and user management** — full access control
+- 🌐 **Work with organizations and clouds** — corporate use
+- ⚙️ **Flexible parameter configuration** — temperature, maxTokens, reasoning options
+- 🔍 **Detailed error handling** — clear exceptions and logging
+- 📊 **Token usage monitoring** — cost control
+
+### Integration and Compatibility
+
+- ✅ **PHP 8.0+** — modern syntax and typing
+- ✅ **Laravel 8.0+** — full framework support
+- ✅ **Composer** — standard installation via package manager
+- ✅ **PSR-compatible** — following PHP standards
+- ✅ **Dependency Injection** — clean architecture
+- ✅ **Guzzle HTTP Client** — reliable HTTP requests
 
 ---
 
@@ -872,13 +919,35 @@ try {
 
 ---
 
-## 🤖 Available models
+## 🤖 Available YandexGPT Models
 
-| Model            | Description                                  | Constant                          | Context |
-|------------------|----------------------------------------------|-----------------------------------|---------|
-| `yandexgpt-lite` | Fast and economical model                    | `YandexGPTModel::YANDEX_GPT_LITE` | 32K     |
-| `yandexgpt`      | Standard model                               | `YandexGPTModel::YANDEX_GPT`      | 32K     |
-| `aliceai-llm`    | Alice AI LLM - advanced conversational model | `YandexGPTModel::ALICE_AI`        | 32K     |
+The SDK supports all current generative AI models from Yandex Cloud:
+
+| Model            | Description                                  | Constant                          | Context | Application |
+|------------------|----------------------------------------------|-----------------------------------|---------|-------------|
+| `yandexgpt-lite` | Fast and economical model                    | `YandexGPTModel::YANDEX_GPT_LITE` | 32K     | Simple queries, chatbots, FAQ |
+| `yandexgpt`      | Standard model (Pro)                         | `YandexGPTModel::YANDEX_GPT`      | 32K     | Content generation, text analysis |
+| `aliceai-llm`    | Alice AI LLM - advanced conversational model | `YandexGPTModel::ALICE_AI`        | 32K     | Dialogue systems, assistants |
+
+### Choosing a Model for Your Task
+
+**YandexGPT Lite** — ideal for:
+- Quick answers to simple questions
+- Chatbots with basic functionality
+- Processing large volumes of requests
+- Budget-friendly token usage
+
+**YandexGPT Pro** — recommended for:
+- Quality content generation
+- SEO-optimized texts
+- Complex analytical tasks
+- Working with reasoning mode
+
+**Alice AI** — optimal for:
+- Natural dialogues with users
+- Virtual assistants
+- Conversational interfaces
+- Personalized communication
 
 📚 **Complete list of available models:**
 [Generation models in Yandex AI Studio](https://yandex.cloud/en/docs/ai-studio/concepts/generation/models)
@@ -1103,9 +1172,11 @@ return [
 
 ---
 
-## 📚 Usage examples
+## 📚 Practical Usage Examples
 
-### Chatbot for Laravel
+### Real-World YandexGPT PHP SDK Application Scenarios
+
+#### 1. Laravel Chatbot with Conversation History
 
 ```php
 <?php
@@ -1160,7 +1231,7 @@ class ChatBotController extends Controller
 }
 ```
 
-### Content generation
+#### 2. SEO-Optimized Content Generation
 
 ```php
 <?php
@@ -1196,8 +1267,219 @@ class ContentGenerator
 
         return $response['result']['alternatives'][0]['message']['text'];
     }
+
+    public function generateProductDescription(array $productData): string
+    {
+        $prompt = "Create an attractive product description for an online store:\n";
+        $prompt .= "Name: {$productData['name']}\n";
+        $prompt .= "Features: " . implode(', ', $productData['features']) . "\n";
+        $prompt .= "The description should be SEO-optimized, contain keywords and a call to action.";
+
+        $response = YandexGPT::generateText(
+            $prompt,
+            YandexGPTModel::YANDEX_GPT,
+            [
+                'completionOptions' => [
+                    'temperature' => 0.6,
+                    'maxTokens' => 500
+                ]
+            ]
+        );
+
+        return $response['result']['alternatives'][0]['message']['text'];
+    }
+
+    public function generateBlogPost(string $topic, array $keywords): array
+    {
+        $keywordsList = implode(', ', $keywords);
+        $prompt = "Write an SEO-optimized blog article on the topic: '{$topic}'.\n";
+        $prompt .= "Be sure to use keywords: {$keywordsList}.\n";
+        $prompt .= "Structure: H1 title, introduction, 3-4 H2 subheadings with content, conclusion.\n";
+        $prompt .= "Length: 1500-2000 words.";
+
+        $response = YandexGPT::generateText(
+            $prompt,
+            YandexGPTModel::YANDEX_GPT,
+            [
+                'completionOptions' => [
+                    'temperature' => 0.7,
+                    'maxTokens' => 3000
+                ],
+                'reasoningOptions' => ReasoningOptions::enabledHidden(ReasoningOptions::EFFORT_MEDIUM)
+            ]
+        );
+
+        $content = $response['result']['alternatives'][0]['message']['text'];
+        $metaDescription = $this->generateSEODescription($content);
+
+        return [
+            'content' => $content,
+            'meta_description' => $metaDescription,
+            'keywords' => $keywords
+        ];
+    }
 }
 ```
+
+#### 3. Customer Support Automation
+
+```php
+<?php
+
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+
+class CustomerSupportBot
+{
+    private array $knowledgeBase;
+
+    public function __construct()
+    {
+        $this->knowledgeBase = [
+            'Information about company, products, services, return policies, etc.'
+        ];
+    }
+
+    public function answerQuestion(string $question, array $conversationHistory = []): string
+    {
+        $systemPrompt = "You are a support assistant. Use the following knowledge base for answers:\n";
+        $systemPrompt .= implode("\n", $this->knowledgeBase);
+
+        $messages = [
+            ['role' => 'system', 'text' => $systemPrompt],
+            ...$conversationHistory,
+            ['role' => 'user', 'text' => $question]
+        ];
+
+        $response = YandexGPT::generateFromMessages(
+            $messages,
+            YandexGPTModel::ALICE_AI,
+            [
+                'completionOptions' => [
+                    'temperature' => 0.5,
+                    'maxTokens' => 1000
+                ]
+            ]
+        );
+
+        return $response['result']['alternatives'][0]['message']['text'];
+    }
+}
+```
+
+#### 4. Sentiment Analysis and Review Processing
+
+```php
+<?php
+
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+
+class ReviewAnalyzer
+{
+    public function analyzeSentiment(string $review): array
+    {
+        $prompt = "Analyze the sentiment of the following review and return the result in JSON format:\n";
+        $prompt .= "Review: {$review}\n\n";
+        $prompt .= "Response format: {\"sentiment\": \"positive/negative/neutral\", \"score\": 0-10, \"key_points\": [\"point1\", \"point2\"]}";
+
+        $response = YandexGPT::generateText(
+            $prompt,
+            YandexGPTModel::YANDEX_GPT,
+            [
+                'completionOptions' => [
+                    'temperature' => 0.3,
+                    'maxTokens' => 500
+                ]
+            ]
+        );
+
+        $result = $response['result']['alternatives'][0]['message']['text'];
+        return json_decode($result, true) ?? [];
+    }
+
+    public function generateResponse(string $review, string $sentiment): string
+    {
+        $prompt = "Generate a professional response to a customer review (sentiment: {$sentiment}):\n{$review}";
+
+        $response = YandexGPT::generateText(
+            $prompt,
+            YandexGPTModel::YANDEX_GPT,
+            [
+                'completionOptions' => [
+                    'temperature' => 0.7,
+                    'maxTokens' => 300
+                ]
+            ]
+        );
+
+        return $response['result']['alternatives'][0]['message']['text'];
+    }
+}
+```
+
+#### 5. Content Image Generation
+
+```php
+<?php
+
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
+
+class ContentImageGenerator
+{
+    public function generateArticleImage(string $articleTitle, string $articleSummary): string
+    {
+        // First, generate an optimal prompt for the image
+        $promptGeneration = "Create a detailed prompt for generating an image for an article:\n";
+        $promptGeneration .= "Title: {$articleTitle}\n";
+        $promptGeneration .= "Summary: {$articleSummary}\n";
+        $promptGeneration .= "The prompt should describe the visual concept, style, color palette.";
+
+        $textResponse = YandexGPT::generateText(
+            $promptGeneration,
+            YandexGPTModel::YANDEX_GPT_LITE
+        );
+
+        $imagePrompt = $textResponse['result']['alternatives'][0]['message']['text'];
+
+        // Generate the image
+        $result = YandexGPT::generateImage($imagePrompt);
+        
+        // Save the image
+        $filename = 'article_' . time() . '.jpg';
+        $path = storage_path('app/public/images/' . $filename);
+        file_put_contents($path, base64_decode($result['image_base64']));
+
+        return $filename;
+    }
+}
+```
+
+---
+
+## 🆚 Comparison with Alternatives
+
+### YandexGPT PHP SDK vs OpenAI PHP
+
+| Feature | YandexGPT PHP SDK | OpenAI PHP |
+|---------|-------------------|------------|
+| **Localization** | Excellent Russian language support | Good, but not native |
+| **Pricing** | Competitive prices for Russian market | Payment in foreign currency |
+| **Legal Compliance** | Full compliance with Russian legislation | Requires additional measures |
+| **Yandex Cloud Integration** | Native | Not available |
+| **Image Generation** | YandexART built-in | Requires DALL-E |
+| **Laravel Integration** | Service Provider + Facades | Requires additional setup |
+| **Infrastructure Management** | Built-in cloud management | Not available |
+
+### Benefits of Using YandexGPT for Russian Projects
+
+✅ **Legal Compliance** — data stored in Russia  
+✅ **Russian Language Quality** — models trained on Russian data  
+✅ **Stability** — independent of international sanctions  
+✅ **Russian Support** — documentation and support in native language  
+✅ **Yandex Ecosystem Integration** — unified infrastructure  
+✅ **Transparent Pricing** — payment in rubles  
 
 ---
 
@@ -1287,6 +1569,25 @@ composer test-coverage
 
 ### Frequently Asked Questions
 
+#### Q: What is YandexGPT and what is it for?
+
+**A:** YandexGPT is a family of generative language models from Yandex Cloud that can generate text, conduct dialogues, analyze information, and solve various natural language processing tasks. The SDK makes it easy to integrate these capabilities into PHP applications.
+
+#### Q: Which model is best for my task?
+
+**A:** 
+- **YandexGPT Lite** — for simple tasks, chatbots, FAQ (fast and economical)
+- **YandexGPT Pro** — for quality content generation, SEO texts, complex tasks
+- **Alice AI** — for natural dialogues and conversational interfaces
+
+#### Q: How much does YandexGPT cost?
+
+**A:** The cost depends on the model and number of tokens. See current prices in [Yandex Cloud documentation](https://yandex.cloud/en/docs/foundation-models/pricing). YandexGPT Lite is the most economical option.
+
+#### Q: Can I use the SDK without Laravel?
+
+**A:** Yes, the SDK works fully in any PHP project (PHP 8.0+). Laravel integration is optional and provides additional conveniences (Facades, Service Provider).
+
 #### Q: How to get an OAuth token?
 
 **A:** Follow the
@@ -1315,6 +1616,54 @@ $folders = $cloudClient->folders()->list($clouds[0]['id']);
 
 **A:** Make sure that `YANDEX_GPT_OAUTH_TOKEN` is correctly set in the `.env` file without spaces or quotes.
 
+```
+
+#### Q: Is it safe to store the OAuth token in the .env file?
+
+**A:** Yes, this is standard practice for Laravel. Make sure:
+- The `.env` file is added to `.gitignore`
+- Production uses server environment variables
+- File access permissions are restricted (chmod 600)
+
+#### Q: Can I use the SDK for commercial projects?
+
+**A:** Yes, the package is distributed under the MIT license, which allows free use in commercial projects.
+
+#### Q: Is streaming supported?
+
+**A:** Streaming is not implemented in the current version but is planned for future updates.
+
+#### Q: How to limit token usage?
+
+**A:** Use the `maxTokens` parameter in generation options:
+```php
+$response = YandexGPT::generateText(
+    'Your request',
+    YandexGPTModel::YANDEX_GPT_LITE,
+    [
+        'completionOptions' => [
+            'maxTokens' => 500  // Limit
+        ]
+    ]
+);
+```
+
+#### Q: Can I use multiple folders?
+
+**A:** Yes, create separate client instances for different folders:
+```php
+$client1 = new YandexGPTClient($oauthToken, $folderId1);
+$client2 = new YandexGPTClient($oauthToken, $folderId2);
+```
+
+#### Q: How to handle large volumes of text?
+
+**A:** Split text into parts considering the context limit (32K tokens) or use summarization:
+```php
+$summary = YandexGPT::generateText(
+    "Briefly summarize the main ideas of the text: {$longText}",
+    YandexGPTModel::YANDEX_GPT
+);
 ```
 
 ### Troubleshooting
@@ -1587,4 +1936,67 @@ All changes are documented in [CHANGELOG.md](CHANGELOG.md).
 ## 🛡️ Security
 
 If you discover a security vulnerability, please send an email to sovletig@gmail.com instead of creating an issue.
+
+---
+
+## 🔑 Keywords and Tags
+
+`yandexgpt`, `yandex-gpt`, `yandex-cloud`, `yandex-ai`, `yandexart`, `php-sdk`, `laravel`, `laravel-package`, `ai`, `artificial-intelligence`, `machine-learning`, `nlp`, `natural-language-processing`, `chatbot`, `chat-bot`, `gpt`, `language-model`, `text-generation`, `image-generation`, `russian-language`, `php8`, `composer-package`, `api-client`, `yandex-api`, `generative-ai`, `llm`, `large-language-model`, `alice-ai`, `reasoning-mode`, `chain-of-thought`, `prompt-engineering`, `content-generation`, `seo-tools`, `php-library`
+
+## 📊 Statistics and Performance
+
+- ⚡ **Response Speed**: YandexGPT Lite — 1-3 seconds
+- 🎯 **Accuracy**: High accuracy for Russian language queries
+- 💾 **Context**: Up to 32K tokens (approximately 24K words)
+- 🔄 **Token Renewal**: Automatic every 12 hours
+- 📦 **Package Size**: Minimal dependencies, fast installation
+
+## 🌟 Reviews and Use Cases
+
+### Where YandexGPT PHP SDK is Used
+
+- 🛒 **E-commerce**: Product description generation, customer support
+- 📰 **Media and Blogs**: Content automation, SEO optimization
+- 💼 **Corporate Systems**: Internal chatbots, document processing
+- 🎓 **Education**: Learning assistants, text verification
+- 🏥 **Healthcare**: Information systems, FAQ bots
+- 🏢 **Business Analytics**: Review analysis, request processing
+
+## 🚀 Roadmap and Development Plans
+
+- [ ] Streaming support
+- [ ] Extended YandexART capabilities
+- [ ] Integration with other Yandex Cloud services
+- [ ] Request caching for optimization
+- [ ] Extended token usage analytics
+- [ ] Asynchronous request support
+- [ ] CLI tools for quick testing
+- [ ] Additional adapters for popular CMS
+
+## 📱 Contacts and Community
+
+- 📧 **Email**: sovletig@gmail.com
+- 🐙 **GitHub**: [tigusigalpa/yandexgpt-php](https://github.com/tigusigalpa/yandexgpt-php)
+- 📦 **Packagist**: [tigusigalpa/yandexgpt-php](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
+- 📚 **Yandex Cloud Documentation**: [foundation-models](https://yandex.cloud/en/docs/foundation-models/)
+
+## 💡 Useful Resources
+
+### Official Yandex Cloud Documentation
+- [YandexGPT API](https://yandex.cloud/en/docs/foundation-models/concepts/yandexgpt/)
+- [YandexART](https://yandex.cloud/en/docs/ai-studio/quickstart/yandexart)
+- [Generation Models](https://yandex.cloud/en/docs/ai-studio/concepts/generation/models)
+- [Pricing](https://yandex.cloud/en/docs/foundation-models/pricing)
+- [Best Practices](https://yandex.cloud/en/docs/foundation-models/concepts/yandexgpt/)
+
+### Learning Materials
+- [Prompt Engineering for YandexGPT](https://yandex.cloud/en/docs/foundation-models/concepts/yandexgpt/)
+- [Usage Examples](https://github.com/tigusigalpa/yandexgpt-php/tree/main/examples)
+- [Video Tutorials and Webinars](https://yandex.cloud/en/training)
+
+---
+
+**YandexGPT PHP SDK** — your reliable tool for integrating artificial intelligence into PHP applications. Start using generative AI capabilities today!
+
+⭐ If the project was helpful, give it a star on GitHub!
 
