@@ -7,81 +7,27 @@
 [![License](https://img.shields.io/packagist/l/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
 [![Dependencies](https://img.shields.io/packagist/dm/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
 
-**🌐 Language:** English | [Русский](README.md)
+**Language:** English | [Русский](README.md)
 
-**A full-featured PHP SDK for working with YandexGPT API and YandexART** — a modern library for integrating Yandex Cloud artificial intelligence into PHP applications and Laravel projects. The package provides a simple and convenient interface for working with generative AI models, including text generation, dialogue systems, and image creation.
+PHP SDK for YandexGPT API and YandexART. Text generation, dialogues, images, Conversations API. Works with any PHP 8.0+ project and has built-in Laravel support.
 
-## 📋 Description
+> For cloud infrastructure management (organizations, clouds, folders) see [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php).
 
-YandexGPT PHP SDK is a powerful tool for developers who want to integrate Yandex Cloud artificial intelligence capabilities into their PHP applications. The library supports all major YandexGPT models (including YandexGPT Lite, YandexGPT Pro, and Alice AI), as well as image generation via YandexART.
+## Features
 
-**Key Benefits:**
-- ✨ Easy integration with any PHP project (PHP 8.0+)
-- 🚀 Native Laravel support with Service Provider and Facades
-- 🤖 Work with all YandexGPT and YandexART models
-- 🔐 Automatic OAuth and IAM token management
-- 💬 Support for dialogue systems and contextual conversations
-- 🗂️ Conversations API — server-side conversation management
-- 🎨 Image generation with YandexART
-- 🧠 Reasoning Mode (Chain of Thought) for complex tasks
-- 📦 Yandex Cloud infrastructure management
-- 🛡️ Error and exception handling
-- 📚 Detailed documentation and examples
-
-**Use Cases:**
-- Creating chatbots and virtual assistants
-- Content generation for websites and blogs
-- Automating customer support responses
-- SEO optimization of texts and meta descriptions
-- Natural language analysis and processing
-- Creating unique images for content
-- Developing AI-powered Laravel applications
-- Integration with CMS and e-commerce platforms
-
-> **Note:** This package uses [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php) for
-> managing Yandex Cloud infrastructure (organizations, clouds, folders, authorization).
-
-## 🚀 Features
-
-### Core Functions
-
-- 🔌 **Easy YandexGPT API integration** — connect in 5 minutes
-- 🔨 **YandexART support** — text-to-image generation
-- 🔐 **Automatic OAuth and IAM token management** — no need to worry about renewal
-- 🎯 **Support for all available YandexGPT models** — Lite, Pro, Alice AI
-- 🛠 **Full Laravel integration** — Service Provider, Facades, configuration
-- 📝 **Support for dialogues and single requests** — create chatbots and AI assistants
-- ⚡ **Automatic token renewal** — seamless operation without interruptions
-- 🧪 **Test coverage** — reliability and stability
-- 📚 **Detailed documentation** — examples for all use cases
-
-### Advanced Features
-
-- 🧠 **Reasoning Mode (Chain of Thought)** — for solving complex logical problems
-- 🎨 **Prompt Chaining** — combining YandexGPT and YandexART
-- 🔄 **Cloud infrastructure management** — folder creation, role assignment
-- 👥 **IAM and user management** — full access control
-- 🌐 **Work with organizations and clouds** — corporate use
-- ⚙️ **Flexible parameter configuration** — temperature, maxTokens, reasoning options
-- 🔍 **Detailed error handling** — clear exceptions and logging
-- 📊 **Token usage monitoring** — cost control
-
-### Integration and Compatibility
-
-- ✅ **PHP 8.0+** — modern syntax and typing
-- ✅ **Laravel 8.0+** — full framework support
-- ✅ **Composer** — standard installation via package manager
-- ✅ **PSR-compatible** — following PHP standards
-- ✅ **Dependency Injection** — clean architecture
-- ✅ **Guzzle HTTP Client** — reliable HTTP requests
+- All YandexGPT models: Lite, Pro, Alice AI
+- Image generation via YandexART
+- Conversations API — server-side conversations
+- Reasoning mode (Chain of Thought)
+- Automatic OAuth/IAM token management
+- Laravel: Service Provider, Facade, configuration
+- PHP 8.0+, Laravel 8.0+, Guzzle HTTP
 
 ---
 
-## 📦 Installation
+## Installation
 
-### Installation from Packagist (recommended)
-
-Install the package via Composer:
+Via Composer:
 
 ```bash
 composer require tigusigalpa/yandexgpt-php
@@ -165,11 +111,11 @@ php artisan vendor:publish --tag=yandexgpt-config
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 ### 1. Getting an OAuth token
 
-📚 **Documentation:** [OAuth-token](https://yandex.cloud/en/docs/iam/concepts/authorization/oauth-token)
+Documentation: [OAuth-token](https://yandex.cloud/en/docs/iam/concepts/authorization/oauth-token)
 
 Follow the link
 to [get an OAuth token](https://oauth.yandex.com/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb):
@@ -198,8 +144,7 @@ it is important to understand the process:
 
 #### 3.1. Getting an IAM token
 
-📚 **Documentation:
-** [Getting an IAM token for a Yandex account](https://yandex.cloud/en/docs/iam/operations/iam-token/create#exchange-token)
+Documentation: [Getting an IAM token for a Yandex account](https://yandex.cloud/en/docs/iam/operations/iam-token/create#exchange-token)
 
 The IAM token is obtained automatically through the SDK using the OAuth token. The token is valid for 12 hours and is
 renewed automatically.
@@ -315,11 +260,11 @@ $folderId = $folder['metadata']['folderId'];
 
 ```
 
-📚 **Documentation:** [Creating a folder](https://yandex.cloud/en/docs/resource-manager/operations/folder/create)
+Documentation: [Creating a folder](https://yandex.cloud/en/docs/resource-manager/operations/folder/create)
 
 #### 3.4. Assigning roles to folder or cloud
 
-📚 **Documentation:**
+Documentation:
 
 [Authentication in Yandex AI Studio API](https://yandex.cloud/en/docs/ai-studio/api-ref/authentication)
 
@@ -418,7 +363,7 @@ yc resource-manager folder add-access-binding \
 4. Click "Assign roles"
 5. Select a user and the `ai.languageModels.user` role
 
-📚 **Documentation:**
+Documentation:
 
 - [Assigning roles](https://yandex.cloud/en/docs/iam/operations/roles/grant)
 - [Roles for Yandex Foundation Models](https://yandex.cloud/en/docs/foundation-models/security/)
@@ -487,15 +432,15 @@ echo $response['result']['alternatives'][0]['message']['text'];
 
 #### 3.6. Useful links
 
-- 📖 [YandexGPT Quickstart](https://yandex.cloud/en/docs/foundation-models/quickstart/yandexgpt)
-- 🔑 [API Authentication](https://yandex.cloud/en/docs/iam/concepts/authorization/iam-token)
-- 🏗️ [Resource Management](https://yandex.cloud/en/docs/resource-manager/)
-- 🤖 [API Foundation Models](https://yandex.cloud/en/docs/foundation-models/concepts/api)
-- 💰 [YandexGPT Pricing](https://yandex.cloud/en/docs/foundation-models/pricing)
+- [YandexGPT Quickstart](https://yandex.cloud/en/docs/foundation-models/quickstart/yandexgpt)
+- [API Authentication](https://yandex.cloud/en/docs/iam/concepts/authorization/iam-token)
+- [Resource Management](https://yandex.cloud/en/docs/resource-manager/)
+- [API Foundation Models](https://yandex.cloud/en/docs/foundation-models/concepts/api)
+- [YandexGPT Pricing](https://yandex.cloud/en/docs/foundation-models/pricing)
 
 ---
 
-## 💡 Usage
+## Usage
 
 ### Basic usage (without Laravel)
 
@@ -534,89 +479,6 @@ echo $response['result']['alternatives'][0]['message']['text'];
 ```
 
 ### Usage with Laravel
-
-#### Integration via Service Provider
-
-The package is automatically integrated with Laravel via a Service Provider, which performs the following functions:
-
-**Automatic registration:**
-
-```php
-// In the package's composer.json:
-"extra": {
-    "laravel": {
-        "providers": [
-            "Tigusigalpa\\YandexGPT\\Laravel\\YandexGPTServiceProvider"
-        ],
-        "aliases": {
-            "YandexGPT": "Tigusigalpa\\YandexGPT\\Laravel\\Facades\\YandexGPT"
-        }
-    }
-}
-```
-
-**What the Service Provider does:**
-
-1. **Register services** (`register()` method):
-    - Merges the package configuration with the application configuration
-    - Registers `YandexGPTClient` as a singleton in the container
-    - Creates an alias for convenient dependency injection
-
-   ```php
-   public function register()
-   {
-       // Merge configuration
-       $this->mergeConfigFrom(
-           __DIR__ . '/../../config/yandexgpt.php',
-           'yandexgpt'
-       );
-
-       // Register singleton
-       $this->app->singleton('yandexgpt', function ($app) {
-           $config = $app['config']['yandexgpt'];
-
-           return new YandexGPTClient(
-               $config['oauth_token'],
-               $config['folder_id']
-           );
-       });
-
-       // Create alias
-       $this->app->alias('yandexgpt', YandexGPTClient::class);
-   }
-   ```
-
-2. **Load services** (`boot()` method):
-    - Publishes the configuration file for customization
-
-   ```php
-   public function boot()
-   {
-       if ($this->app->runningInConsole()) {
-           $this->publishes([
-               __DIR__ . '/../../config/yandexgpt.php' => config_path('yandexgpt.php'),
-           ], 'yandexgpt-config');
-       }
-   }
-   ```
-
-3. **Define provided services** (`provides()` method):
-    - Specifies which services the provider provides
-
-   ```php
-   public function provides()
-   {
-       return ['yandexgpt', YandexGPTClient::class];
-   }
-   ```
-
-**Publishing the configuration:**
-
-```bash
-php artisan vendor:publish --tag=yandexgpt-config
-```
-
-After publishing, the configuration file will be available at `config/yandexgpt.php` for customization.
 
 #### Via facade
 
@@ -746,224 +608,26 @@ $authManager->assignRoleToCloud(
 );
 ```
 
-### User and Role Management (IAM)
-
-The SDK provides a complete set of functions for working with Identity and Access Management (IAM):
-
-#### Getting user information
-
-```php
-use Tigusigalpa\YandexCloudClient\YandexCloudClient;
-
-$cloudClient = new YandexCloudClient('your_oauth_token');
-
-// Laravel:
-// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
-// $cloudClient = YandexGPT::getCloudClient();
-
-// 1. Get User ID (Subject ID) by Yandex login
-$userInfo = $cloudClient->yandexPassportUserAccounts()->getByLogin('username@yandex.ru');
-$userId = $userInfo['id'];
-echo "User ID: " . $userId;
-
-// 2. Get full user information by login
-/*
-Returns array:
-[
-    'id' => 'aje...',           // User Subject ID
-    'yandexPassportUserAccount' => [
-        'login' => 'username',
-        'defaultEmail' => 'username@yandex.ru'
-    ]
-]
-*/
-
-// 3. Get user information by UserAccountId
-$userAccount = $cloudClient->userAccounts()->get($userId);
-/*
-Returns array with full account information
-*/
-```
-
-#### Assigning roles to folder
-
-```php
-use Tigusigalpa\YandexCloudClient\YandexCloudClient;
-
-$cloudClient = new YandexCloudClient('your_oauth_token');
-
-// Laravel:
-// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
-// $cloudClient = YandexGPT::getCloudClient();
-
-// Assign role to user on folder
-$cloudClient->folders()->updateAccessBindings(
-    'folder_id',              // Folder ID
-    [
-        [
-            'action' => 'ADD',
-            'accessBinding' => [
-                'roleId' => 'ai.languageModels.user', // Role
-                'subject' => [
-                    'id' => 'user_subject_id',        // User Subject ID
-                    'type' => 'userAccount'           // Subject type
-                ]
-            ]
-        ]
-    ]
-);
-
-// Assign role to service account
-$cloudClient->folders()->updateAccessBindings(
-    'folder_id',
-    [
-        [
-            'action' => 'ADD',
-            'accessBinding' => [
-                'roleId' => 'ai.languageModels.user',
-                'subject' => [
-                    'id' => 'service_account_id',
-                    'type' => 'serviceAccount'        // For service account
-                ]
-            ]
-        ]
-    ]
-);
-
-// Available roles for AI:
-// - ai.languageModels.user - use models
-// - ai.editor - edit resources
-// - ai.viewer - view resources
-// - editor - full folder access
-// - viewer - view folder
-```
-
-#### Assigning roles to cloud
-
-```php
-use Tigusigalpa\YandexCloudClient\YandexCloudClient;
-
-$cloudClient = new YandexCloudClient('your_oauth_token');
-
-// Laravel:
-// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
-// $cloudClient = YandexGPT::getCloudClient();
-
-// Assign role to cloud
-$cloudClient->clouds()->updateAccessBindings(
-    'cloud_id',        // Cloud ID
-    [
-        [
-            'action' => 'ADD',
-            'accessBinding' => [
-                'roleId' => 'editor',          // Cloud role
-                'subject' => [
-                    'id' => 'user_subject_id', // User Subject ID
-                    'type' => 'userAccount'    // Subject type
-                ]
-            ]
-        ]
-    ]
-);
-
-// Available roles for cloud:
-// - admin - cloud administrator
-// - editor - cloud editor
-// - viewer - view cloud
-// - resource-manager.clouds.owner - cloud owner
-```
-
-#### Complete example: get user and assign role
-
-```php
-use Tigusigalpa\YandexCloudClient\YandexCloudClient;
-
-$cloudClient = new YandexCloudClient('your_oauth_token');
-
-// Laravel:
-// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
-// $cloudClient = YandexGPT::getCloudClient();
-
-try {
-    // 1. Get User ID by login
-    $userInfo = $cloudClient->yandexPassportUserAccounts()->getByLogin('username@yandex.ru');
-    $userId = $userInfo['id'];
-    echo "User ID: {$userId}\n";
-    
-    // 2. Get user information
-    $userAccount = $cloudClient->userAccounts()->get($userId);
-    echo "User info: " . json_encode($userAccount, JSON_PRETTY_PRINT) . "\n";
-    
-    // 3. Assign role to folder
-    $cloudClient->folders()->updateAccessBindings(
-        'your_folder_id',
-        [
-            [
-                'action' => 'ADD',
-                'accessBinding' => [
-                    'roleId' => 'ai.languageModels.user',
-                    'subject' => [
-                        'id' => $userId,
-                        'type' => 'userAccount'
-                    ]
-                ]
-            ]
-        ]
-    );
-    
-    echo "Role assigned successfully!\n";
-    
-} catch (\Exception $e) {
-    echo "Error: " . $e->getMessage();
-}
-```
-
 ---
 
-## 🤖 Available YandexGPT Models
+## Available Models
 
-The SDK supports all current generative AI models from Yandex Cloud:
+| Model            | Constant                          | Context | Use case |
+|------------------|-----------------------------------|---------|----------|
+| `yandexgpt-lite` | `YandexGPTModel::YANDEX_GPT_LITE` | 32K     | Simple queries, chatbots, FAQ |
+| `yandexgpt`      | `YandexGPTModel::YANDEX_GPT`      | 32K     | Content, analysis, reasoning |
+| `aliceai-llm`    | `YandexGPTModel::ALICE_AI`        | 32K     | Dialogues, assistants |
 
-| Model            | Description                                  | Constant                          | Context | Application |
-|------------------|----------------------------------------------|-----------------------------------|---------|-------------|
-| `yandexgpt-lite` | Fast and economical model                    | `YandexGPTModel::YANDEX_GPT_LITE` | 32K     | Simple queries, chatbots, FAQ |
-| `yandexgpt`      | Standard model (Pro)                         | `YandexGPTModel::YANDEX_GPT`      | 32K     | Content generation, text analysis |
-| `aliceai-llm`    | Alice AI LLM - advanced conversational model | `YandexGPTModel::ALICE_AI`        | 32K     | Dialogue systems, assistants |
-
-### Choosing a Model for Your Task
-
-**YandexGPT Lite** — ideal for:
-- Quick answers to simple questions
-- Chatbots with basic functionality
-- Processing large volumes of requests
-- Budget-friendly token usage
-
-**YandexGPT Pro** — recommended for:
-- Quality content generation
-- SEO-optimized texts
-- Complex analytical tasks
-- Working with reasoning mode
-
-**Alice AI** — optimal for:
-- Natural dialogues with users
-- Virtual assistants
-- Conversational interfaces
-- Personalized communication
-
-📚 **Complete list of available models:**
-[Generation models in Yandex AI Studio](https://yandex.cloud/en/docs/ai-studio/concepts/generation/models)
+Full list: [Generation models in Yandex AI Studio](https://yandex.cloud/en/docs/ai-studio/concepts/generation/models)
 
 ```php
-// Get all available models
 $models = YandexGPT::getAvailableModels();
-
-// Get model descriptions
 $descriptions = YandexGPT::getModelDescriptions();
 ```
 
 ---
 
-## 🔧 Generation parameters
+## Generation parameters
 
 ```php
 $options = [
@@ -977,11 +641,11 @@ $options = [
 $response = YandexGPT::generateText('Your request', 'yandexgpt-lite', $options);
 ```
 
-### 🧠 Reasoning Mode
+### Reasoning Mode
 
 Reasoning mode allows the model to break down tasks into steps and perform sequential chains of computations to improve answer accuracy. This mode is especially useful for tasks requiring logical reasoning.
 
-📚 **Documentation:** [Reasoning mode in generative models](https://yandex.cloud/en/docs/ai-studio/concepts/generation/chain-of-thought)
+Documentation: [Reasoning mode in generative models](https://yandex.cloud/en/docs/ai-studio/concepts/generation/chain-of-thought)
 
 **Available modes:**
 - `DISABLED` - reasoning mode is disabled (default)
@@ -1114,7 +778,7 @@ echo $response['result']['alternatives'][0]['message']['text'];
 
 ---
 
-## ⚠️ Error handling
+## Error handling
 
 ```php
 <?php
@@ -1139,7 +803,7 @@ try {
 
 ---
 
-## 🛠️ Configuration
+## Configuration file
 
 Full configuration file `config/yandexgpt.php`:
 
@@ -1173,9 +837,7 @@ return [
 
 ---
 
-## 📚 Practical Usage Examples
-
-### Real-World YandexGPT PHP SDK Application Scenarios
+## Examples
 
 #### 1. Laravel Chatbot with Conversation History
 
@@ -1459,312 +1121,35 @@ class ContentImageGenerator
 
 ---
 
-## 🆚 Comparison with Alternatives
-
-### YandexGPT PHP SDK vs OpenAI PHP
-
-| Feature | YandexGPT PHP SDK | OpenAI PHP |
-|---------|-------------------|------------|
-| **Localization** | Excellent Russian language support | Good, but not native |
-| **Pricing** | Competitive prices for Russian market | Payment in foreign currency |
-| **Legal Compliance** | Full compliance with Russian legislation | Requires additional measures |
-| **Yandex Cloud Integration** | Native | Not available |
-| **Image Generation** | YandexART built-in | Requires DALL-E |
-| **Laravel Integration** | Service Provider + Facades | Requires additional setup |
-| **Infrastructure Management** | Built-in cloud management | Not available |
-
-### Benefits of Using YandexGPT for Russian Projects
-
-✅ **Legal Compliance** — data stored in Russia  
-✅ **Russian Language Quality** — models trained on Russian data  
-✅ **Stability** — independent of international sanctions  
-✅ **Russian Support** — documentation and support in native language  
-✅ **Yandex Ecosystem Integration** — unified infrastructure  
-✅ **Transparent Pricing** — payment in rubles  
-
----
-
-## 🧪 Testing
-
-### Running package tests
+## Testing
 
 ```bash
-# Go to the package directory
-cd packages/yandexgpt-php
-
-# Install development dependencies
 composer install
-
-# Run tests
 composer test
-
-# Run tests with coverage
 composer test-coverage
 ```
 
-### Testing in a Laravel project
+---
 
-1. **Create a test controller or use an existing one:**
+## Troubleshooting
 
-   ```php
-   <?php
+**"Class 'YandexGPTClient' not found"** — `composer show tigusigalpa/yandexgpt-php`, then `composer dump-autoload`.
 
-   namespace App\Http\Controllers;
+**"OAuth token not configured"** — check `YANDEX_GPT_OAUTH_TOKEN` in `.env`, then `php artisan config:clear`.
 
-   use Tigusigalpa\YandexGPT\YandexGPTClient;
-   use Tigusigalpa\YandexGPT\Models\YandexGPTModel;
-   use Tigusigalpa\YandexGPT\Exceptions\AuthenticationException;
-   use Tigusigalpa\YandexGPT\Exceptions\ApiException;
+**401 Unauthorized** — check your OAuth token (valid for 1 year) and folder access rights.
 
-   class TestYandexGPTController extends Controller
-   {
-       public function test()
-       {
-           try {
-               $client = new YandexGPTClient(
-                   env('YANDEX_GPT_OAUTH_TOKEN'),
-                   env('YANDEX_GPT_FOLDER_ID')
-               );
+**403 Forbidden** — the user must have the `ai.languageModels.user` role on the folder.
 
-               $response = $client->generateText(
-                   'Hello! This is a YandexGPT SDK test',
-                   YandexGPTModel::YANDEX_GPT_LITE
-               );
-
-               return response()->json([
-                   'success' => true,
-                   'response' => $response['result']['alternatives'][0]['message']['text']
-               ]);
-
-           } catch (AuthenticationException $e) {
-               return response()->json([
-                   'success' => false,
-                   'error' => 'Authentication error: ' . $e->getMessage()
-               ], 401);
-           } catch (ApiException $e) {
-               return response()->json([
-                   'success' => false,
-                   'error' => 'API error: ' . $e->getMessage()
-               ], 400);
-           }
-       }
-   }
-   ```
-
-2. **Add a route for testing:**
-
-   ```php
-   // routes/web.php
-   Route::get('/test-yandexgpt', [TestYandexGPTController::class, 'test']);
-   ```
-
-3. **Test via a browser or API client:**
-
-   ```bash
-   curl http://your-domain.com/test-yandexgpt
-   ```
+**Connection timeout** — increase `timeout` in `config/yandexgpt.php`.
 
 ---
 
-## ❓ Troubleshooting and FAQ
-
-### Frequently Asked Questions
-
-#### Q: What is YandexGPT and what is it for?
-
-**A:** YandexGPT is a family of generative language models from Yandex Cloud that can generate text, conduct dialogues, analyze information, and solve various natural language processing tasks. The SDK makes it easy to integrate these capabilities into PHP applications.
-
-#### Q: Which model is best for my task?
-
-**A:** 
-- **YandexGPT Lite** — for simple tasks, chatbots, FAQ (fast and economical)
-- **YandexGPT Pro** — for quality content generation, SEO texts, complex tasks
-- **Alice AI** — for natural dialogues and conversational interfaces
-
-#### Q: How much does YandexGPT cost?
-
-**A:** The cost depends on the model and number of tokens. See current prices in [Yandex Cloud documentation](https://yandex.cloud/en/docs/foundation-models/pricing). YandexGPT Lite is the most economical option.
-
-#### Q: Can I use the SDK without Laravel?
-
-**A:** Yes, the SDK works fully in any PHP project (PHP 8.0+). Laravel integration is optional and provides additional conveniences (Facades, Service Provider).
-
-#### Q: How to get an OAuth token?
-
-**A:** Follow the
-link: https://oauth.yandex.com/authorize?response_type=token&client_id=1a6990aa636648e9b2ef855fa7bec2fb
-
-After authorization, copy the token from the URL.
-
-#### Q: How to get a Folder ID?
-
-**A:** Use the SDK to get a list of folders:
-
-```php
-use Tigusigalpa\YandexCloudClient\YandexCloudClient;
-
-$cloudClient = new YandexCloudClient('your_oauth_token');
-
-// Laravel:
-// use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
-// $cloudClient = YandexGPT::getCloudClient();
-
-$clouds = $cloudClient->clouds()->list();
-$folders = $cloudClient->folders()->list($clouds[0]['id']);
-```
-
-#### Q: Why do I get the error "OAuth token cannot be empty"?
-
-**A:** Make sure that `YANDEX_GPT_OAUTH_TOKEN` is correctly set in the `.env` file without spaces or quotes.
-
-```
-
-#### Q: Is it safe to store the OAuth token in the .env file?
-
-**A:** Yes, this is standard practice for Laravel. Make sure:
-- The `.env` file is added to `.gitignore`
-- Production uses server environment variables
-- File access permissions are restricted (chmod 600)
-
-#### Q: Can I use the SDK for commercial projects?
-
-**A:** Yes, the package is distributed under the MIT license, which allows free use in commercial projects.
-
-#### Q: Is streaming supported?
-
-**A:** Streaming is not implemented in the current version but is planned for future updates.
-
-#### Q: How to limit token usage?
-
-**A:** Use the `maxTokens` parameter in generation options:
-```php
-$response = YandexGPT::generateText(
-    'Your request',
-    YandexGPTModel::YANDEX_GPT_LITE,
-    [
-        'completionOptions' => [
-            'maxTokens' => 500  // Limit
-        ]
-    ]
-);
-```
-
-#### Q: Can I use multiple folders?
-
-**A:** Yes, create separate client instances for different folders:
-```php
-$client1 = new YandexGPTClient($oauthToken, $folderId1);
-$client2 = new YandexGPTClient($oauthToken, $folderId2);
-```
-
-#### Q: How to handle large volumes of text?
-
-**A:** Split text into parts considering the context limit (32K tokens) or use summarization:
-```php
-$summary = YandexGPT::generateText(
-    "Briefly summarize the main ideas of the text: {$longText}",
-    YandexGPTModel::YANDEX_GPT
-);
-```
-
-### Troubleshooting
-
-#### Error: "Class 'Tigusigalpa\YandexGPT\YandexGPTClient' not found"
-
-**Solution:**
-
-1. Make sure the package is installed: `composer show tigusigalpa/yandexgpt-php`
-2. Clear the autoloader: `composer dump-autoload`
-3. Check that the package is added to `composer.json`
-
-#### Error: "YandexGPT OAuth token not configured"
-
-**Solution:**
-
-1. Add to the `.env` file:
-
-   ```env
-   YANDEX_GPT_OAUTH_TOKEN=your_actual_token_here
-   YANDEX_GPT_FOLDER_ID=your_folder_id_here
-   ```
-
-2. Clear the configuration cache: `php artisan config:clear`
-
-#### Error: "YandexGPT API error (code 401): Unauthorized"
-
-**Solution:**
-
-1. Check the correctness of the OAuth token
-2. Make sure the token has not expired (OAuth tokens are valid for 1 year)
-3. Check the access rights to the folder
-
-#### Error: "YandexGPT API error (code 403): Forbidden"
-
-**Solution:**
-
-1. Make sure the user has the `ai.languageModels.user` role
-2. Check the correctness of the Folder ID
-3. Make sure the folder exists and is accessible
-
-#### Error: "Connection timeout"
-
-**Solution:**
-
-1. Increase the timeout in the configuration:
-
-   ```php
-   // config/yandexgpt.php
-   'http_options' => [
-       'timeout' => 60,
-       'connect_timeout' => 30,
-   ],
-   ```
-
-2. Check your internet connection
-3. Make sure there is no firewall blocking
-
-### Debugging
-
-#### Enabling detailed logging
-
-```php
-use Tigusigalpa\YandexGPT\YandexGPTClient;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Middleware;
-
-// Create an HTTP client with logging
-$stack = HandlerStack::create();
-$stack->push(Middleware::log(
-    app('log')->getLogger(),
-    new \GuzzleHttp\MessageFormatter('{method} {uri} HTTP/{version} {req_body} RESPONSE: {code} - {res_body}')
-));
-
-$httpClient = new Client(['handler' => $stack]);
-$client = new YandexGPTClient('oauth_token', 'folder_id', $httpClient);
-```
-
-#### Checking the configuration
-
-```php
-// Check all settings
-$config = config('yandexgpt');
-dd($config);
-
-// Check environment variables
-dd([
-    'oauth_token' => env('YANDEX_GPT_OAUTH_TOKEN'),
-    'folder_id' => env('YANDEX_GPT_FOLDER_ID'),
-]);
-```
-
----
-
-## � Conversations API
+## Conversations API
 
 The SDK supports the Conversations API for managing conversations and their items on the Yandex Cloud server side.
 
-📚 **Documentation:** [REST: Conversations](https://yandex.cloud/ru/docs/ai-studio/conversations/)
+Documentation: [REST: Conversations](https://yandex.cloud/ru/docs/ai-studio/conversations/)
 
 ### Available Methods
 
@@ -1878,21 +1263,20 @@ $history = YandexGPT::conversations()->listItems($conversation['id'], 50, 'asc')
 
 ---
 
-## �🖼️ Image Generation (YandexART)
+## Image Generation (YandexART)
 
 <img src="https://github.com/user-attachments/assets/e9fdb285-e575-40ef-b240-824a990e097f" alt="YandexART Hero Image">
 
-> 📚 Resources
-> - 📖 Documentation: https://yandex.cloud/en/docs/ai-studio/quickstart/yandexart
-> - 🛠️ [Request](https://yandex.cloud/en/docs/ai-studio/operations/generation/yandexart-request#generate-text)
-    documentation
-> - 🎨 Website: https://ya.ru/ai/papers/paper-yaart-v1
+> Resources:
+> - Documentation: https://yandex.cloud/en/docs/ai-studio/quickstart/yandexart
+> - [Request documentation](https://yandex.cloud/en/docs/ai-studio/operations/generation/yandexart-request#generate-text)
+> - Website: https://ya.ru/ai/papers/paper-yaart-v1
 
 The SDK supports image generation using YandexART. There are three methods available:
 
-- 📨 **generateImageAsync** — submit a generation request and receive an Operation object
-- 🔎 **getOperation** — check the operation status by its ID
-- ⏳ **generateImage** — synchronous wrapper that waits for the result
+- **generateImageAsync** — submit a generation request and receive an Operation object
+- **getOperation** — check the operation status by its ID
+- **generateImage** — synchronous wrapper that waits for the result
 
 Access requirements:
 
@@ -2018,7 +1402,7 @@ Check the error field in the operation response and the presence of response.ima
 
 ---
 
-## ✅ Requirements
+## Requirements
 
 - PHP 8.0 or higher
 - Laravel 8.0 or higher (for Laravel integration)
@@ -2026,13 +1410,13 @@ Check the error field in the operation response and the presence of response.ima
 
 ---
 
-## 📄 License
+## License
 
 This package is distributed under the MIT license. See the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🤝 Support
+## Links
 
 - [YandexGPT API Documentation](https://yandex.cloud/en/docs/foundation-models/)
 - [Quickstart](https://yandex.cloud/en/docs/foundation-models/quickstart/yandexgpt)
@@ -2040,82 +1424,25 @@ This package is distributed under the MIT license. See the [LICENSE](LICENSE) fi
 
 ---
 
-## 🧑‍💻 Contributing
+## Contributing
 
 We welcome contributions! Please see the [contribution guide](CONTRIBUTING.md).
 
 ---
 
-## 📜 Changelog
+## Changelog
 
 All changes are documented in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
-## 🛡️ Security
+## Security
 
 If you discover a security vulnerability, please send an email to sovletig@gmail.com instead of creating an issue.
 
 ---
 
-## 🔑 Keywords and Tags
+## Author
 
-`yandexgpt`, `yandex-gpt`, `yandex-cloud`, `yandex-ai`, `yandexart`, `php-sdk`, `laravel`, `laravel-package`, `ai`, `artificial-intelligence`, `machine-learning`, `nlp`, `natural-language-processing`, `chatbot`, `chat-bot`, `gpt`, `language-model`, `text-generation`, `image-generation`, `conversations-api`, `russian-language`, `php8`, `composer-package`, `api-client`, `yandex-api`, `generative-ai`, `llm`, `large-language-model`, `alice-ai`, `reasoning-mode`, `chain-of-thought`, `prompt-engineering`, `content-generation`, `seo-tools`, `php-library`
-
-## 📊 Statistics and Performance
-
-- ⚡ **Response Speed**: YandexGPT Lite — 1-3 seconds
-- 🎯 **Accuracy**: High accuracy for Russian language queries
-- 💾 **Context**: Up to 32K tokens (approximately 24K words)
-- 🔄 **Token Renewal**: Automatic every 12 hours
-- 📦 **Package Size**: Minimal dependencies, fast installation
-
-## 🌟 Reviews and Use Cases
-
-### Where YandexGPT PHP SDK is Used
-
-- 🛒 **E-commerce**: Product description generation, customer support
-- 📰 **Media and Blogs**: Content automation, SEO optimization
-- 💼 **Corporate Systems**: Internal chatbots, document processing
-- 🎓 **Education**: Learning assistants, text verification
-- 🏥 **Healthcare**: Information systems, FAQ bots
-- 🏢 **Business Analytics**: Review analysis, request processing
-
-## 🚀 Roadmap and Development Plans
-
-- [ ] Streaming support
-- [ ] Extended YandexART capabilities
-- [ ] Integration with other Yandex Cloud services
-- [ ] Request caching for optimization
-- [ ] Extended token usage analytics
-- [ ] Asynchronous request support
-- [ ] CLI tools for quick testing
-- [ ] Additional adapters for popular CMS
-
-## 📱 Contacts and Community
-
-- 📧 **Email**: sovletig@gmail.com
-- 🐙 **GitHub**: [tigusigalpa/yandexgpt-php](https://github.com/tigusigalpa/yandexgpt-php)
-- 📦 **Packagist**: [tigusigalpa/yandexgpt-php](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
-- 📚 **Yandex Cloud Documentation**: [foundation-models](https://yandex.cloud/en/docs/foundation-models/)
-
-## 💡 Useful Resources
-
-### Official Yandex Cloud Documentation
-- [YandexGPT API](https://yandex.cloud/en/docs/foundation-models/concepts/yandexgpt/)
-- [YandexART](https://yandex.cloud/en/docs/ai-studio/quickstart/yandexart)
-- [Generation Models](https://yandex.cloud/en/docs/ai-studio/concepts/generation/models)
-- [Pricing](https://yandex.cloud/en/docs/foundation-models/pricing)
-- [Best Practices](https://yandex.cloud/en/docs/foundation-models/concepts/yandexgpt/)
-
-### Learning Materials
-- [Prompt Engineering for YandexGPT](https://yandex.cloud/en/docs/foundation-models/concepts/yandexgpt/)
-- [Usage Examples](https://github.com/tigusigalpa/yandexgpt-php/tree/main/examples)
-- [Video Tutorials and Webinars](https://yandex.cloud/en/training)
-
----
-
-**YandexGPT PHP SDK** — your reliable tool for integrating artificial intelligence into PHP applications. Start using generative AI capabilities today!
-
-⭐ If the project was helpful, give it a star on GitHub!
+[Igor Sazonov](https://github.com/tigusigalpa) — sovletig@gmail.com
 
