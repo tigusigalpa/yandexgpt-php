@@ -21,6 +21,7 @@ YandexGPT PHP SDK — это мощный инструмент для разра
 - 🤖 Работа со всеми моделями YandexGPT и YandexART
 - 🔐 Автоматическое управление OAuth и IAM токенами
 - 💬 Поддержка диалоговых систем и контекстных бесед
+- 🗂️ Conversations API — управление диалогами на стороне сервера
 - 🎨 Генерация изображений с помощью YandexART
 - 🧠 Режим рассуждений (Chain of Thought) для сложных задач
 - 📦 Управление облачной инфраструктурой Yandex Cloud
@@ -1754,7 +1755,125 @@ dd([
 
 ---
 
-## 🖼️ Генерация изображений (YandexART)
+## � Conversations API
+
+SDK поддерживает работу с Conversations API для управления диалогами и их элементами на стороне сервера Yandex Cloud.
+
+📚 **Документация:** [REST: Conversations](https://yandex.cloud/ru/docs/ai-studio/conversations/)
+
+### Доступные методы
+
+| Метод | Описание |
+|-------|----------|
+| `create()` | Создание нового диалога |
+| `get()` | Получение диалога по ID |
+| `update()` | Обновление метаданных диалога |
+| `delete()` | Удаление диалога |
+| `createItems()` | Добавление элементов в диалог |
+| `listItems()` | Получение списка элементов диалога |
+| `getItem()` | Получение одного элемента диалога |
+| `deleteItem()` | Удаление элемента из диалога |
+
+### Управление диалогами
+
+```php
+use Tigusigalpa\YandexGPT\YandexGPTClient;
+
+$client = new YandexGPTClient('your_oauth_token', 'your_folder_id');
+
+// Создание диалога с метаданными
+$conversation = $client->conversations()->create([
+    'title' => 'Техническая поддержка',
+    'user_id' => '12345',
+]);
+
+$conversationId = $conversation['id'];
+echo "Conversation ID: " . $conversationId . "\n";
+echo "Created at: " . $conversation['created_at'] . "\n";
+
+// Получение диалога
+$conversation = $client->conversations()->get($conversationId);
+
+// Обновление метаданных диалога
+$conversation = $client->conversations()->update($conversationId, [
+    'title' => 'Обновлённый заголовок',
+    'status' => 'active',
+]);
+
+// Удаление диалога
+$result = $client->conversations()->delete($conversationId);
+// $result['deleted'] === true
+```
+
+### Управление элементами диалога
+
+```php
+use Tigusigalpa\YandexGPT\YandexGPTClient;
+
+$client = new YandexGPTClient('your_oauth_token', 'your_folder_id');
+$conversationId = 'conv_123';
+
+// Добавление элементов в диалог
+$items = $client->conversations()->createItems($conversationId, [
+    [
+        'type' => 'message',
+        'role' => 'user',
+        'content' => [['type' => 'input_text', 'text' => 'Привет! Как дела?']],
+    ],
+    [
+        'type' => 'message',
+        'role' => 'assistant',
+        'content' => [['type' => 'output_text', 'text' => 'Здравствуйте! Всё отлично, чем могу помочь?']],
+    ],
+]);
+
+// Получение списка элементов (с пагинацией)
+$items = $client->conversations()->listItems($conversationId, 20, 'asc');
+foreach ($items['data'] as $item) {
+    echo $item['role'] . ': ' . ($item['content'][0]['text'] ?? '') . "\n";
+}
+
+// Пагинация: получение следующей страницы
+if ($items['has_more']) {
+    $nextPage = $client->conversations()->listItems(
+        $conversationId,
+        20,
+        'asc',
+        $items['last_id']
+    );
+}
+
+// Получение одного элемента
+$item = $client->conversations()->getItem($conversationId, 'item_123');
+
+// Удаление элемента
+$client->conversations()->deleteItem($conversationId, 'item_123');
+```
+
+### Использование через Laravel Facade
+
+```php
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+
+// Создание диалога
+$conversation = YandexGPT::conversations()->create(['title' => 'Новый диалог']);
+
+// Добавление сообщений
+YandexGPT::conversations()->createItems($conversation['id'], [
+    [
+        'type' => 'message',
+        'role' => 'user',
+        'content' => [['type' => 'input_text', 'text' => 'Вопрос пользователя']],
+    ],
+]);
+
+// Получение истории
+$history = YandexGPT::conversations()->listItems($conversation['id'], 50, 'asc');
+```
+
+---
+
+## ��️ Генерация изображений (YandexART)
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/0e08dee0-6fe2-41bd-ac92-501f53d18166" alt="YandexART Hero Image">
@@ -1932,7 +2051,7 @@ $operation = $client->generateImageAsync('Описание сцены', $generat
 
 ## 🔑 Ключевые слова и теги
 
-`yandexgpt`, `yandex-gpt`, `yandex-cloud`, `yandex-ai`, `yandexart`, `php-sdk`, `laravel`, `laravel-package`, `ai`, `artificial-intelligence`, `machine-learning`, `nlp`, `natural-language-processing`, `chatbot`, `chat-bot`, `gpt`, `language-model`, `text-generation`, `image-generation`, `russian-language`, `php8`, `composer-package`, `api-client`, `yandex-api`, `generative-ai`, `llm`, `large-language-model`, `alice-ai`, `reasoning-mode`, `chain-of-thought`, `prompt-engineering`, `content-generation`, `seo-tools`, `php-library`
+`yandexgpt`, `yandex-gpt`, `yandex-cloud`, `yandex-ai`, `yandexart`, `php-sdk`, `laravel`, `laravel-package`, `ai`, `artificial-intelligence`, `machine-learning`, `nlp`, `natural-language-processing`, `chatbot`, `chat-bot`, `gpt`, `language-model`, `text-generation`, `image-generation`, `conversations-api`, `russian-language`, `php8`, `composer-package`, `api-client`, `yandex-api`, `generative-ai`, `llm`, `large-language-model`, `alice-ai`, `reasoning-mode`, `chain-of-thought`, `prompt-engineering`, `content-generation`, `seo-tools`, `php-library`
 
 ## 📊 Статистика и производительность
 

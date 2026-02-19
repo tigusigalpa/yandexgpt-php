@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static array generateImageAsync(array|string $messages, array $generationOptions = [], ?string $catalogId = null)
  * @method static array getOperation(string $operationId)
  * @method static array generateImage(array|string $messages, array $generationOptions = [], ?string $catalogId = null, int $pollIntervalSeconds = 2, int $maxWaitSeconds = 600)
+ * @method static \Tigusigalpa\YandexGPT\Conversations\ConversationsClient conversations()
  *
  * @see \Tigusigalpa\YandexGPT\YandexGPTClient
  */

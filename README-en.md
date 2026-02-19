@@ -21,6 +21,7 @@ YandexGPT PHP SDK is a powerful tool for developers who want to integrate Yandex
 - 🤖 Work with all YandexGPT and YandexART models
 - 🔐 Automatic OAuth and IAM token management
 - 💬 Support for dialogue systems and contextual conversations
+- 🗂️ Conversations API — server-side conversation management
 - 🎨 Image generation with YandexART
 - 🧠 Reasoning Mode (Chain of Thought) for complex tasks
 - 📦 Yandex Cloud infrastructure management
@@ -1759,7 +1760,125 @@ dd([
 
 ---
 
-## 🖼️ Image Generation (YandexART)
+## � Conversations API
+
+The SDK supports the Conversations API for managing conversations and their items on the Yandex Cloud server side.
+
+📚 **Documentation:** [REST: Conversations](https://yandex.cloud/ru/docs/ai-studio/conversations/)
+
+### Available Methods
+
+| Method | Description |
+|--------|-------------|
+| `create()` | Create a new conversation |
+| `get()` | Retrieve a conversation by ID |
+| `update()` | Update conversation metadata |
+| `delete()` | Delete a conversation |
+| `createItems()` | Add items to a conversation |
+| `listItems()` | List conversation items |
+| `getItem()` | Retrieve a single conversation item |
+| `deleteItem()` | Delete an item from a conversation |
+
+### Managing Conversations
+
+```php
+use Tigusigalpa\YandexGPT\YandexGPTClient;
+
+$client = new YandexGPTClient('your_oauth_token', 'your_folder_id');
+
+// Create a conversation with metadata
+$conversation = $client->conversations()->create([
+    'title' => 'Technical Support',
+    'user_id' => '12345',
+]);
+
+$conversationId = $conversation['id'];
+echo "Conversation ID: " . $conversationId . "\n";
+echo "Created at: " . $conversation['created_at'] . "\n";
+
+// Retrieve a conversation
+$conversation = $client->conversations()->get($conversationId);
+
+// Update conversation metadata
+$conversation = $client->conversations()->update($conversationId, [
+    'title' => 'Updated Title',
+    'status' => 'active',
+]);
+
+// Delete a conversation
+$result = $client->conversations()->delete($conversationId);
+// $result['deleted'] === true
+```
+
+### Managing Conversation Items
+
+```php
+use Tigusigalpa\YandexGPT\YandexGPTClient;
+
+$client = new YandexGPTClient('your_oauth_token', 'your_folder_id');
+$conversationId = 'conv_123';
+
+// Add items to a conversation
+$items = $client->conversations()->createItems($conversationId, [
+    [
+        'type' => 'message',
+        'role' => 'user',
+        'content' => [['type' => 'input_text', 'text' => 'Hello! How are you?']],
+    ],
+    [
+        'type' => 'message',
+        'role' => 'assistant',
+        'content' => [['type' => 'output_text', 'text' => 'Hi! I am doing great, how can I help?']],
+    ],
+]);
+
+// List items (with pagination)
+$items = $client->conversations()->listItems($conversationId, 20, 'asc');
+foreach ($items['data'] as $item) {
+    echo $item['role'] . ': ' . ($item['content'][0]['text'] ?? '') . "\n";
+}
+
+// Pagination: get the next page
+if ($items['has_more']) {
+    $nextPage = $client->conversations()->listItems(
+        $conversationId,
+        20,
+        'asc',
+        $items['last_id']
+    );
+}
+
+// Retrieve a single item
+$item = $client->conversations()->getItem($conversationId, 'item_123');
+
+// Delete an item
+$client->conversations()->deleteItem($conversationId, 'item_123');
+```
+
+### Using via Laravel Facade
+
+```php
+use Tigusigalpa\YandexGPT\Laravel\Facades\YandexGPT;
+
+// Create a conversation
+$conversation = YandexGPT::conversations()->create(['title' => 'New Conversation']);
+
+// Add messages
+YandexGPT::conversations()->createItems($conversation['id'], [
+    [
+        'type' => 'message',
+        'role' => 'user',
+        'content' => [['type' => 'input_text', 'text' => 'User question']],
+    ],
+]);
+
+// Get history
+$history = YandexGPT::conversations()->listItems($conversation['id'], 50, 'asc');
+```
+
+---
+
+## �🖼️ Image Generation (YandexART)
 
 <img src="https://github.com/user-attachments/assets/e9fdb285-e575-40ef-b240-824a990e097f" alt="YandexART Hero Image">
 
@@ -1941,7 +2060,7 @@ If you discover a security vulnerability, please send an email to sovletig@gmail
 
 ## 🔑 Keywords and Tags
 
-`yandexgpt`, `yandex-gpt`, `yandex-cloud`, `yandex-ai`, `yandexart`, `php-sdk`, `laravel`, `laravel-package`, `ai`, `artificial-intelligence`, `machine-learning`, `nlp`, `natural-language-processing`, `chatbot`, `chat-bot`, `gpt`, `language-model`, `text-generation`, `image-generation`, `russian-language`, `php8`, `composer-package`, `api-client`, `yandex-api`, `generative-ai`, `llm`, `large-language-model`, `alice-ai`, `reasoning-mode`, `chain-of-thought`, `prompt-engineering`, `content-generation`, `seo-tools`, `php-library`
+`yandexgpt`, `yandex-gpt`, `yandex-cloud`, `yandex-ai`, `yandexart`, `php-sdk`, `laravel`, `laravel-package`, `ai`, `artificial-intelligence`, `machine-learning`, `nlp`, `natural-language-processing`, `chatbot`, `chat-bot`, `gpt`, `language-model`, `text-generation`, `image-generation`, `conversations-api`, `russian-language`, `php8`, `composer-package`, `api-client`, `yandex-api`, `generative-ai`, `llm`, `large-language-model`, `alice-ai`, `reasoning-mode`, `chain-of-thought`, `prompt-engineering`, `content-generation`, `seo-tools`, `php-library`
 
 ## 📊 Statistics and Performance
 

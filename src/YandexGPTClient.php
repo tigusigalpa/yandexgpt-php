@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use stdClass;
 use Tigusigalpa\YandexCloudClient\YandexCloudClient;
+use Tigusigalpa\YandexGPT\Conversations\ConversationsClient;
 use Tigusigalpa\YandexGPT\Exceptions\ApiException;
 use Tigusigalpa\YandexGPT\Exceptions\AuthenticationException;
 use Tigusigalpa\YandexGPT\Models\ReasoningOptions;
@@ -21,6 +22,7 @@ class YandexGPTClient
     private Client $httpClient;
     private YandexCloudClient $cloudClient;
     private string $folderId;
+    private ?ConversationsClient $conversationsClient = null;
 
     public function __construct(string $oauthToken, string $folderId, ?Client $httpClient = null)
     {
@@ -225,6 +227,20 @@ class YandexGPTClient
     public function getFolderId(): string
     {
         return $this->folderId;
+    }
+
+    /**
+     * Get Conversations API client
+     *
+     * @return ConversationsClient
+     */
+    public function conversations(): ConversationsClient
+    {
+        if ($this->conversationsClient === null) {
+            $this->conversationsClient = new ConversationsClient($this->cloudClient, $this->httpClient);
+        }
+
+        return $this->conversationsClient;
     }
 
     /**
