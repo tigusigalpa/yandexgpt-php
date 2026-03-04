@@ -13,6 +13,8 @@ PHP SDK для YandexGPT API и YandexART. Генерация текста, ди
 
 > Для управления облачной инфраструктурой (организации, облака, каталоги) используется [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php).
 
+> 📖 **[Полная документация доступна на Wiki](https://github.com/tigusigalpa/yandexgpt-php/wiki)**
+
 ## Возможности
 
 - Все модели YandexGPT: Lite, Pro, Alice AI
@@ -1419,6 +1421,7 @@ $operation = $client->generateImageAsync('Описание сцены', $generat
 
 ## Ссылки
 
+- [Wiki — документация и руководства](https://github.com/tigusigalpa/yandexgpt-php/wiki)
 - [Документация YandexGPT API](https://yandex.cloud/ru/docs/foundation-models/)
 - [Quickstart](https://yandex.cloud/ru/docs/foundation-models/quickstart/yandexgpt)
 - [Список моделей](https://yandex.cloud/ru/docs/ai-studio/concepts/generation/models)

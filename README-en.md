@@ -9,9 +9,13 @@
 
 **Language:** English | [Русский](README.md)
 
-PHP SDK for YandexGPT API and YandexART. Text generation, dialogues, images, Conversations API. Works with any PHP 8.0+ project and has built-in Laravel support.
+PHP SDK for YandexGPT API and YandexART. Text generation, dialogues, images, Conversations API. Works with any PHP 8.0+
+project and has built-in Laravel support.
 
-> For cloud infrastructure management (organizations, clouds, folders) see [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php).
+> For cloud infrastructure management (organizations, clouds, folders)
+> see [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php).
+
+> 📖 **[Full documentation available on Wiki](https://github.com/tigusigalpa/yandexgpt-php/wiki)**
 
 ## Features
 
@@ -612,11 +616,11 @@ $authManager->assignRoleToCloud(
 
 ## Available Models
 
-| Model            | Constant                          | Context | Use case |
-|------------------|-----------------------------------|---------|----------|
+| Model            | Constant                          | Context | Use case                      |
+|------------------|-----------------------------------|---------|-------------------------------|
 | `yandexgpt-lite` | `YandexGPTModel::YANDEX_GPT_LITE` | 32K     | Simple queries, chatbots, FAQ |
-| `yandexgpt`      | `YandexGPTModel::YANDEX_GPT`      | 32K     | Content, analysis, reasoning |
-| `aliceai-llm`    | `YandexGPTModel::ALICE_AI`        | 32K     | Dialogues, assistants |
+| `yandexgpt`      | `YandexGPTModel::YANDEX_GPT`      | 32K     | Content, analysis, reasoning  |
+| `aliceai-llm`    | `YandexGPTModel::ALICE_AI`        | 32K     | Dialogues, assistants         |
 
 Full list: [Generation models in Yandex AI Studio](https://yandex.cloud/en/docs/ai-studio/concepts/generation/models)
 
@@ -643,15 +647,18 @@ $response = YandexGPT::generateText('Your request', 'yandexgpt-lite', $options);
 
 ### Reasoning Mode
 
-Reasoning mode allows the model to break down tasks into steps and perform sequential chains of computations to improve answer accuracy. This mode is especially useful for tasks requiring logical reasoning.
+Reasoning mode allows the model to break down tasks into steps and perform sequential chains of computations to improve
+answer accuracy. This mode is especially useful for tasks requiring logical reasoning.
 
 Documentation: [Reasoning mode in generative models](https://yandex.cloud/en/docs/ai-studio/concepts/generation/chain-of-thought)
 
 **Available modes:**
+
 - `DISABLED` - reasoning mode is disabled (default)
 - `ENABLED_HIDDEN` - reasoning mode is enabled, but the reasoning chain is not returned in the response
 
 **Effort levels:**
+
 - `low` - priority on speed and token economy
 - `medium` - balance between speed and reasoning accuracy
 - `high` - priority on more complete and thorough reasoning
@@ -1153,16 +1160,16 @@ Documentation: [REST: Conversations](https://yandex.cloud/ru/docs/ai-studio/conv
 
 ### Available Methods
 
-| Method | Description |
-|--------|-------------|
-| `create()` | Create a new conversation |
-| `get()` | Retrieve a conversation by ID |
-| `update()` | Update conversation metadata |
-| `delete()` | Delete a conversation |
-| `createItems()` | Add items to a conversation |
-| `listItems()` | List conversation items |
-| `getItem()` | Retrieve a single conversation item |
-| `deleteItem()` | Delete an item from a conversation |
+| Method          | Description                         |
+|-----------------|-------------------------------------|
+| `create()`      | Create a new conversation           |
+| `get()`         | Retrieve a conversation by ID       |
+| `update()`      | Update conversation metadata        |
+| `delete()`      | Delete a conversation               |
+| `createItems()` | Add items to a conversation         |
+| `listItems()`   | List conversation items             |
+| `getItem()`     | Retrieve a single conversation item |
+| `deleteItem()`  | Delete an item from a conversation  |
 
 ### Managing Conversations
 
@@ -1418,6 +1425,7 @@ This package is distributed under the MIT license. See the [LICENSE](LICENSE) fi
 
 ## Links
 
+- [Wiki — Documentation & Guides](https://github.com/tigusigalpa/yandexgpt-php/wiki)
 - [YandexGPT API Documentation](https://yandex.cloud/en/docs/foundation-models/)
 - [Quickstart](https://yandex.cloud/en/docs/foundation-models/quickstart/yandexgpt)
 - [List of models](https://yandex.cloud/en/docs/ai-studio/concepts/generation/models)
@@ -1427,12 +1435,6 @@ This package is distributed under the MIT license. See the [LICENSE](LICENSE) fi
 ## Contributing
 
 We welcome contributions! Please see the [contribution guide](CONTRIBUTING.md).
-
----
-
-## Changelog
-
-All changes are documented in [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
