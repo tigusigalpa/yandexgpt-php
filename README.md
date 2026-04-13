@@ -1,6 +1,6 @@
 # YandexGPT PHP SDK
 
-![YandexGPT PHP SDK](https://github.com/user-attachments/assets/758d8956-0126-4b32-a6ba-afa8c8948188)
+![YandexGPT PHP SDK](https://i.postimg.cc/Qx2kShKX/yandexgpt-php-banner.jpg)
 
 [![Latest Version](https://img.shields.io/packagist/v/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
 [![PHP Version](https://img.shields.io/packagist/php-v/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
@@ -9,9 +9,11 @@
 
 **Язык:** Русский | [English](README-en.md)
 
-PHP SDK для YandexGPT API и YandexART. Генерация текста, диалоги, изображения, Conversations API. Работает с любым PHP 8.0+ проектом и имеет встроенную поддержку Laravel.
+PHP SDK для YandexGPT API и YandexART. Генерация текста, диалоги, изображения, Conversations API. Работает с любым PHP
+8.0+ проектом и имеет встроенную поддержку Laravel.
 
-> Для управления облачной инфраструктурой (организации, облака, каталоги) используется [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php).
+> Для управления облачной инфраструктурой (организации, облака, каталоги)
+> используется [yandex-cloud-client-php](https://github.com/tigusigalpa/yandex-cloud-client-php).
 
 > 📖 **[Полная документация доступна на Wiki](https://github.com/tigusigalpa/yandexgpt-php/wiki)**
 
@@ -613,11 +615,11 @@ $authManager->assignRoleToCloud(
 
 ## Доступные модели
 
-| Модель           | Константа                         | Контекст | Когда использовать |
-|------------------|-----------------------------------|----------|--------------------|
+| Модель           | Константа                         | Контекст | Когда использовать             |
+|------------------|-----------------------------------|----------|--------------------------------|
 | `yandexgpt-lite` | `YandexGPTModel::YANDEX_GPT_LITE` | 32K      | Простые запросы, чат-боты, FAQ |
-| `yandexgpt`      | `YandexGPTModel::YANDEX_GPT`      | 32K      | Контент, анализ, reasoning |
-| `aliceai-llm`    | `YandexGPTModel::ALICE_AI`        | 32K      | Диалоги, ассистенты |
+| `yandexgpt`      | `YandexGPTModel::YANDEX_GPT`      | 32K      | Контент, анализ, reasoning     |
+| `aliceai-llm`    | `YandexGPTModel::ALICE_AI`        | 32K      | Диалоги, ассистенты            |
 
 Полный список: [Модели генерации в Yandex AI Studio](https://yandex.cloud/ru/docs/ai-studio/concepts/generation/models)
 
@@ -644,15 +646,18 @@ $response = YandexGPT::generateText('Ваш запрос', 'yandexgpt-lite', $op
 
 ### Режим рассуждений (Reasoning Mode)
 
-Режим рассуждений позволяет модели разбивать задачу на этапы и выполнять последовательную цепочку вычислений для повышения точности ответов. Этот режим особенно полезен для задач, требующих логических рассуждений.
+Режим рассуждений позволяет модели разбивать задачу на этапы и выполнять последовательную цепочку вычислений для
+повышения точности ответов. Этот режим особенно полезен для задач, требующих логических рассуждений.
 
 Документация: [Режим рассуждений в генеративных моделях](https://yandex.cloud/ru/docs/ai-studio/concepts/generation/chain-of-thought)
 
 **Доступные режимы:**
+
 - `DISABLED` - режим рассуждений выключен (по умолчанию)
 - `ENABLED_HIDDEN` - режим рассуждений включен, но цепочка рассуждений не возвращается в ответе
 
 **Уровни усилий (effort):**
+
 - `low` - приоритет на скорость и экономию токенов
 - `medium` - баланс между скоростью и точностью рассуждений
 - `high` - приоритет на более полное и тщательное рассуждение
@@ -755,7 +760,8 @@ $response = YandexGPT::generateFromMessages(
 
 #### Проверка использования токенов рассуждений
 
-При использовании режима рассуждений ответ может содержать информацию о количестве токенов, использованных для рассуждений:
+При использовании режима рассуждений ответ может содержать информацию о количестве токенов, использованных для
+рассуждений:
 
 ```php
 $response = YandexGPT::generateText(
@@ -1154,16 +1160,16 @@ SDK поддерживает работу с Conversations API для управ
 
 ### Доступные методы
 
-| Метод | Описание |
-|-------|----------|
-| `create()` | Создание нового диалога |
-| `get()` | Получение диалога по ID |
-| `update()` | Обновление метаданных диалога |
-| `delete()` | Удаление диалога |
-| `createItems()` | Добавление элементов в диалог |
-| `listItems()` | Получение списка элементов диалога |
-| `getItem()` | Получение одного элемента диалога |
-| `deleteItem()` | Удаление элемента из диалога |
+| Метод           | Описание                           |
+|-----------------|------------------------------------|
+| `create()`      | Создание нового диалога            |
+| `get()`         | Получение диалога по ID            |
+| `update()`      | Обновление метаданных диалога      |
+| `delete()`      | Удаление диалога                   |
+| `createItems()` | Добавление элементов в диалог      |
+| `listItems()`   | Получение списка элементов диалога |
+| `getItem()`     | Получение одного элемента диалога  |
+| `deleteItem()`  | Удаление элемента из диалога       |
 
 ### Управление диалогами
 

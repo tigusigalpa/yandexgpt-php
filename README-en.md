@@ -1,6 +1,6 @@
 # YandexGPT PHP SDK
 
-![YandexGPT PHP SDK](https://github.com/user-attachments/assets/758d8956-0126-4b32-a6ba-afa8c8948188)
+![YandexGPT PHP SDK](https://i.postimg.cc/Qx2kShKX/yandexgpt-php-banner.jpg)
 
 [![Latest Version](https://img.shields.io/packagist/v/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
 [![PHP Version](https://img.shields.io/packagist/php-v/tigusigalpa/yandexgpt-php.svg?style=flat-square)](https://packagist.org/packages/tigusigalpa/yandexgpt-php)
